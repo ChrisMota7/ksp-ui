@@ -1,4 +1,5 @@
 'use client'
+import './Tickets.scss'
 import React from 'react';
 import { useState } from 'react';
 
@@ -42,10 +43,7 @@ const Tickets = () => {
         for (let i = 0; i < selectedFiles.length; i++) {
             let file = selectedFiles.item(i)
             console.log(file.name)
-            allFiles.push({
-                archivo: file,
-                tipo: file.type
-            })
+            allFiles.push(file)
         }
         setFiles(allFiles)
     }
@@ -121,6 +119,12 @@ const Tickets = () => {
                             id="outlined-basic" 
                             label="Descripción del problema"/>
                         </div>
+                        
+                    </div>
+                </Card>
+                <Card>
+                    <div className='content__evidencia'>
+                        <h4 className='content__evidencia__title'>Evidencia</h4>
                         <div>
                             <input 
                                 type="file" 
@@ -128,15 +132,7 @@ const Tickets = () => {
                                 multiple 
                                 onChange={handleFileInputChange}/>
                         </div>
-                    </div>
-                </Card>
-                <Card>
-                    <div className='content__evidencia'>
-                        <h4 className='content__evidencia__title'>Evidencia</h4>
-                        <Button className='content__evidencia__button' component="label"  startIcon={<CloudUploadIcon />}>
-                            Subir archivos, fotos o videos
-                        </Button>
-                        <div className='content__evidencia__buttonSave'>
+                        <div className='content__evidencia__button__Save'>
                             <Button type='submit' className='content__evidencia__buttonSave' variant="contained" >Guardar Ticket</Button>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 import { get, post } from "@/utils/api"
 import { SET_PROBLEMS } from "../reducers/ticketReducer"
 
-
 export const getProblems = (categoryId) => async (dispatch) => {
     try {
         const problems = await get(`/helpdesk/getProblemByCategory/${categoryId}`)
@@ -22,17 +21,17 @@ export const getProblems = (categoryId) => async (dispatch) => {
 export const createTicket = (asunto, descripcion, problemaid, files) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
 
-    console.log("accessToken",accessToken)
+    const body = new FormData()
+    body.append('asunto', asunto)
+    body.append('descripcion', descripcion)
+    body.append('problema', problemaid)
 
-    console.log("files ", files)
+    files.map((file) => {
+        body.append('archivos', file, file.name)
+    })
     try {
-        const response = await post("/helpdesk/tickets/crear/", {
-            asunto,
-            descripcion,
-            problema: problemaid,
-            archivos: files
-        }, {
-            Authorization: `Bearer ${accessToken}`
+        const response = await post("/helpdesk/tickets/crear/", body, {
+            Authorization: `Bearer ${accessToken}`,
         })
 
         console.log("response",response)

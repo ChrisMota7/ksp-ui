@@ -8,17 +8,17 @@
 }
 
 .content{
-    margin-top: 30px;
+    margin-top: 5px;
     align-items: center;
     &__text{
-        padding-top: 30px;
-        padding-left: 30px;
+        padding-top: 10px;
+        padding-left: 10px;
     }
     &__column{
         flex-direction: column;
     }
     &__division{
-        padding: 30px;
+        padding: 10px;
         display: flex;
         flex-direction: row;
     }
