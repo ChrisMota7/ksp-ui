@@ -12,12 +12,15 @@ export const login = (email, password) => async (dispatch) => {
             password
         })
         
+        
         localStorage.setItem("jwt", access)
 
         const { user_id } = jwtDecode(access)
         
+        
         localStorage.setItem("userid", user_id)
         localStorage.setItem("user_email", email)
+        localStorage.setItem("isAdmi", getUserType)
 
         console.log("access",access)
         console.log("user_id",user_id)
@@ -28,4 +31,17 @@ export const login = (email, password) => async (dispatch) => {
 
         return { userAuthenticationSuccessfully: false }
     } 
+}
+
+export const getUserType = (isAdmin) => async (dispatch) => {
+    try{
+        const {admi} = await get("/auth/user-type/", {
+            isAdmin
+        })
+        localStorage.setItem("isAdmin", admi)
+
+    } catch (e) {
+
+    }
+
 }

@@ -4,12 +4,11 @@ import React from 'react';
 import { useState } from 'react';
 
 import { TextField, FormControl, InputLabel, Select, MenuItem, Card, Button, Breadcrumbs, Link, Typography } from "@mui/material"
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket, getProblems } from '@/redux/actions/ticketAction';
 import { selectProblems } from '@/redux/reducers/ticketReducer';
-import { selectJWT, selectUserid } from '@/redux/reducers/authReducer';
 
 const Tickets = () => {
     const router = useRouter()
@@ -56,7 +55,7 @@ const Tickets = () => {
         
         <div className='tickets__nav'>
             <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" onClick={() => router.push('/ticket')}>
+                <Link underline="hover" color="inherit" onClick={() => router.push('/tickets-home/')}>
                     Tickets
                 </Link>
                 <Typography color="text.primary">Nuevo</Typography>
@@ -81,7 +80,6 @@ const Tickets = () => {
                                     <InputLabel id="select-label">Categoría</InputLabel>
                                         <Select 
                                         value={categoria} name='categoria'
-                                        // onChange={event => setCategoria(event.target.value)}
                                         labelId="select-label"
                                         id="select"
                                         label="categoria"
@@ -89,6 +87,7 @@ const Tickets = () => {
                                         >
                                             <MenuItem value={1}>Hardware</MenuItem>
                                             <MenuItem value={2}>Software</MenuItem>
+
                                         </Select>
                                 </FormControl>
                             </div>
@@ -133,7 +132,10 @@ const Tickets = () => {
                                 onChange={handleFileInputChange}/>
                         </div>
                         <div className='content__evidencia__button__Save'>
-                            <Button type='submit' className='content__evidencia__buttonSave' variant="contained" >Guardar Ticket</Button>
+                            <Button type='submit' className='content__evidencia__buttonSave' 
+                            variant="contained" 
+                            onClick={() => router.push(`/tickets-home`)}
+                            >Guardar Ticket</Button>
                         </div>
                     </div>
                 </Card>
