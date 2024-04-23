@@ -1,5 +1,5 @@
 'use client'
-import './Category.scss'
+import './Categories.scss'
 import React, { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, To
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Category = () => {
+const Categories = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const categories = useSelector(selectCategories);
@@ -41,7 +41,7 @@ const Category = () => {
             <div className='content__divisor'>
             <CardContent className='content__table'>
               <div className='content__button'>
-                <Button variant="contained" onClick={() => router.push('/New-Category')}>Nueva categoría</Button>
+                <Button variant="contained" onClick={() => router.push('/new-category')}>Nueva categoría</Button>
               </div>
               <div>
                 <Paper>
@@ -84,4 +84,4 @@ const Category = () => {
     )
 }
 
-export default Category
+export default Categories

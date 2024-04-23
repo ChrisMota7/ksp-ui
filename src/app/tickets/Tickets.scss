@@ -1,26 +1,26 @@
-.tickets{
+.header{
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
     &__title{
         margin-top: 10px;
+        margin-left: 20px;
     }
     &__nav{
         margin-top: 35px;
+        margin-left: 20px;
     }
 }
 
 .content{
-    margin-top: 5px;
-    align-items: center;
-    &__text{
-        padding-top: 10px;
-        padding-left: 10px;
-    }
-    &__column{
-        flex-direction: column;
-    }
+    margin-top: 30px;
+    width: 100%; // Asegura que el contenido usa todo el ancho disponible
+    margin-top: 30px;
     &__division{
-        padding: 10px;
+        padding: 30px;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
     }
     &__label{
         width: 626px;
@@ -28,36 +28,22 @@
         &__select{
             width: 626px;
             padding: 5px;
+            flex: 1;
         }
     }
-    &__tipoProblema{
-        padding: 5px;
-        padding: 5px;
-        margin-left: 15px;
-        width: 1253px;
+    &__button{
+        margin-bottom: 30px;
+        
     }
-    &__Descripcion{
-        width: 1245px;
-        margin-left: 20px;
-        padding-bottom: 30px;
-        padding-top: 10px;
+    &__divisor{
+        padding: 20px;
+        // border: 1px solid #000;  
     }
-    &__evidencia{
-        padding: 30px;
+}
 
-        &__button{
-            display: flex;
-            align-items: center;
-            width: 600px;
-            height: 150px;
-            margin-left: 320px;
-            padding: 15px;
-            border: 1px solid #000;
-        }
-        &__buttonSave{
-            padding: 10px;
-            margin-left: 552px;
-            
-        }
+.table{
+    background-color: #1976D2;
+    &__letra{
+        color: white;
     }
 }

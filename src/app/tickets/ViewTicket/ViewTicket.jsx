@@ -45,7 +45,9 @@ export default function verTicket () {
             <div className='header__nav'>
             <Breadcrumbs aria-label="breadcrumb">
                 <Typography color="text.primary">HelpDesk</Typography>
-                <Typography color="text.primary">Tickets</Typography>
+                <Link underline="hover" color="inherit" onClick={() => router.push('/create-ticket')}>
+                    Tickets
+                </Link>
                 <Typography color="text.primary">Ver ticket</Typography>
             </Breadcrumbs>
             </div>

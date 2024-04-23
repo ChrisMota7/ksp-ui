@@ -1,0 +1,63 @@
+.tickets{
+    &__title{
+        margin-top: 10px;
+    }
+    &__nav{
+        margin-top: 35px;
+    }
+}
+
+.content{
+    margin-top: 5px;
+    align-items: center;
+    &__text{
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+    &__column{
+        flex-direction: column;
+    }
+    &__division{
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+    }
+    &__label{
+        width: 626px;
+        padding: 5px;
+        &__select{
+            width: 626px;
+            padding: 5px;
+        }
+    }
+    &__tipoProblema{
+        padding: 5px;
+        padding: 5px;
+        margin-left: 15px;
+        width: 1253px;
+    }
+    &__Descripcion{
+        width: 1245px;
+        margin-left: 20px;
+        padding-bottom: 30px;
+        padding-top: 10px;
+    }
+    &__evidencia{
+        padding: 30px;
+
+        &__button{
+            display: flex;
+            align-items: center;
+            width: 600px;
+            height: 150px;
+            margin-left: 320px;
+            padding: 15px;
+            border: 1px solid #000;
+        }
+        &__buttonSave{
+            padding: 10px;
+            margin-left: 552px;
+            
+        }
+    }
+}

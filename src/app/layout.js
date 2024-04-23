@@ -15,8 +15,8 @@ const store = configureStore({
 
 export default function RootLayout({ children }) {
   // const isUserId = useSelector(selectUserid)
-  // const isUserId = 12
-  const isUserId = undefined
+  const isUserId = 12
+  // const isUserId = undefined
 
   return (
     <html lang="en">

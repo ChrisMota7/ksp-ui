@@ -131,17 +131,23 @@ const Menu = ({ children }) => {
   }
 
   const handleItemClick = (itemText)=> {
+    console.log("itemText",itemText)
     switch (itemText) {
       case "Mis Tickets":
         push("/tickets")
+        break;
       case "Crear Ticket":
-        push("/tickets")
+        push("/create-ticket")
+        break;
       case "Categorías":
-        push("/tickets")
+        push("/categories")
+        break;
       case "Dashboard":
-        push("/tickets")
+        push("/")
+        break;
       case "Configuración":
-        push("/tickets")
+        push("/")
+        break;
     }
   }
 
