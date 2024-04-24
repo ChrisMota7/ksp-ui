@@ -6,6 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import reducer from "@/redux/reducer"
 import Menu from "@/components/Menu/Menu";
 import { selectUserid } from "@/redux/reducers/authReducer";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,15 +15,17 @@ const store = configureStore({
 })
 
 export default function RootLayout({ children }) {
-  const isUserId = useSelector(selectUserid)
-  // const isUserId = 12
-  // const isUserId = undefined
+  const [userId, setUserId] = useState(undefined)
+
+  useEffect(() => {
+    setUserId(localStorage.getItem("userid"))
+  })
 
   return (
     <html lang="en">
       <Provider store={store}>
         <body className={inter.className}>
-          {isUserId ? (
+          {userId ? (
             <Menu children={children} />
           ) : (
             children
