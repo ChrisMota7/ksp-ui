@@ -43,7 +43,7 @@ const NewCategory = () => {
                     </Select>
             </FormControl>
             <Button type="submit" variant="contained" color="primary"
-            onClick={() => router.push(`/category/`)}>
+            onClick={() => router.push(`/categories/`)}>
                 Crear Problema
             </Button>
         </form>

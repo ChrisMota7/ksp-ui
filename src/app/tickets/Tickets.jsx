@@ -18,7 +18,7 @@ const Tickets = () => {
     const router = useRouter()
 
     useEffect(() => {
-        // dispatch(getTableTickets());
+        dispatch(getTableTickets());
     }, [dispatch]);
 
 
@@ -60,7 +60,7 @@ const Tickets = () => {
           <div className='content__divisor'>
           <CardContent className='content__table'>
             <div className='content__button'>
-              <Button variant="contained" onClick={() => router.push(`/tickets/`)}>Nuevo Ticket</Button>
+              <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
             </div>
             <div>
                 <Paper>

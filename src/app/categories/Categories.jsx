@@ -41,7 +41,7 @@ const Categories = () => {
             <div className='content__divisor'>
             <CardContent className='content__table'>
               <div className='content__button'>
-                <Button variant="contained" onClick={() => router.push('/new-category')}>Nueva categoría</Button>
+                <Button variant="contained" onClick={() => router.push('/New-Category')}>Nueva categoría</Button>
               </div>
               <div>
                 <Paper>

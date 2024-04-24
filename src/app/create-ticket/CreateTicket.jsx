@@ -133,7 +133,7 @@ const CreateTicket = () => {
                         <div className='content__evidencia__button__Save'>
                             <Button type='submit' className='content__evidencia__buttonSave' 
                             variant="contained" 
-                            onClick={() => router.push(`/tickets-home`)}
+                            onClick={() => router.push(`/tickets`)}
                             >Guardar Ticket</Button>
                         </div>
                     </div>
