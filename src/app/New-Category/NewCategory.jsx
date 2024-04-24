@@ -10,8 +10,6 @@ const NewCategory = () => {
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const possibleCategories = useSelector(selectCategories)
-
     const [name, setName] = useState("");
     const [categoriaid, setCategoriaid] = useState("");
 
