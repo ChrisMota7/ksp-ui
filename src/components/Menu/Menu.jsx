@@ -23,6 +23,8 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DnsIcon from '@mui/icons-material/Dns';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useSelector } from 'react-redux';
+import { selectUserid } from '@/redux/reducers/authReducer';
 
 const drawerWidth = 240;
 
@@ -97,6 +99,8 @@ const Menu = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+  const userId = useSelector(selectUserid)
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -152,59 +156,65 @@ const Menu = ({ children }) => {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 2
-        }}>
-            <img src="/LogoNegro.png" alt="KSP" height={30} />
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {menuItems.map((itemText) => {
-            return (
-              <div key={itemText}>
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton onClick={() => handleItemClick(itemText)} className={open ? "menu__open-list-item" : "menu__list-item"}>
-                  <ListItemIcon className={open ? "menu__open-list-item__list-icon" : "menu__list-item__list-icon"}>
-                    {renderItemIcon(itemText)}
-                  </ListItemIcon>
-                  <ListItemText primary={itemText} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-              <Divider />
-              </div>
-            )
-          })}
-        </List>
-      </Drawer> 
-      <Box component="main" sx={{ flexGrow: 1, paddingLeft: 10 }}>
-        <DrawerHeader />
-        {children}
+    <>
+      {userId ? (
+        <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingLeft: 2
+          }}>
+              <img src="/LogoNegro.png" alt="KSP" height={30} />
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {menuItems.map((itemText) => {
+              return (
+                <div key={itemText}>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton onClick={() => handleItemClick(itemText)} className={open ? "menu__open-list-item" : "menu__list-item"}>
+                    <ListItemIcon className={open ? "menu__open-list-item__list-icon" : "menu__list-item__list-icon"}>
+                      {renderItemIcon(itemText)}
+                    </ListItemIcon>
+                    <ListItemText primary={itemText} sx={{ opacity: open ? 1 : 0 }} />
+                  </ListItemButton>
+                </ListItem>
+                <Divider />
+                </div>
+              )
+            })}
+          </List>
+        </Drawer> 
+        <Box component="main" sx={{ flexGrow: 1, paddingLeft: 10 }}>
+          <DrawerHeader />
+          {children}
+        </Box>
       </Box>
-    </Box>
+      ) : (
+        {children}
+      )}
+    </>
   );
 }
 
