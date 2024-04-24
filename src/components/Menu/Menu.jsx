@@ -212,7 +212,7 @@ const Menu = ({ children }) => {
         </Box>
       </Box>
       ) : (
-        {children}
+        children
       )}
     </>
   );
