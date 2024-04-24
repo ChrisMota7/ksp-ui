@@ -6,7 +6,7 @@ export const defaultState = {
   isAdmin: false,
 };
 
-const reducer = (state = defaultState, action) => {
+const authReducer = (state = defaultState, action) => {
   switch (action.type) {
     case AUTHENTICATE_USER:
       return {
@@ -20,7 +20,7 @@ const reducer = (state = defaultState, action) => {
   }
 };
 
-export default reducer
+export default authReducer
 
-export const selectJWT = (state) => state.ticketReducer.jwt
-export const selectUserid = (state) => state.ticketReducer.userid
+export const selectJWT = (state) => state.authReducer.jwt
+export const selectUserid = (state) => state.authReducer.userid
