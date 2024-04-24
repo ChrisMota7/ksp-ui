@@ -1,8 +1,5 @@
 import { get, post } from "@/utils/api"
-import { SET_PROBLEMS } from "../reducers/ticketReducer"
-
 import { jwtDecode } from "jwt-decode";
-import { AUTHENTICATE_USER } from "../reducers/authReducer";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -12,18 +9,20 @@ export const login = (email, password) => async (dispatch) => {
             password
         })
         
+        const { user_id } = jwtDecode(access)
+
+        const { is_admin } = await get("/auth/user-type/", {
+            Authorization: `Bearer ${access}`,
+        })
         
         localStorage.setItem("jwt", access)
-
-        const { user_id } = jwtDecode(access)
-        
-        
         localStorage.setItem("userid", user_id)
         localStorage.setItem("user_email", email)
-        localStorage.setItem("isAdmi", getUserType)
+        localStorage.setItem("isAdmin", is_admin)
 
         console.log("access",access)
         console.log("user_id",user_id)
+        console.log("isAdmin",is_admin)
 
         return { userAuthenticationSuccessfully: true }
     } catch (e) {
@@ -31,17 +30,4 @@ export const login = (email, password) => async (dispatch) => {
 
         return { userAuthenticationSuccessfully: false }
     } 
-}
-
-export const getUserType = (isAdmin) => async (dispatch) => {
-    try{
-        const {admi} = await get("/auth/user-type/", {
-            isAdmin
-        })
-        localStorage.setItem("isAdmin", admi)
-
-    } catch (e) {
-
-    }
-
 }
