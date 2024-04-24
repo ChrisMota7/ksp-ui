@@ -1,5 +1,6 @@
 import { get, post } from "@/utils/api"
 import { jwtDecode } from "jwt-decode";
+import { AUTHENTICATE_USER } from "../reducers/authReducer";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -19,6 +20,15 @@ export const login = (email, password) => async (dispatch) => {
         localStorage.setItem("userid", user_id)
         localStorage.setItem("user_email", email)
         localStorage.setItem("isAdmin", is_admin)
+
+        dispatch({
+            type: AUTHENTICATE_USER,
+            payload: {
+                jwt: access,
+                userid: user_id,
+                isAdmin: is_admin,
+            }
+        })
 
         console.log("access",access)
         console.log("user_id",user_id)

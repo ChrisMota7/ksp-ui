@@ -1,8 +1,9 @@
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER"
 
 export const defaultState = {
+  jwt: undefined,
   userid: undefined,
-  jwt: undefined
+  isAdmin: false,
 };
 
 const reducer = (state = defaultState, action) => {
@@ -10,8 +11,9 @@ const reducer = (state = defaultState, action) => {
     case AUTHENTICATE_USER:
       return {
         ...state,
+        jwt: action.payload.jwt,
         userid: action.payload.userid,
-        jwt: action.payload.jwt
+        isAdmin: action.payload.isAdmin,
       };
     default:
       return state;
