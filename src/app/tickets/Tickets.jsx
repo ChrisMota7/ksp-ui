@@ -10,11 +10,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableTickets } from '@/redux/actions/ticketAction';
+import { selectTickets } from '@/redux/reducers/ticketReducer';
 
 const Tickets = () => {
     const dispatch = useDispatch();
 
-    const tickets = useSelector(state => state.ticketReducer.ticketsTable);
+    const tickets = useSelector(selectTickets);
+    
     const router = useRouter()
 
     useEffect(() => {
@@ -23,25 +25,26 @@ const Tickets = () => {
 
 
     return(
-        <div className='header'>
-      <div className='header__title'>
-        <h1>Tickets</h1>
-      </div>
-      <div className='header__nav'>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Typography color="text.primary">HelpDesk</Typography>
-          <Typography color="text.primary">Tickets</Typography>
-        </Breadcrumbs>
-      </div>
-      <div className='content'>
-        <Card>
-        <div className='content__division'> 
-            <div className='content__label'>
-                <TextField  className='content__label' id="outlined-basic" label="ID, Nombre, Correo, Fecha" />    
-                <Button  variant="contained">Buscar</Button>
-            </div>
-            <div className='content__label__select'>
-              <FormControl className='content__label__select'>
+      <div className='tickets'>
+        <div className='tickets__header__title'>
+          <h1>Tickets</h1>
+        </div>
+        <div className='tickets__header__nav'>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Typography color="text.primary">HelpDesk</Typography>
+            <Typography color="text.primary">Tickets</Typography>
+          </Breadcrumbs>
+        </div>
+        <div className='tickets__content'>
+          <div className='tickets__content__searcher'>
+            <div className='tickets__content__searcher__top'>
+              <TextField  
+                className='tickets__content__searcher__top__input' 
+                id="outlined-basic" 
+                label="ID, Nombre, Correo, Fecha" 
+              />    
+
+              <FormControl className='tickets__content__searcher__top__select'>
                 <InputLabel id="select-label">Estado</InputLabel>
                 <Select 
                   labelId="select-label"
@@ -53,63 +56,58 @@ const Tickets = () => {
                 </Select>
               </FormControl>
             </div>
-        </div>
-        </Card>
-            <br></br>
-        <Card>
-          <div className='content__divisor'>
-          <CardContent className='content__table'>
-            <div className='content__button'>
+            
+            <Button className='tickets__content__searcher__bottom' variant="contained">Buscar</Button>
+          </div>
+
+          <div className='tickets__content__info-section'>
+            <div className='tickets__content__info-section__button'>
               <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
             </div>
             <div>
-                <Paper>
-                  <Table>
-                      <TableHead className='table'>
-                          <TableRow>
-                              <TableCell className='table__letra'>ID</TableCell>
-                              <TableCell className='table__letra'>Asunto</TableCell>
-                              <TableCell className='table__letra'>Descripción</TableCell>
-                              <TableCell className='table__letra'>Problema</TableCell>
-                              <TableCell className='table__letra'>Usuario</TableCell>
-                              {/* <TableCell>Prioridad</TableCell> */}
-                              <TableCell className='table__letra'>Fecha de Creación</TableCell>
-                              <TableCell className='table__letra'>Acciones</TableCell>
-                          </TableRow>
-                      </TableHead>
-                      <TableBody>
-                          {tickets.map(ticket => (
-                              <TableRow key={ticket.id}>
-                                  <TableCell>{ticket.id}</TableCell>
-                                  <TableCell>{ticket.asunto}</TableCell>
-                                  <TableCell>{ticket.descripcion}</TableCell>
-                                  <TableCell>{ticket.problema.name}</TableCell>
-                                  <TableCell>{ticket.user.email}</TableCell>
-                                  {/* <TableCell>{ticket.prioridad.name}</TableCell> */}
-                                  <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
-                                    <TableCell>
-                                        <Tooltip title="Ver Detalles">
-                                            <IconButton onClick={() => router.push(`/tickets/ViewTicket/${ticket.id}`)}>
-                                                <VisibilityIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Eliminar Ticket">
-                                            <IconButton onClick={() => deleteTicket(ticket.id)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </TableCell>
-                              </TableRow>
-                          ))}    
-                      </TableBody>
-                  </Table>
+              <Paper>
+                <Table>
+                  <TableHead className='tickets__content__info-section__table'>
+                    <TableRow>
+                      <TableCell className='tickets__content__info-section__table__headers'>ID</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Asunto</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Descripción</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Problema</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Usuario</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Fecha de Creación</TableCell>
+                      <TableCell className='tickets__content__info-section__table__headers'>Acciones</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {tickets.map(ticket => (
+                      <TableRow key={ticket.id}>
+                        <TableCell>{ticket.id}</TableCell>
+                        <TableCell>{ticket.asunto}</TableCell>
+                        <TableCell>{ticket.descripcion}</TableCell>
+                        <TableCell>{ticket.problema.name}</TableCell>
+                        <TableCell>{ticket.user.email}</TableCell>
+                        <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          <Tooltip title="Ver Detalles">
+                            <IconButton onClick={() => router.push(`/tickets/ViewTicket/${ticket.id}`)}>
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Eliminar Ticket">
+                            <IconButton onClick={() => deleteTicket(ticket.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    ))}    
+                  </TableBody>
+                </Table>
               </Paper>
             </div>  
-          </CardContent>
           </div>
-        </Card>
+        </div>
       </div>
-    </div>
     );
 };
 

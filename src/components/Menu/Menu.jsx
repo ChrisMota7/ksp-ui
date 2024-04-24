@@ -206,7 +206,7 @@ const Menu = ({ children }) => {
             })}
           </List>
         </Drawer> 
-        <Box component="main" sx={{ flexGrow: 1, paddingLeft: 10 }}>
+        <Box component="main" sx={{ flexGrow: 1 }}>
           <DrawerHeader />
           {children}
         </Box>

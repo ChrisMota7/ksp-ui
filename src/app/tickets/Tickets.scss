@@ -1,49 +1,71 @@
-.header{
+.tickets{
     width: 100%;
-    margin-left: 20px;
-    margin-right: 20px;
-    &__title{
-        margin-top: 10px;
+    
+    &__header {
+        width: 100%;
         margin-left: 20px;
-    }
-    &__nav{
-        margin-top: 35px;
-        margin-left: 20px;
-    }
-}
+        margin-right: 20px;
 
-.content{
-    margin-top: 30px;
-    width: 100%; // Asegura que el contenido usa todo el ancho disponible
-    margin-top: 30px;
-    &__division{
-        padding: 30px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    &__label{
-        width: 626px;
-        padding: 5px;
-        &__select{
-            width: 626px;
-            padding: 5px;
-            flex: 1;
+        &__title{
+            margin-left: 20px;
+        }
+
+        &__nav{
+            margin-left: 20px;
         }
     }
-    &__button{
-        margin-bottom: 30px;
-        
-    }
-    &__divisor{
-        padding: 20px;
-        // border: 1px solid #000;  
-    }
-}
 
-.table{
-    background-color: #1976D2;
-    &__letra{
-        color: white;
+    &__content{
+        width: 100%;
+        margin-top: 15px;
+        
+        &__searcher{
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+
+            &__top {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 5px;
+
+                &__input{
+                    width: 50%;
+                }
+        
+                &__select{
+                    width: 50%;
+                    flex: 1;
+                }
+            }
+
+            &__bottom {
+                width: 10%;
+                margin: 5px;
+            }
+        }
+
+        &__info-section {
+            margin-top: 5px;
+
+            &__button{
+                width: 100%;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: flex-end;
+                padding-right: 15px;
+            }
+
+            &__table{
+                background-color: rgb(202, 202, 202);
+                margin: 15px;
+                
+                &__headers {
+                    font-weight: bold;
+                }
+            }
+        }
+        
     }
 }

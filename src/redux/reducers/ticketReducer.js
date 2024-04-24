@@ -6,11 +6,11 @@ export const SET_VER_TICKET = "SET_VER_TICKET"
 
 export const defaultState = {
   problems: [],
-  ticketsTable: [],
+  tickets: [],
   verTicket: [],
 };
 
-const reducer = (state = defaultState, action) => {
+const ticketReducer = (state = defaultState, action) => {
   switch (action.type) {
     case SET_PROBLEMS:
       return {
@@ -20,7 +20,7 @@ const reducer = (state = defaultState, action) => {
     case SET_TICKETS_TABLE:
       return {
         ...state,
-        ticketsTable: action.payload
+        tickets: action.payload
       }
     case SET_VER_TICKET:
       return{
@@ -32,7 +32,8 @@ const reducer = (state = defaultState, action) => {
   }
 };
 
-export default reducer
+export default ticketReducer
 
 export const selectProblems = (state) => state.ticketReducer.problems
 export const TicketVer = (state) => state.ticketReducer.verTicket
+export const selectTickets = (state) => state.ticketReducer.tickets
