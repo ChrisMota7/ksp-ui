@@ -1,63 +1,68 @@
-.tickets{
-    &__title{
-        margin-top: 10px;
-    }
-    &__nav{
-        margin-top: 35px;
-    }
-}
-
-.content{
-    margin-top: 5px;
-    align-items: center;
-    &__text{
-        padding-top: 10px;
-        padding-left: 10px;
-    }
-    &__column{
-        flex-direction: column;
-    }
-    &__division{
-        padding: 10px;
-        display: flex;
-        flex-direction: row;
-    }
-    &__label{
-        width: 626px;
-        padding: 5px;
-        &__select{
-            width: 626px;
-            padding: 5px;
-        }
-    }
-    &__tipoProblema{
-        padding: 5px;
-        padding: 5px;
-        margin-left: 15px;
-        width: 1253px;
-    }
-    &__Descripcion{
-        width: 1245px;
+.create-ticket{
+    width: 100%;
+    
+    &__header {
+        width: 100%;
         margin-left: 20px;
-        padding-bottom: 30px;
-        padding-top: 10px;
-    }
-    &__evidencia{
-        padding: 30px;
+        margin-right: 20px;
 
-        &__button{
-            display: flex;
-            align-items: center;
-            width: 600px;
-            height: 150px;
-            margin-left: 320px;
-            padding: 15px;
-            border: 1px solid #000;
+        &__title{
+            margin-left: 20px;
         }
-        &__buttonSave{
-            padding: 10px;
-            margin-left: 552px;
-            
+
+        &__nav{
+            margin-left: 20px;
+        }
+    }
+
+    &__content{
+        width: 100%;
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+
+        &__title{
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        &__top {
+            display: flex;
+            gap: 10px;
+            padding: 5px;
+
+            &__input{
+                width: 50%;
+            }
+    
+            &__select{
+                width: 50%;
+            }
+        }
+
+        &__bottom {
+            padding: 5px;
+
+            &__title {
+                padding-top: 10px;
+                padding-left: 5px;
+            }
+
+            &__tipoProblema{
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            &__descripcion{
+                width: 100%;
+            }
+        
+            &__button-container{
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+                padding: 15px;
+            }
         }
     }
 }

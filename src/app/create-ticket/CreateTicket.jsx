@@ -47,100 +47,96 @@ const CreateTicket = () => {
     }
 
     return (        
-      <div className='tickets'>
-        <div className='tickets__title'>
-            <h1>Nuevo Ticket</h1>
-        </div>
-        
-        <div className='tickets__nav'>
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" onClick={() => router.push('/tickets-home/')}>
-                    Tickets
-                </Link>
-                <Typography color="text.primary">Nuevo</Typography>
-            </Breadcrumbs>
-        </div>
-        <div className='content'>
-            <form onSubmit={submitCreateTicket}>
-                <Card className='content__card'>
-                    <h4 className='content__text'>Información básica</h4>
-                    <div className='content__column'>
-                        <div className='content__division'> 
-                            <div className='content__label'>
-                                <TextField 
-                                value={asunto} name='asunto' type='text' 
-                                onChange={event => setAsunto(event.target.value)}
-                                className='content__label' 
-                                id="outlined-basic" 
-                                label="Asunto" />    
-                            </div>
-                            <div fullWidth className='content__label__select'>
-                                <FormControl fullWidth className='content__label__select'>
-                                    <InputLabel id="select-label">Categoría</InputLabel>
-                                        <Select 
-                                        value={categoria} name='categoria'
-                                        labelId="select-label"
-                                        id="select"
-                                        label="categoria"
-                                        onChange={handleCategoryChange}
-                                        >
-                                            <MenuItem value={1}>Hardware</MenuItem>
-                                            <MenuItem value={2}>Software</MenuItem>
+        <div className='create-ticket'>
+            <div className='create-ticket__header__title'>
+                <h1>Nuevo Ticket</h1>
+            </div>
+            
+            <div className='create-ticket__header__nav'>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" color="inherit" onClick={() => router.push('/tickets-home/')}>
+                        Tickets
+                    </Link>
+                    <Typography color="text.primary">Nuevo</Typography>
+                </Breadcrumbs>
+            </div>
 
-                                        </Select>
-                                </FormControl>
-                            </div>
-                        </div>
-                        <div  className='content__tipoProblema'>
-                            <FormControl fullWidth className='content__tipoProblema'>
-                                <InputLabel  id="select-label">Tipo de problema</InputLabel>
-                                <Select 
-                                    onChange={event => setProblemaid(event.target.value)}
-                                    value={problemaid} name='problema'
-                                    labelId="select-label"
-                                    id="select"
-                                    label="Tipo de problema"
-                                >
-                                    {possibleProblems?.map((problem) => {
-                                        return(
-                                            <MenuItem key={problem.id} value={problem.id}>{problem.name}</MenuItem>
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <div className='content__Descripcion'>
-                            <TextField 
-                            onChange={event => setDescripcion(event.target.value)}
-                            value={descripcion} name='descripcion' 
-                            className='content__Descripcion' 
-                            id="outlined-basic" 
-                            label="Descripción del problema"/>
-                        </div>
+            <form onSubmit={submitCreateTicket} className='create-ticket__content'>
+                <h4 className='create-ticket__content__title'>Información básica</h4>
+
+                <div className='create-ticket__content__top'> 
+                    <TextField 
+                        value={asunto} 
+                        name='asunto' 
+                        type='text' 
+                        onChange={event => setAsunto(event.target.value)}
+                        className='create-ticket__content__top__input' 
+                        id="outlined-basic" 
+                        label="Asunto" 
+                    />    
+                    
+                    <FormControl className='create-ticket__content__top__select'>
+                        <InputLabel id="select-label">Categoría</InputLabel>
+                            <Select 
+                                value={categoria} 
+                                name='categoria'
+                                labelId="select-label"
+                                id="select"
+                                label="categoria"
+                                onChange={handleCategoryChange}
+                            >
+                                <MenuItem value={1}>Hardware</MenuItem>
+                                <MenuItem value={2}>Software</MenuItem>
+                            </Select>
+                    </FormControl>
+                </div>
+
+                <div className='create-ticket__content__bottom'>
+                    <FormControl fullWidth className='create-ticket__content__bottom__tipoProblema'>
+                        <InputLabel  id="select-label">Tipo de problema</InputLabel>
+                        <Select 
+                            onChange={event => setProblemaid(event.target.value)}
+                            value={problemaid} name='problema'
+                            labelId="select-label"
+                            id="select"
+                            label="Tipo de problema"
+                        >
+                            {possibleProblems?.map((problem) => {
+                                return(
+                                    <MenuItem key={problem.id} value={problem.id}>{problem.name}</MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+
+                    <TextField 
+                    onChange={event => setDescripcion(event.target.value)}
+                    value={descripcion} name='descripcion' 
+                    className='create-ticket__content__bottom__descripcion' 
+                    id="outlined-basic" 
+                    label="Descripción del problema"/>
                         
-                    </div>
-                </Card>
-                <Card>
-                    <div className='content__evidencia'>
-                        <h4 className='content__evidencia__title'>Evidencia</h4>
-                        <div>
-                            <input 
-                                type="file" 
-                                accept="image/* video/*" 
-                                multiple 
-                                onChange={handleFileInputChange}/>
-                        </div>
-                        <div className='content__evidencia__button__Save'>
-                            <Button type='submit' className='content__evidencia__buttonSave' 
+                    <h4 className='create-ticket__content__bottom__title'>Evidencia</h4>
+
+                    <input 
+                        type="file" 
+                        accept="image/* video/*" 
+                        multiple 
+                        onChange={handleFileInputChange}
+                    />
+
+                    <div className='create-ticket__content__bottom__button-container'>
+                        <Button 
+                            type='submit' 
                             variant="contained" 
                             onClick={() => router.push(`/tickets`)}
-                            >Guardar Ticket</Button>
-                        </div>
+                        >
+                            Guardar Ticket
+                        </Button>
                     </div>
-                </Card>
+                </div>
             </form>    
         </div>
-    </div>
     );
 };
 
