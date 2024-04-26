@@ -54,7 +54,7 @@ const CreateTicket = () => {
             
             <div className='create-ticket__header__nav'>
                 <Breadcrumbs aria-label="breadcrumb">
-                    <Link underline="hover" color="inherit" onClick={() => router.push('/tickets-home/')}>
+                    <Link underline="hover" color="inherit" onClick={() => router.push('/tickets/')}>
                         Tickets
                     </Link>
                     <Typography color="text.primary">Nuevo</Typography>
