@@ -1,13 +1,12 @@
-import verTicket from "@/app/tickets/ViewTicket/ViewTicket";
-
 export const SET_PROBLEMS = "SET_PROBLEMS"
 export const SET_TICKETS_TABLE = "SET_TICKETS_TABLE"
 export const SET_VER_TICKET = "SET_VER_TICKET"
+export const SET_TICKETS_DUPLICATION = "SET_TICKETS_DUPLICATION"
 
 export const defaultState = {
   problems: [],
   tickets: [],
-  verTicket: [],
+  ticketsDuplication: [],
 };
 
 const ticketReducer = (state = defaultState, action) => {
@@ -22,10 +21,10 @@ const ticketReducer = (state = defaultState, action) => {
         ...state,
         tickets: action.payload
       }
-    case SET_VER_TICKET:
-      return{
+    case SET_TICKETS_DUPLICATION:
+      return {
         ...state,
-        verTicket: action.payload
+        ticketsDuplication: action.payload
       }
     default:
       return state;
@@ -37,3 +36,4 @@ export default ticketReducer
 export const selectProblems = (state) => state.ticketReducer.problems
 export const TicketVer = (state) => state.ticketReducer.verTicket
 export const selectTickets = (state) => state.ticketReducer.tickets
+export const selectTicketsDuplication = (state) => state.ticketReducer.ticketsDuplication
