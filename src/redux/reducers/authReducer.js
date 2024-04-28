@@ -24,3 +24,4 @@ export default authReducer
 
 export const selectJWT = (state) => state.authReducer.jwt
 export const selectUserid = (state) => state.authReducer.userid
+export const selectIsAdmin = (state) => state.authReducer.isAdmin
