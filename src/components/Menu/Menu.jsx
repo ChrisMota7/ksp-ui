@@ -23,8 +23,9 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DnsIcon from '@mui/icons-material/Dns';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import SettingsIcon from '@mui/icons-material/Settings';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useSelector } from 'react-redux';
-import { selectUserid } from '@/redux/reducers/authReducer';
+import { selectIsAdmin, selectUserid } from '@/redux/reducers/authReducer';
 
 const drawerWidth = 240;
 
@@ -95,11 +96,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const Menu = ({ children }) => {
   const { push } = useRouter()
-  const menuItems = ["Mis Tickets", "Crear Ticket", "Categorías", "Dashboard", "Configuración"]
+  const menuItems = ["Mis Tickets", "Crear Ticket", "Usuarios", "Categorías", "Dashboard", "Configuración"]
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
   const userId = useSelector(selectUserid)
+  const isAdmin = useSelector(selectIsAdmin)
   // const userId = 1
 
   const handleDrawerOpen = () => {
@@ -119,6 +121,10 @@ const Menu = ({ children }) => {
       case "Crear Ticket":
         return (
           <PlaylistAddIcon />
+        )
+      case "Usuarios":
+        return (
+          <PeopleAltIcon />
         )
       case "Categorías":
         return (
@@ -143,6 +149,9 @@ const Menu = ({ children }) => {
         break;
       case "Crear Ticket":
         push("/create-ticket")
+        break;
+      case "Usuarios":
+        push("/")
         break;
       case "Categorías":
         push("/categories")
