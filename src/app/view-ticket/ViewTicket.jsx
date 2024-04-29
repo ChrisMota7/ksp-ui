@@ -3,7 +3,7 @@ import './ViewTicket.scss'
 
 import React, { useEffect } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getVerTickets } from '@/redux/actions/ticketAction';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
@@ -21,6 +21,9 @@ import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 export default function verTicket () {
     const router = useRouter()
     const dispatch = useDispatch();
+    const searchParams = useSearchParams()
+    
+    const ticketId = searchParams.get('ticketId')
 
     useEffect(() => {
         dispatch(getVerTickets());

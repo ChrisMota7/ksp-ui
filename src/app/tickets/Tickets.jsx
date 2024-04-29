@@ -15,6 +15,7 @@ import { selectTickets } from '@/redux/reducers/ticketReducer';
 const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter()
+
   const [search, setSearch] = useState("")
   const tickets = useSelector(selectTickets) 
   // const tickets = [
@@ -139,7 +140,7 @@ const Tickets = () => {
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => router.push(`/tickets/view-ticket/`)}>
+                          <IconButton onClick={() => router.push(`/view-ticket/?ticketId=${ticket.id}`)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>
