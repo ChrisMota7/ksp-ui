@@ -3,7 +3,7 @@ import './ViewTicket.scss'
 
 import React, { useEffect } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
 import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
@@ -21,6 +21,9 @@ import { getTicketInfo } from '@/redux/actions/ticketAction';
 export default function verTicket () {
     const router = useRouter()
     const dispatch = useDispatch();
+    const searchParams = useSearchParams()
+    
+    const ticketId = searchParams.get('ticketId')
 
     useEffect(() => {
         dispatch(getTicketInfo());
