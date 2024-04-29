@@ -17,8 +17,46 @@ const Tickets = () => {
   const router = useRouter()
   const [search, setSearch] = useState("")
   const tickets = useSelector(selectTickets) 
+  // const tickets = [
+  //   {
+  //     asunto:  "asunto 1",
+  //     created_at: "2024-04-28T05:30:42.136946Z",
+  //     descripcion: "aaaaa",
+  //     id: 1,
+  //     prioridad: null,
+  //     problema: {id: 1, name: 'Administrar equipos', isDeleted: '0', categoria: 1},
+  //     status: "0",
+  //     user: {
+  //       id: 2, 
+  //       firstName: 'Christian', 
+  //       lastName: 'López', 
+  //       email: 'chris@ksp.com.mx', 
+  //       isDeleted: '0', 
+  //       createdAt: "2024-04-28T05:28:59.163412Z",
+  //       isAdmin: "0"
+  //     }
+  //   },
+  //   {
+  //     asunto: "Prueba 1 crear ticket",
+  //     created_at: "2024-04-28T05:30:51.042209Z",
+  //     descripcion: "desc 1",
+  //     id: 2,
+  //     prioridad: null,
+  //     problema: {id: 2, name: 'Administrar cuentas', isDeleted: '0', categoria: 2},
+  //     status: "0",
+  //     user: {
+  //       id: 2, 
+  //       firstName: 'prueba', 
+  //       lastName: 'López', 
+  //       email: 'isra', 
+  //       isDeleted: '0', 
+  //       createdAt: "2024-04-28T05:28:59.163412Z",
+  //       isAdmin: "0"
+  //     }
+  //   }
+  // ]
   const [Status, setStatus] = useState("")
-  
+
   const handleSearch = (e) => {
     setSearch(e.target.value)
     console.log(e.target.value)
@@ -101,7 +139,7 @@ const Tickets = () => {
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => router.push(`/tickets/ViewTicket/`)}>
+                          <IconButton onClick={() => router.push(`/tickets/view-ticket/`)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>

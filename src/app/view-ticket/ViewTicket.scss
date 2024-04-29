@@ -1,0 +1,121 @@
+.view-tickets {
+    width: 100%;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        padding-left: 30px;
+        padding-right: 30px;
+
+        &__container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            &__title {
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 20px;
+
+                &__id {
+                    font-size: 40px;
+                }
+        
+                &__subject {
+                    font-size: 25px;
+                }
+            }
+
+            &__breadcrumbs {
+                padding-left: 10px;
+            }
+        }
+
+        &__info {
+            margin-top: 30px;
+            margin-left: 10px;
+        }
+    }
+
+    &__content {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+
+        &__messages {
+            width: 90%;
+            max-height: 80svh;
+            overflow: scroll;
+            margin-top: 10px;
+            -webkit-box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
+            -moz-box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
+            box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
+        }
+
+        &__input-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 10px;
+
+            &__input {
+                width: 70%;
+            }
+
+            &__file {
+                display: none;
+            }
+        }
+    }
+}
+
+.header{
+    align-items: center;
+    justify-content:center;
+    position: relative;
+    &__title{
+        margin-top: 40px;
+        display: flex;
+        flex-direction: row;
+        &__name{
+            margin-right: 100px;
+        }
+        &__problem{
+            margin-left: 750px;
+        }
+    }
+    &__nav{
+        margin-top: 35px;
+    }
+}
+
+.content{
+    margin-top: 30px;
+    &__date{
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+
+    }
+    &__button{
+        margin-left: 1145px;
+        
+    }
+    &__divisor{
+        padding: 20px;
+    }
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    padding-top: 5px;
+    &__label{
+        width: 1200px;
+        
+        padding-right: 5px;
+    }
+}
