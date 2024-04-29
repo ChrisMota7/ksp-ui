@@ -139,7 +139,7 @@ const Tickets = () => {
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => router.push(`/tickets/view-ticket/`)}>
+                          <IconButton onClick={() => router.push(`/view-ticket/`)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>

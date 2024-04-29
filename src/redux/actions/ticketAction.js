@@ -1,5 +1,5 @@
 import { get, post } from "@/utils/api"
-import { SET_PROBLEMS, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_STATUS, selectTicketsDuplication } from "../reducers/ticketReducer"
+import { SET_PROBLEMS, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_TICKET_INFO, selectTicketsDuplication } from "../reducers/ticketReducer"
 
 export const getProblems = (categoryId) => async (dispatch) => {
     try {
@@ -39,20 +39,32 @@ export const getTableTickets = () => async (dispatch) => {
     }
 }
 
-export const getVerTickets = () => async (dispatch) => {
-    try{
-        const ticketsTable = await get('/helpdesk/tickets/<int:ticket_id>/')
+export const getTicketInfo = (ticketid) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
 
-        dispatch({
-            type: SET_TICKETS_TABLE,
-            payload: ticketsTable
+    try{
+        const ticketInfo = await get(`/helpdesk/tickets/${ticketid}/`, {
+            Authorization: `Bearer ${accessToken}`,
         })
 
-        return { setTicketsTableSuccessfully: true}
+        //TODO: Change endpoint
+        const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+
+        console.log("ticketInfo",ticketInfo)
+        console.log("messages",messages)
+
+        // dispatch({
+        //     type: SET_TICKET_INFO,
+        //     payload: ticketInfo
+        // })
+
+        return { setTicketInfoSuccessfully: true}
     } catch (e) {
         console.log("error", e)
 
-        return {setTicketsTableSuccessfully: false}
+        return {setTicketInfoSuccessfully: false}
     }
 }
 
