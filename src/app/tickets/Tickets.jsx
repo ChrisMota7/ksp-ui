@@ -95,7 +95,7 @@ const Tickets = () => {
                       <TableCell>{ticket.problema.name}</TableCell>
                       <TableCell>{ticket.user.email}</TableCell>
                       <TableCell>
-                        {ticket.status === 0 ? "Inactivo" : "Activo" }</TableCell>
+                        {ticket.status === '0' ? "Inactivo" : "Activo" }</TableCell>
                       <TableCell>
                         {ticket.prioridad ? ticket.prioridad.name : "S/A"}
                       </TableCell>

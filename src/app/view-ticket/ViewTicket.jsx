@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVerTickets } from '@/redux/actions/ticketAction';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
 import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
 import { Card, Button, Link } from "@mui/material"
@@ -17,6 +16,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
+import { getTicketInfo } from '@/redux/actions/ticketAction';
 
 export default function verTicket () {
     const router = useRouter()
@@ -26,7 +26,7 @@ export default function verTicket () {
     const ticketId = searchParams.get('ticketId')
 
     useEffect(() => {
-        dispatch(getVerTickets());
+        dispatch(getTicketInfo());
     }, [dispatch]);
 
     return(
