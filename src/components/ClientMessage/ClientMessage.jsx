@@ -1,11 +1,11 @@
 import "./ClientMessage.scss"
 import React from 'react'
 
-export const ClientMessage = () => {
+export const ClientMessage = ({text}) => {
   return (
     <div className='client-message'>
         <div className='client-message__container'>
-            <p>ClientMessageeeeeeeeeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeee eeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeee eeeeeeee</p>
+            <p>{text}</p>
         </div>
     </div>
   )

@@ -96,7 +96,7 @@ const Tickets = () => {
                 labelId="select-label"
                 id="select"
                 label="Estado"
-                onChange={event => setStatus(event.target.value)}
+                onChange={setStatus}
               >
               <MenuItem value={1}>Activo</MenuItem>
               <MenuItem value={2}>Inactivo</MenuItem>

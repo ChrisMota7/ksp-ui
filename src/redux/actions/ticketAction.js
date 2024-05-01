@@ -1,5 +1,5 @@
-import { get, post } from "@/utils/api"
-import { SET_PROBLEMS, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_TICKET_INFO, selectTicketsDuplication } from "../reducers/ticketReducer"
+import { get, post, put } from "@/utils/api"
+import { SET_PROBLEMS, SET_PRIORIDAD, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_TICKET_INFO, selectTicketsDuplication } from "../reducers/ticketReducer"
 
 export const getProblems = (categoryId) => async (dispatch) => {
     try {
@@ -16,6 +16,27 @@ export const getProblems = (categoryId) => async (dispatch) => {
 
         return { setProblemsSuccessfully: false }
     } 
+}
+
+export const updateTicketPriority = (ticketid, newPriority, newStatus) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
+
+    console.log("accessToken", accessToken)
+    console.log("ticketid", ticketid)
+    try {
+        const ticketUpdated = await put(`/helpdesk/tickets/${ticketid}/update-priority/`, {
+            prioridad: newPriority
+        }, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+        console.log("ticketUpdated", ticketUpdated)
+
+        return { setUpdateTicketSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setUpdateTicketSuccessfully: false }
+    }
 }
 
 export const getTableTickets = () => async (dispatch) => {
@@ -47,7 +68,6 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
             Authorization: `Bearer ${accessToken}`,
         })
 
-        //TODO: Change endpoint
         const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
             Authorization: `Bearer ${accessToken}`,
         })
@@ -55,16 +75,50 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
         console.log("ticketInfo",ticketInfo)
         console.log("messages",messages)
 
-        // dispatch({
-        //     type: SET_TICKET_INFO,
-        //     payload: ticketInfo
-        // })
+        dispatch({
+            type: SET_TICKET_INFO,
+            payload: {
+                ticketInfo: ticketInfo,
+                messages: messages,
+            }
+        })
 
         return { setTicketInfoSuccessfully: true}
     } catch (e) {
         console.log("error", e)
 
         return {setTicketInfoSuccessfully: false}
+    }
+}
+
+export const createNewMessage = (texto, file, ticketId) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
+    const isAdmin = localStorage.getItem("isAdmin")  === "true"
+    const isFromClient = isAdmin === true ? "0" : "1"
+
+    console.log("Tipo de isAdmin:", typeof isAdmin)
+    
+    const body = new FormData()
+    body.append('texto', texto) 
+    body.append('archivo', file)
+    body.append('isFromClient', isFromClient)
+    body.append('ticket', ticketId)
+
+    console.log("isAdmin", isAdmin)
+    console.log("isFromClient", isFromClient)
+
+    try {
+        const response = await post("/helpdesk/mensajes/crear/", body, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+
+        console.log("response",response)
+
+        return { messageCreatedSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { messageCreatedSuccessfully: false }
     }
 }
 
