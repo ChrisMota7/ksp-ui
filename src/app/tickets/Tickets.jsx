@@ -9,24 +9,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableTickets, searchTicketByInfo, updateTicketStatus } from '@/redux/actions/ticketAction';
+import { getTableTickets, searchTicketByInfo, searchTicketByStatus, updateTicketStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 
 const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter()
 
-  const [search, setSearch] = useState("")
   const tickets = useSelector(selectTickets) 
-  const [status, setStatus] = useState("")
 
-  const StatusChange = async (event) => {
-    const statusId = event.target.value
-
-    setPrioridad(statusId)
-
-    const { setStatusSuccessfully } = await dispatch(updateTicketStatus(ticketId, statusId))
-  }
+  const [search, setSearch] = useState("")
+  const [filterStatus, setFilterStatus] = useState("")
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
@@ -35,9 +28,24 @@ const Tickets = () => {
     dispatch(searchTicketByInfo(e.target.value));
   }
 
+  const handleSearchByStatus = (e) => {
+    setFilterStatus(e.target.value)
+    dispatch(searchTicketByStatus(e.target.value));
+  }
+
   useEffect(() => {
       dispatch(getTableTickets());
   }, [dispatch]);
+
+  const handleViewTicket = async (ticketId, status) => {
+    console.log("status",status)
+
+    if (status === "0") {
+      await dispatch(updateTicketStatus(ticketId, 1))
+    }
+
+    router.push(`/view-ticket/?ticketId=${ticketId}`)
+  }
 
   return(
     <div className='tickets'>
@@ -66,10 +74,10 @@ const Tickets = () => {
                 labelId="select-label"
                 id="select"
                 label="Estado"
-                onChange={setStatus}
+                onChange={handleSearchByStatus}
               >
-              <MenuItem value={1}>Activo</MenuItem>
-              <MenuItem value={2}>Inactivo</MenuItem>
+                <MenuItem value={1}>Activo</MenuItem>
+                <MenuItem value={0}>Inactivo</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -110,7 +118,7 @@ const Tickets = () => {
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => router.push(`/view-ticket/?ticketId=${ticket.id}`)}>
+                          <IconButton onClick={() => handleViewTicket(ticket.id, ticket.status)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>

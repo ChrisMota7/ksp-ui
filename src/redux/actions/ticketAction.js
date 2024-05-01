@@ -44,6 +44,7 @@ export const updateTicketStatus = (ticketid, newStatus) => async (dispatch) => {
 
     console.log("accessToken", accessToken)
     console.log("ticketid", ticketid)
+    console.log("newStatus", newStatus)
     try {
         const ticketStatusUpdated = await put(`/helpdesk/tickets/${ticketid}/update-status/`, {
             status: newStatus
@@ -61,52 +62,52 @@ export const updateTicketStatus = (ticketid, newStatus) => async (dispatch) => {
 }
 
 export const getTableTickets = () => async (dispatch) => {
-    const isAdmin = "false"
-    const userId = 2
-    // const isAdmin = localStorage.getItem("isAdmin")
-    // const userId = localStorage.getItem("userid")
+    // const isAdmin = "false"
+    // const userId = 2
+    const isAdmin = localStorage.getItem("isAdmin")
+    const userId = localStorage.getItem("userid")
 
     try{
-        // const ticketsTable = await get('/helpdesk/tickets/table/')
+        const ticketsTable = await get('/helpdesk/tickets/table/')
         
-        const ticketsTable = [
-            {
-                asunto:  "asunto 1",
-                created_at: "2024-04-28T05:30:42.136946Z",
-                descripcion: "aaaaa",
-                id: 1,
-                prioridad: null,
-                problema: {id: 1, name: 'Administrar equipos', isDeleted: '0', categoria: 1},
-                status: "0",
-                user: {
-                    id: 1, 
-                    firstName: 'Christian', 
-                    lastName: 'López', 
-                    email: 'chris@ksp.com.mx', 
-                    isDeleted: '0', 
-                    createdAt: "2024-04-28T05:28:59.163412Z",
-                    isAdmin: "0"
-                }
-            },
-            {
-                asunto: "Prueba 1 crear ticket",
-                created_at: "2024-04-28T05:30:51.042209Z",
-                descripcion: "desc 1",
-                id: 2,
-                prioridad: null,
-                problema: {id: 2, name: 'Administrar cuentas', isDeleted: '0', categoria: 2},
-                status: "0",
-                user: {
-                    id: 2, 
-                    firstName: 'prueba', 
-                    lastName: 'López', 
-                    email: 'isra', 
-                    isDeleted: '0', 
-                    createdAt: "2024-04-28T05:28:59.163412Z",
-                    isAdmin: "0"
-                }
-            }
-        ]
+        // const ticketsTable = [
+        //     {
+        //         asunto:  "asunto 1",
+        //         created_at: "2024-04-28T05:30:42.136946Z",
+        //         descripcion: "aaaaa",
+        //         id: 1,
+        //         prioridad: null,
+        //         problema: {id: 1, name: 'Administrar equipos', isDeleted: '0', categoria: 1},
+        //         status: "0",
+        //         user: {
+        //             id: 1, 
+        //             firstName: 'Christian', 
+        //             lastName: 'López', 
+        //             email: 'chris@ksp.com.mx', 
+        //             isDeleted: '0', 
+        //             createdAt: "2024-04-28T05:28:59.163412Z",
+        //             isAdmin: "0"
+        //         }
+        //     },
+        //     {
+        //         asunto: "Prueba 1 crear ticket",
+        //         created_at: "2024-04-28T05:30:51.042209Z",
+        //         descripcion: "desc 1",
+        //         id: 2,
+        //         prioridad: null,
+        //         problema: {id: 2, name: 'Administrar cuentas', isDeleted: '0', categoria: 2},
+        //         status: "0",
+        //         user: {
+        //             id: 2, 
+        //             firstName: 'prueba', 
+        //             lastName: 'López', 
+        //             email: 'isra', 
+        //             isDeleted: '0', 
+        //             createdAt: "2024-04-28T05:28:59.163412Z",
+        //             isAdmin: "0"
+        //         }
+        //     }
+        // ]
 
         console.log("isAdmin", isAdmin)
         console.log("userId", userId)
@@ -142,12 +143,17 @@ export const getTableTickets = () => async (dispatch) => {
 export const getTicketInfo = (ticketid) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
 
-    try{
-        const ticketInfo = await get(`/helpdesk/tickets/${ticketid}/`, {
+    let relatedFiles = []
+    try {
+        relatedFiles = await get(`/helpdesk/tickets/${ticketid}/archivos/`, {
             Authorization: `Bearer ${accessToken}`,
         })
+    } catch (e) {
+        console.log("error",e)
+    }
 
-        const relatedFiles = await get(`/helpdesk/tickets/${ticketid}/archivos/`, {
+    try{
+        const ticketInfo = await get(`/helpdesk/tickets/${ticketid}/`, {
             Authorization: `Bearer ${accessToken}`,
         })
 
@@ -259,3 +265,24 @@ export const searchTicketByInfo = (searchWord) => async (dispatch, getState) => 
     return { setTicketsTableSuccessfully: true}
 }
 
+export const searchTicketByStatus = (statusId) => async (dispatch, getState) => {
+    const curentTickets = selectTicketsDuplication(getState())
+
+    console.log("curentTickets",curentTickets)
+    console.log("statusId",statusId)
+
+    console.log("map", curentTickets.map((ticket) => ticket.status.includes(statusId) ))
+
+    const searchedTickets = curentTickets.filter((ticket) => 
+        ticket.status.includes(statusId) 
+    )
+
+    console.log("searchedTickets",searchedTickets)
+
+    dispatch({
+        type: SET_TICKETS_TABLE,
+        payload: searchedTickets
+    })
+
+    return { setTicketsTableSuccessfully: true}
+}
