@@ -1,16 +1,15 @@
 'use client'
 import './ViewTicket.scss'
 
-import React, { useEffect, useState, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Card, Button, Link, ImageList, ImageListItem, Modal, 
-    Box, Breadcrumbs, Typography, IconButton, Dialog, DialogContent } from "@mui/material"
+    Box, Breadcrumbs, Typography, IconButton, Dialog, DialogContent, 
+    TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material"
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
 import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
-import { Button, Link, Breadcrumbs, Typography, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material"
-import IconButton from '@mui/material/IconButton';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
