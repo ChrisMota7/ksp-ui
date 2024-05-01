@@ -1,33 +1,68 @@
 'use client'
 import './ViewTicket.scss'
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Card, Button, Link, ImageList, ImageListItem, Modal, 
+    Box, Breadcrumbs, Typography, IconButton, Dialog, DialogContent } from "@mui/material"
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
 import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
-import { Card, Button, Link } from "@mui/material"
 import {TextField } from "@mui/material"
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import { getTicketInfo } from '@/redux/actions/ticketAction';
 
 export default function verTicket () {
     const router = useRouter()
     const dispatch = useDispatch();
     const searchParams = useSearchParams()
-    
+
     const ticketId = searchParams.get('ticketId')
+
+    const [openImageModal, setOpenImageModal] = useState(false)
+    const [selectedImage, setSelectedImage] = useState("")
+
+    const images = [
+        {
+            id: 1,
+            img: "./cat1.jpeg",
+            title: "Cat 1"
+        },
+        {
+            id: 2,
+            img: "./cat2.jpg",
+            title: "Cat 2"
+        },
+        {
+            id: 3,
+            img: "./cat3.jpg",
+            title: "Cat 3"
+        },
+        {
+            id: 4,
+            img: "./cat2.jpg",
+            title: "Cat 4"
+        },
+        {
+            id: 5,
+            img: "./cat3.jpg",
+            title: "Cat 5"
+        }
+    ]
 
     useEffect(() => {
         dispatch(getTicketInfo());
     }, [dispatch]);
+
+    const handleImageClick = async (imageUrl) => {
+        await setSelectedImage(imageUrl)
+        setOpenImageModal(true)
+        console.log("clicked!!")
+    }
 
     return(
         <div className='view-tickets'>
@@ -54,7 +89,22 @@ export default function verTicket () {
 
                 <div className='view-tickets__header__info'> 
                     <Typography color="text.primary">Descripción: Esta es lsdivjsubvab jahsbc nf vhasdfhaefohzdvashdiuv dfiuv dpiuviuhvep ohgdpiuhvsdfiugsdf liuvsd iufhvs dfiuh sfibug ldiughseriugh siur ghoduigapsñoudig dsiugd siug </Typography>
-                    <div>IMAGE</div>
+                    
+                    <div className='view-tickets__header__info__images'>
+                        <ImageList cols={images.length} gap={8}>
+                            {images.map((item) => (
+                                <ImageListItem key={item.id}>
+                                    <img
+                                        srcSet={`${item.img}?w=82&h=82&fit=crop&auto=format&dpr=2 2x`}
+                                        src={`${item.img}?w=82&h=82&fit=crop&auto=format`}
+                                        alt={item.title}
+                                        loading="lazy"
+                                        onClick={() => handleImageClick(item.img)}
+                                    />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                    </div>
 
                     <hr />
 
@@ -96,6 +146,31 @@ export default function verTicket () {
                     <ReplayOutlinedIcon fontSize="medium" />
                 </IconButton>
             </div>
+            
+            <Dialog
+                open={openImageModal}
+                onClose={() => setOpenImageModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                className='view-tickets__content__modal'
+            >
+                <IconButton
+                aria-label="close"
+                onClick={() => setOpenImageModal(false)}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent>
+                    <Box>
+                        <img src={selectedImage} alt="Imagen seleccionada" />
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

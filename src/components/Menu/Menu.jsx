@@ -99,10 +99,10 @@ const Menu = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  const userId = useSelector(selectUserid)
-  const isAdmin = useSelector(selectIsAdmin)
-  // const isAdmin = "false"
-  // const userId = 1
+  // const userId = useSelector(selectUserid)
+  // const isAdmin = useSelector(selectIsAdmin)
+  const isAdmin = "false"
+  const userId = 1
 
   console.log("isAdmin",isAdmin)
   const menuItems = [isAdmin === "true" ? "Tickets" : "Mis Tickets", "Crear Ticket", "Usuarios", "Categorías", "Dashboard", "Configuración"]
