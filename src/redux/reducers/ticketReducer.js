@@ -7,8 +7,9 @@ export const SET_PRIORIDAD = "SET_PRIORIDAD"
 export const defaultState = {
   problems: [],
   tickets: [],
-  ticketsInfo: [],
   ticketsDuplication: [],
+  ticketsInfo: [],
+  ticketFiles: [],
   messages: [],
 };
 
@@ -23,6 +24,7 @@ const ticketReducer = (state = defaultState, action) => {
       return {
         ...state,
         ticketInfo: action.payload.ticketInfo, 
+        ticketFiles: action.payload.ticketFiles,
         messages : action.payload.messages
       };
     case SET_TICKETS_TABLE:
@@ -47,3 +49,4 @@ export const selectTicketInfo = (state) => state.ticketReducer.ticketInfo
 export const selectTickets = (state) => state.ticketReducer.tickets
 export const selectTicketsDuplication = (state) => state.ticketReducer.ticketsDuplication
 export const selectTicketMessages = (state) => state.ticketReducer.messages
+export const selectTicketFiles = (state) => state.ticketReducer.ticketFiles

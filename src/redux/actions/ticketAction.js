@@ -147,17 +147,23 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
             Authorization: `Bearer ${accessToken}`,
         })
 
+        const relatedFiles = await get(`/helpdesk/tickets/${ticketid}/archivos/`, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+
         const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
             Authorization: `Bearer ${accessToken}`,
         })
 
         console.log("ticketInfo",ticketInfo)
         console.log("messages",messages)
+        console.log("relatedFiles",relatedFiles)
 
         dispatch({
             type: SET_TICKET_INFO,
             payload: {
                 ticketInfo: ticketInfo,
+                ticketFiles: relatedFiles,
                 messages: messages,
             }
         })

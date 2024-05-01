@@ -13,13 +13,14 @@ import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import { createNewMessage, getTicketInfo, updateTicketPriority } from '@/redux/actions/ticketAction';
-import { selectTicketMessages, selectTicketInfo } from '@/redux/reducers/ticketReducer';
+import { selectTicketMessages, selectTicketInfo, selectTicketFiles } from '@/redux/reducers/ticketReducer';
 
 export default function verTicket () {
     const router = useRouter()
     const dispatch = useDispatch();
     const searchParams = useSearchParams()
     const ticketInfo = useSelector(selectTicketInfo)
+    const relatedFiles = useSelector(selectTicketFiles)
     const messages = useSelector(selectTicketMessages)
     
     const ticketId = searchParams.get('ticketId')
@@ -92,6 +93,10 @@ export default function verTicket () {
                     <div className='view-tickets__header__info'> 
                         <Typography color="text.primary">Descripción: {ticketInfo.descripcion}</Typography>
                         <div>IMAGE</div>
+
+                        {relatedFiles.map((file) => {
+                            return <img src={file.url} />
+                        })}
 
                         <hr />
 

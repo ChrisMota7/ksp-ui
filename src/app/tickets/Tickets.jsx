@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, To
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableTickets, searchTicketByInfo, updateTicketStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
@@ -16,12 +16,9 @@ const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter()
 
-  const searchParams = useSearchParams()
   const [search, setSearch] = useState("")
   const tickets = useSelector(selectTickets) 
   const [status, setStatus] = useState("")
-
-  const ticketId = searchParams.get('ticketId')
 
   const StatusChange = async (event) => {
     const statusId = event.target.value
