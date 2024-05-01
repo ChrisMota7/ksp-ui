@@ -7,18 +7,29 @@ import { Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, To
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableTickets, searchTicketByInfo } from '@/redux/actions/ticketAction';
+import { getTableTickets, searchTicketByInfo, updateTicketStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 
 const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter()
 
+  const searchParams = useSearchParams()
   const [search, setSearch] = useState("")
   const tickets = useSelector(selectTickets) 
-  const [Status, setStatus] = useState("")
+  const [status, setStatus] = useState("")
+
+  const ticketId = searchParams.get('ticketId')
+
+  const StatusChange = async (event) => {
+    const statusId = event.target.value
+
+    setPrioridad(statusId)
+
+    const { setStatusSuccessfully } = await dispatch(updateTicketStatus(ticketId, statusId))
+  }
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
@@ -58,7 +69,7 @@ const Tickets = () => {
                 labelId="select-label"
                 id="select"
                 label="Estado"
-                onChange={event => setStatus(event.target.value)}
+                onChange={setStatus}
               >
               <MenuItem value={1}>Activo</MenuItem>
               <MenuItem value={2}>Inactivo</MenuItem>

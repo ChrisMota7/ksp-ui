@@ -21,10 +21,13 @@ const CreateTicket = () => {
     const [descripcion, setDescripcion] = useState("");
     const [files, setFiles] = useState([]);
 
+    console.log("files", files)
+
     const submitCreateTicket = (e) => {
         e.preventDefault();
         
         dispatch(createTicket(asunto, descripcion, problemaid, files))
+
     }
 
     const handleCategoryChange = async (event) => {
