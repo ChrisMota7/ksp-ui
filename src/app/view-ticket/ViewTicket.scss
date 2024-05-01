@@ -36,6 +36,12 @@
         &__info {
             margin-top: 30px;
             margin-left: 10px;
+
+            &__images {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
         }
     }
 
@@ -68,6 +74,11 @@
             &__file {
                 display: none;
             }
+        }
+
+        &__modal {
+            display: flex;
+            justify-content: center;
         }
     }
 }
