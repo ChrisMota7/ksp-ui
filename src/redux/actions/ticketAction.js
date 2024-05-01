@@ -18,7 +18,7 @@ export const getProblems = (categoryId) => async (dispatch) => {
     } 
 }
 
-export const updateTicketPriority = (ticketid, newPriority, newStatus) => async (dispatch) => {
+export const updateTicketPriority = (ticketid, newPriority) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
 
     console.log("accessToken", accessToken)
@@ -29,13 +29,34 @@ export const updateTicketPriority = (ticketid, newPriority, newStatus) => async 
         }, {
             Authorization: `Bearer ${accessToken}`,
         })
-        console.log("ticketUpdated", ticketUpdated)
+        console.log("ticketPriorityUpdated", ticketUpdated)
 
         return { setUpdateTicketSuccessfully: true }
     } catch (e) {
         console.log("error", e)
 
         return { setUpdateTicketSuccessfully: false }
+    }
+}
+
+export const updateTicketStatus = (ticketid, newStatus) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
+
+    console.log("accessToken", accessToken)
+    console.log("ticketid", ticketid)
+    try {
+        const ticketStatusUpdated = await put(`/helpdesk/tickets/${ticketid}/update-status/`, {
+            status: newStatus
+        }, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+        console.log("ticketStatusUpdated", ticketStatusUpdated)
+
+        return { setUpdateStatusTicketSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setUpdateStatusTicketSuccessfully: false }
     }
 }
 
@@ -87,10 +108,14 @@ export const getTableTickets = () => async (dispatch) => {
         //     }
         // ]
 
+        console.log("isAdmin", isAdmin)
+        console.log("userId", userId)
+
         let filteredTickets
         if (isAdmin === "false") {
+            console.log("holaaaaaa", ticketsTable)
             filteredTickets = ticketsTable.filter((ticket) => {
-                return ticket.user.id === userId
+                return ticket.user.id == userId
             })
         } else {
             filteredTickets = ticketsTable

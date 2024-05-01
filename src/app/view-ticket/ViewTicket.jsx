@@ -39,6 +39,7 @@ export default function verTicket () {
 
         const { setPrioridadSuccessfully } = await dispatch(updateTicketPriority(ticketId, prioridadId))
     }
+
     const loadInfo = () => {
         dispatch(getTicketInfo(ticketId));
     }
