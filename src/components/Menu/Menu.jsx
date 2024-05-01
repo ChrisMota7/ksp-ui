@@ -96,13 +96,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const Menu = ({ children }) => {
   const { push } = useRouter()
-  const menuItems = ["Mis Tickets", "Crear Ticket", "Usuarios", "Categorías", "Dashboard", "Configuración"]
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
   const userId = useSelector(selectUserid)
   const isAdmin = useSelector(selectIsAdmin)
+  // const isAdmin = "false"
   // const userId = 1
+
+  console.log("isAdmin",isAdmin)
+  const menuItems = [isAdmin === "true" ? "Tickets" : "Mis Tickets", "Crear Ticket", "Usuarios", "Categorías", "Dashboard", "Configuración"]
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -115,6 +118,7 @@ const Menu = ({ children }) => {
   const renderItemIcon = (itemText) => {
     switch (itemText) {
       case "Mis Tickets":
+      case "Tickets":
         return (
           <ListAltIcon />
         )
@@ -145,6 +149,7 @@ const Menu = ({ children }) => {
     console.log("itemText",itemText)
     switch (itemText) {
       case "Mis Tickets":
+      case "Tickets":
         push("/tickets")
         break;
       case "Crear Ticket":
