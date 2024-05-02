@@ -288,3 +288,22 @@ export const searchTicketByStatus = (statusId) => async (dispatch, getState) => 
 
     return { setTicketsTableSuccessfully: true}
 }
+
+export const deleteTicket = (ticketid) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
+
+    console.log("accessToken", accessToken)
+    console.log("ticketid", ticketid)
+    try {
+        const ticketDeleted = await put(`/helpdesk/tickets/${ticketid}/delete/`, {}, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+        console.log("ticketDeleted", ticketDeleted)
+
+        return { ticketDeletedSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { ticketDeletedSuccessfully: false }
+    }
+}

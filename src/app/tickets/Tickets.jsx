@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTableTickets, searchTicketByInfo, searchTicketByStatus, updateTicketStatus } from '@/redux/actions/ticketAction';
+import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus, updateTicketStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 import { selectIsAdmin } from '@/redux/reducers/authReducer';
 
@@ -48,6 +48,14 @@ const Tickets = () => {
 
     router.push(`/view-ticket/?ticketId=${ticketId}`)
   }
+
+  const handleDeleteTicket = async (ticketId) => {
+    const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketId))
+
+    if (ticketDeletedSuccessfully) dispatch(getTableTickets())
+  }
+
+  console.log("tickets",tickets)
 
   return(
     <div className='tickets'>
@@ -107,7 +115,7 @@ const Tickets = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tickets.map(ticket => (
+                  {tickets.map(ticket => ticket.isDeleted === "0" && (
                     <TableRow key={ticket.id}>
                       <TableCell>{ticket.id}</TableCell>
                       <TableCell>{ticket.asunto}</TableCell>
@@ -127,7 +135,7 @@ const Tickets = () => {
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Eliminar Ticket">
-                          <IconButton onClick={() => deleteTicket(ticket.id)}>
+                          <IconButton onClick={() => handleDeleteTicket(ticket.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>

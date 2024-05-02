@@ -16,6 +16,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListItemText from '@mui/material/ListItemText';
 
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -192,7 +193,7 @@ const Menu = ({ children }) => {
         <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
-          <Toolbar>
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -205,6 +206,7 @@ const Menu = ({ children }) => {
             >
               <MenuIcon />
             </IconButton>
+            <AccountCircleIcon fontSize='large' />
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
