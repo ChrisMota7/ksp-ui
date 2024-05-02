@@ -23,11 +23,14 @@ const CreateTicket = () => {
 
     console.log("files", files)
 
-    const submitCreateTicket = (e) => {
+    const submitCreateTicket = async (e) => {
         e.preventDefault();
         
-        dispatch(createTicket(asunto, descripcion, problemaid, files))
+        const { newTicketId, ticketCreatedSuccessfully } = await dispatch(createTicket(asunto, descripcion, problemaid, files))
 
+        if (ticketCreatedSuccessfully) {
+            router.push(`/view-ticket/?ticketId=${newTicketId}`)
+        }
     }
 
     const handleCategoryChange = async (event) => {
@@ -132,7 +135,6 @@ const CreateTicket = () => {
                         <Button 
                             type='submit' 
                             variant="contained" 
-                            onClick={() => router.push(`/tickets`)}
                         >
                             Guardar Ticket
                         </Button>

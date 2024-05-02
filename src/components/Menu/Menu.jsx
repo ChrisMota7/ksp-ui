@@ -107,7 +107,16 @@ const Menu = ({ children }) => {
   // const userId = 1
 
   console.log("isAdmin",isAdmin)
-  const menuItems = [isAdmin === "true" ? "Tickets" : "Mis Tickets", "Crear Ticket", "Usuarios", "Categorías", "Dashboard", "Configuración"]
+  const items = [
+    isAdmin === "true" ? "Tickets" : "Mis Tickets", 
+    isAdmin === "false" ? "Crear Ticket" : null, 
+    isAdmin === "true" ? "Usuarios" : null,
+    isAdmin === "true" ? "Categorías" : null,
+    "Dashboard", 
+    "Configuración"
+  ]
+
+  const menuItems = items.filter(n => n)
 
   const handleDrawerOpen = () => {
     setOpen(true);

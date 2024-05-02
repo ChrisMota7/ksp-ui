@@ -11,12 +11,14 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTableTickets, searchTicketByInfo, searchTicketByStatus, updateTicketStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
+import { selectIsAdmin } from '@/redux/reducers/authReducer';
 
 const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter()
 
   const tickets = useSelector(selectTickets) 
+  const isAdmin = useSelector(selectIsAdmin) 
 
   const [search, setSearch] = useState("")
   const [filterStatus, setFilterStatus] = useState("")
@@ -83,9 +85,11 @@ const Tickets = () => {
           </div>
         </div>
         <div className='tickets__content__info-section'>
-          <div className='tickets__content__info-section__button'>
-            <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
-          </div>
+          {isAdmin === "false" && (
+            <div className='tickets__content__info-section__button'>
+              <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
+            </div>
+          )}
           <div>
             <Paper>
               <Table>

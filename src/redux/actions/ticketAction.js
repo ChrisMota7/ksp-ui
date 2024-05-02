@@ -231,11 +231,13 @@ export const createTicket = (asunto, descripcion, problemaid, files) => async (d
 
         console.log("response",response)
 
-        return { ticketCreatedSuccessfully: true }
+        const ticketId = response.id
+
+        return { ticketCreatedSuccessfully: true, newTicketId: ticketId }
     } catch (e) {
         console.log("error", e)
 
-        return { ticketCreatedSuccessfully: false }
+        return { ticketCreatedSuccessfully: false, newTicketId: undefined }
     }
 }
 
