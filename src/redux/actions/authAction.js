@@ -41,3 +41,29 @@ export const login = (email, password) => async (dispatch) => {
         return { userAuthenticationSuccessfully: false }
     } 
 }
+
+export const setAuthInfo = () => async (dispatch) => {
+    try {        
+        const jwt = localStorage.getItem("jwt")
+        const userid = localStorage.getItem("userid")
+        const isAdmin = localStorage.getItem("isAdmin")
+
+        dispatch({
+            type: AUTHENTICATE_USER,
+            payload: {
+                jwt: jwt,
+                userid: userid,
+                isAdmin: isAdmin,
+            }
+        })
+
+        console.log("userid",userid)
+        console.log("isAdmin",isAdmin)
+
+        return { userAuthenticationSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { userAuthenticationSuccessfully: false }
+    } 
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 
 import { styled, useTheme } from '@mui/material/styles';
@@ -24,8 +24,9 @@ import DnsIcon from '@mui/icons-material/Dns';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAdmin, selectUserid } from '@/redux/reducers/authReducer';
+import { setAuthInfo } from '@/redux/actions/authAction';
 
 const drawerWidth = 240;
 
@@ -96,6 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const Menu = ({ children }) => {
   const { push } = useRouter()
+  const dispatch = useDispatch()
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -169,6 +171,11 @@ const Menu = ({ children }) => {
         break;
     }
   }
+
+  useEffect(() => {
+    dispatch(setAuthInfo())
+    console.log("setAuthInfo")
+  }, [])
 
   return (
     <>
