@@ -177,7 +177,7 @@ const Menu = ({ children }) => {
         push("/")
         break;
       case "Configuración":
-        push("/")
+        push("/config")
         break;
     }
   }

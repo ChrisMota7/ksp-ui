@@ -67,3 +67,25 @@ export const setAuthInfo = () => async (dispatch) => {
         return { userAuthenticationSuccessfully: false }
     } 
 }
+
+export const createUser = (firstName, lastName, email, password, isAdmin) => async (dispatch) => {
+  
+    const body = new FormData()
+    body.append('firstName', firstName)
+    body.append('lastName', lastName)
+    body.append('email', email)
+    body.append('password', password)
+    body.append('isAdmin', isAdmin)
+  
+    try{
+      const response = await post("/users/create",  body)
+  
+      console.log("response", response)
+  
+      return { CreateUserSuccessfully: true }
+    } catch (e) {
+      console.log("error", e)
+  
+      return { CreateUserSuccessfully: false }
+    }
+  }

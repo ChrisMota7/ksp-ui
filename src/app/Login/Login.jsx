@@ -26,6 +26,10 @@ const Login = () => {
         }
     }
 
+    const goToRegister = () => {
+        router.push("/register"); 
+    }
+
     return (
         <div className="login">
             <img src="/LogoNegro.png" alt="user-login" className="login__image"/>
@@ -40,6 +44,11 @@ const Login = () => {
                 />
                 <button className="login__form__button">Iniciar Sesión</button>
             </form>
+            <div className="login__footer">
+                <button onClick={goToRegister} className="login__register-button">
+                    Registrarse
+                </button>
+            </div>
         </div>
     )
 }

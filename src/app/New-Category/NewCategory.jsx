@@ -58,6 +58,7 @@ const NewCategory = () => {
                         >
                             <MenuItem value={1}>Hardware</MenuItem>
                             <MenuItem value={2}>Software</MenuItem>
+                            <MenuItem value={3}>Logística</MenuItem>
                         </Select>
                     </FormControl>
 
