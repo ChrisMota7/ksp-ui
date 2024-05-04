@@ -108,10 +108,12 @@ const GeneralMenu = ({ children }) => {
 
   const isOpenProfileMenu = Boolean(anchorEl);
 
-  // const userId = useSelector(selectUserid)
-  // const isAdmin = useSelector(selectIsAdmin)
-  const isAdmin = "true"
-  const userId = 1
+  const userId = useSelector(selectUserid)
+  const isAdmin = useSelector(selectIsAdmin)
+  // const isAdmin = "true"
+  // const userId = 1
+  // const isAdmin = undefined
+  // const userId = undefined
 
   console.log("isAdmin",isAdmin)
   const items = [

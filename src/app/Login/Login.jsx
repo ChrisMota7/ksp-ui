@@ -45,9 +45,7 @@ const Login = () => {
                 <button className="login__form__button">Iniciar Sesión</button>
             </form>
             <div className="login__footer">
-                <button onClick={goToRegister} className="login__register-button">
-                    Registrarse
-                </button>
+                <a href="/register">Registrarse</a>
             </div>
         </div>
     )

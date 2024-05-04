@@ -19,8 +19,10 @@ body{
     min-width: 300px;
     border-radius: 10px;
     border-top-left-radius: 50px;
-    border: solid 1px $blue_light;
     border-bottom-right-radius: 50px;
+    -webkit-box-shadow: 1px 0px 16px -7px rgba(0,0,0,0.88);
+    -moz-box-shadow: 1px 0px 16px -7px rgba(0,0,0,0.88);
+    box-shadow: 1px 0px 16px -7px rgba(0,0,0,0.88);
 
     &__image {
         width: 150px;
