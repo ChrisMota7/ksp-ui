@@ -181,7 +181,7 @@ const GeneralMenu = ({ children }) => {
         push("/create-ticket")
         break;
       case "Usuarios":
-        push("/")
+        push("/users")
         break;
       case "Categorías":
         push("/categories")
