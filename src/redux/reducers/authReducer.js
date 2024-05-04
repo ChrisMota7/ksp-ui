@@ -1,4 +1,5 @@
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER"
+export const LOGOUT_USER = "LOGOUT_USER"
 
 export const defaultState = {
   jwt: undefined,
@@ -14,6 +15,13 @@ const authReducer = (state = defaultState, action) => {
         jwt: action.payload.jwt,
         userid: action.payload.userid,
         isAdmin: action.payload.isAdmin,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        jwt: undefined,
+        userid: undefined,
+        isAdmin: false,
       };
     default:
       return state;

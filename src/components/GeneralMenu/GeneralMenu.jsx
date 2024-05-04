@@ -10,6 +10,8 @@ import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -27,7 +29,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAdmin, selectUserid } from '@/redux/reducers/authReducer';
-import { setAuthInfo } from '@/redux/actions/authAction';
+import { logout, setAuthInfo } from '@/redux/actions/authAction';
+import { ClickAwayListener, Grow, MenuList, Paper, Popper } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -96,16 +99,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const Menu = ({ children }) => {
+const GeneralMenu = ({ children }) => {
   const { push } = useRouter()
   const dispatch = useDispatch()
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(false);
 
-  const userId = useSelector(selectUserid)
-  const isAdmin = useSelector(selectIsAdmin)
-  // const isAdmin = "false"
-  // const userId = 1
+  const isOpenProfileMenu = Boolean(anchorEl);
+
+  // const userId = useSelector(selectUserid)
+  // const isAdmin = useSelector(selectIsAdmin)
+  const isAdmin = "true"
+  const userId = 1
 
   console.log("isAdmin",isAdmin)
   const items = [
@@ -118,6 +124,11 @@ const Menu = ({ children }) => {
   ]
 
   const menuItems = items.filter(n => n)
+
+  useEffect(() => {
+    dispatch(setAuthInfo())
+    console.log("setAuthInfo")
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -182,10 +193,20 @@ const Menu = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    dispatch(setAuthInfo())
-    console.log("setAuthInfo")
-  }, [])
+  const handleClickProfileMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleCloseProfileMenu = () => {
+    setAnchorEl(null);
+  }
+
+  const handleLogout = async () => {
+    const { userLoggedOutSuccessfully } = await dispatch(logout())
+
+    console.log("userLoggedOutSuccessfully",userLoggedOutSuccessfully)
+    if (userLoggedOutSuccessfully) push("/")
+  }
 
   return (
     <>
@@ -206,7 +227,45 @@ const Menu = ({ children }) => {
             >
               <MenuIcon />
             </IconButton>
-            <AccountCircleIcon fontSize='large' />
+
+            <div>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                anchorEl={anchorEl}
+                onClick={handleClickProfileMenu}
+                edge="start"
+              >
+                <AccountCircleIcon fontSize='large' />
+              </IconButton>
+              
+              <Popper 
+                open={isOpenProfileMenu} 
+                anchorEl={anchorEl}
+                transition
+                disablePortal
+              >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom',
+                  }}
+                >
+                <Paper>
+                  <ClickAwayListener onClickAway={handleCloseProfileMenu}>
+                    <MenuList id="split-button-menu" autoFocusItem>
+                      <MenuItem onClick={handleLogout} >
+                        Cerrar Sesión
+                      </MenuItem>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+                </Grow>
+              )}
+              </Popper>
+            </div>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -251,4 +310,4 @@ const Menu = ({ children }) => {
   );
 }
 
-export default Menu
+export default GeneralMenu

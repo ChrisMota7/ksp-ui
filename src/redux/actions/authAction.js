@@ -1,6 +1,6 @@
 import { get, post } from "@/utils/api"
 import { jwtDecode } from "jwt-decode";
-import { AUTHENTICATE_USER } from "../reducers/authReducer";
+import { AUTHENTICATE_USER, LOGOUT_USER } from "../reducers/authReducer";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -39,6 +39,25 @@ export const login = (email, password) => async (dispatch) => {
         console.log("error", e)
 
         return { userAuthenticationSuccessfully: false }
+    } 
+}
+
+export const logout = () => async (dispatch) => {
+    try {        
+        localStorage.removeItem("jwt")
+        localStorage.removeItem("userid")
+        localStorage.removeItem("user_email")
+        localStorage.removeItem("isAdmin")
+
+        dispatch({
+            type: LOGOUT_USER
+        })
+
+        return { userLoggedOutSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { userLoggedOutSuccessfully: false }
     } 
 }
 
