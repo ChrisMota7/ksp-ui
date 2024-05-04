@@ -1,5 +1,5 @@
 'use client'
-const Config = () => {
+const Settings = () => {
     return(
         <div>
             Hello config
@@ -7,4 +7,4 @@ const Config = () => {
     )
 }
 
-export default Config
+export default Settings

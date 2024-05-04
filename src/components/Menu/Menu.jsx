@@ -174,10 +174,10 @@ const Menu = ({ children }) => {
         push("/categories")
         break;
       case "Dashboard":
-        push("/")
+        push("/dashboard")
         break;
       case "Configuración":
-        push("/config")
+        push("/settings")
         break;
     }
   }
