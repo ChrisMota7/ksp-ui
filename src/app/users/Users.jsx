@@ -207,7 +207,7 @@ const Users = () => {
         <div className='users__header__title'>
             <h1>Usuarios</h1>
             <div className='users__header__title__new-admin'>
-                <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Crear Administrador</Button>
+                <Button variant="contained" onClick={() => router.push(`/create-admin/`)}>Crear Administrador</Button>
             </div>
         </div>
         <div className='users__header__nav'>
