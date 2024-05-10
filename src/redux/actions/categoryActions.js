@@ -1,5 +1,5 @@
 import { get, post } from "@/utils/api"
-import { SET_CATEGORIES, ADD_PROBLEM } from "../reducers/categoryReducer"
+import { SET_CATEGORIES, SET_DASHBOARD, ADD_PROBLEM } from "../reducers/categoryReducer"
 
 export const getCategories = () => async (dispatch) => {
     try {
@@ -18,11 +18,12 @@ export const getCategories = () => async (dispatch) => {
     }
 }
 
-export const createProblem = (name, categoria_id) => async (dispatch) => {
+export const createProblem = (name, categoria_id, prioridad_id) => async (dispatch) => {
 
     const body = new FormData()
     body.append('name', name)
     body.append('categoria', categoria_id)
+    body.append('prioridad', prioridad_id)
 
     try {
         const response = await post("/helpdesk/problemas/", body, {
@@ -35,5 +36,22 @@ export const createProblem = (name, categoria_id) => async (dispatch) => {
         console.log("error", e)
 
         return { ticketCreatedSuccessfully: false }
+    }
+}
+
+export const getDashboard = () => async (dispatch) => {
+    try {
+        const dashboard = await get("/helpdesk/stats/tickets/");
+
+        console.log("datos dashboard", dashboard)
+        dispatch({
+            type: SET_DASHBOARD,
+            payload: dashboard
+        })
+        return { setDashboardSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setDashboardSuccessfully: false }
     }
 }

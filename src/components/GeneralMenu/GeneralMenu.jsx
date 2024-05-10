@@ -121,7 +121,7 @@ const GeneralMenu = ({ children }) => {
     isAdmin === "false" ? "Crear Ticket" : null, 
     isAdmin === "true" ? "Usuarios" : null,
     isAdmin === "true" ? "Categorías" : null,
-    "Dashboard", 
+    isAdmin === "true" ? "Dashboard" : null, 
     "Configuración"
   ]
 

@@ -12,7 +12,7 @@ export const login = (email, password) => async (dispatch) => {
         
         const { user_id } = jwtDecode(access)
 
-        const { is_admin } = await get("/auth/user-type/", {
+        const { is_admin } = await get("/user/user-type/", {
             Authorization: `Bearer ${access}`,
         })
         
@@ -89,7 +89,7 @@ export const setAuthInfo = () => async (dispatch) => {
 
 export const createUser = (firstName, lastName, email, password, isAdmin) => async (dispatch) => {
     try{
-      await post("/users/create", {
+      await post("/user/create/", {
         firstName,
         lastName,
         email,

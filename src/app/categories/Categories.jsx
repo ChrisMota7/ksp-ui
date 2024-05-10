@@ -19,6 +19,43 @@ const Categories = () => {
     useEffect(() => {
         dispatch(getCategories());
     }, [dispatch]);
+
+    const getPriorityStyle = (priorityName) => {
+      switch (priorityName) {
+        case 'Bajo':
+          return { 
+            color: 'white', 
+            backgroundColor: '#00913f', 
+            textDecoration: 'solid', 
+            padding: '3px 17px', 
+            borderRadius: '5px' 
+          };
+        case 'Medio':
+          return { 
+            color: 'white', 
+            backgroundColor: '#E66E00', 
+            textDecoration: 'solid', 
+            padding: '3px 10px', 
+            borderRadius: '5px' 
+          };
+        case 'Crítico':
+          return { 
+            color: 'white', 
+            backgroundColor: '#E63B2C', 
+            textDecoration: 'solid', 
+            padding: '3px 10px', 
+            borderRadius: '5px' 
+          };
+        default:
+          return { 
+            color: 'white', 
+            backgroundColor: 'grey', 
+            textDecoration: 'none',
+            padding: '3px 10px', 
+            borderRadius: '5px' 
+          };
+      }
+    }
     
     return(
       <div className='categories'>
@@ -37,7 +74,7 @@ const Categories = () => {
 
         <div className='categories__info'>
           <div className='categories__info__new-category'>
-            <Button variant="contained" onClick={() => router.push('/New-Category')}>Nueva categoría</Button>
+            <Button variant="contained" onClick={() => router.push('/create-category')}>Nueva categoría</Button>
           </div>
 
           <div>
@@ -47,6 +84,9 @@ const Categories = () => {
                         <TableRow>
                             <TableCell className='categories__info__table__headers'>ID</TableCell>
                             <TableCell className='categories__info__table__headers'>Nombre</TableCell>
+                            <TableCell className='categories__info__table__headers'>Prioridad</TableCell>
+                            <TableCell className='categories__info__table__headers'>Tickets</TableCell>
+                            <TableCell className='categories__info__table__headers'>Fecha de vencimiento por defecto</TableCell>
                             <TableCell className='categories__info__table__headers'>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -55,6 +95,13 @@ const Categories = () => {
                             <TableRow key={category.id}>
                                 <TableCell>{category.id}</TableCell>
                                 <TableCell>{category.name}</TableCell>
+                                <TableCell>
+                                  <span style={getPriorityStyle(category.prioridad.name)}>
+                                    {category.prioridad.name}
+                                  </span>
+                                </TableCell>
+                                <TableCell>S/A</TableCell>
+                                <TableCell>S/A</TableCell>
                                 <TableCell>
                                     <Tooltip title="Ver Detalles">
                                         <IconButton onClick={() => router.push(`/tickets/${ticket.id}`)}>

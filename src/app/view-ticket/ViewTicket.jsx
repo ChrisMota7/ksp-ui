@@ -160,8 +160,7 @@ export default function verTicket () {
                         </div>
 
                         <hr />
-
-                        <Typography color="text">Creado en: {ticketInfo.created_at} </Typography>
+                        <Typography color="text">Creado en: {new Date(ticketInfo.created_at).toLocaleDateString()}</Typography>
                         <Typography color="text.primary">Respuestas: </Typography>
                         <Typography color="text.primary">Ultima respuesta: </Typography>
                     </div>

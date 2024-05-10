@@ -12,11 +12,12 @@ const NewCategory = () => {
 
     const [name, setName] = useState("");
     const [categoriaid, setCategoriaid] = useState("");
+    const [prioridadid, setPrioridad] = useState("");
 
     const submitCreateProblem = (e) => {
         e.preventDefault();
 
-        dispatch(createProblem(name, categoriaid))
+        dispatch(createProblem(name, categoriaid, prioridadid))
     }
 
     return (
@@ -61,6 +62,20 @@ const NewCategory = () => {
                             <MenuItem value={3}>Logística</MenuItem>
                         </Select>
                     </FormControl>
+                    <FormControl className='create-problem__content__top__select'>
+                        <InputLabel id="select-label">Prioridad</InputLabel>
+                        <Select 
+                            value={prioridadid} name='categoria'
+                            labelId="select-label"
+                            id="select"
+                            label="categoria"
+                            onChange={event => setPrioridad(event.target.value)}
+                        >
+                            <MenuItem value={1}>Bajo</MenuItem>
+                            <MenuItem value={2}>Medio</MenuItem>
+                            <MenuItem value={3}>Crítico</MenuItem>
+                        </Select>
+                    </FormControl>
 
                     <div className='create-problem__button-container'>
                         <Button 
@@ -68,7 +83,7 @@ const NewCategory = () => {
                             variant="contained" 
                             color="primary"
                             onClick={() => router.push(`/categories/`)}>
-                                Crear Problema
+                                Crear Categoría
                         </Button>
                     </div>
                 </div>

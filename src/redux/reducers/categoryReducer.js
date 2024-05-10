@@ -1,9 +1,11 @@
 export const SET_CATEGORIES = "SET_CATEGORIES";
 export const ADD_PROBLEM = "ADD_PROBLEM";
+export const SET_DASHBOARD = "SET_DASHBOARD";
 
 export const defaultState = {
     categories: [],
-    problems: []
+    problems: [],
+    dashboard: [],
 };
 
 const categoryReducer = (state = defaultState, action) => {
@@ -18,6 +20,11 @@ const categoryReducer = (state = defaultState, action) => {
                 ...state,
                 problems: action.payload 
             };
+        case SET_DASHBOARD:
+            return {
+                ...state,
+                dashboard: action.payload 
+            };    
         default:
             return state;    
     }
@@ -26,3 +33,4 @@ const categoryReducer = (state = defaultState, action) => {
 export default categoryReducer;
 
 export const selectCategories = (state) => state.categoryReducer.categories
+export const selectDashboard = (state) => state.categoryReducer.dashboard

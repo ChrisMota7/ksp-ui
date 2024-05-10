@@ -24,7 +24,7 @@ const CreateAdmin = () => {
     const handleCreateUser = async (e) => {
         e.preventDefault();
 
-        console.log("isPasswordsMatch",isPasswordsMatch)
+        // console.log("isPasswordsMatch", isPasswordsMatch)
         const { userCreatedSuccessfully } = await dispatch(
             createUser(
                 firstName, 
