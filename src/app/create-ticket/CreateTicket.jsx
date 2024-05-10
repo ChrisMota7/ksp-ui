@@ -137,7 +137,7 @@ const CreateTicket = () => {
                             type='submit' 
                             variant="contained" 
                         >
-                            Guardar Ticket
+                            Enviar Ticket
                         </Button>
                     </div>
                 </div>

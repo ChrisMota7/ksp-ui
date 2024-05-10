@@ -1,0 +1,37 @@
+.dashboard {
+    width: 100%;
+    padding: 20px; /* Añade padding alrededor de todo el dashboard */
+}
+
+.dashboard__header {
+    width: 100%;
+    margin-bottom: 20px; /* Espacio debajo de la cabecera */
+}
+
+.dashboard__header__title,
+.dashboard__header__nav {
+    margin-left: 20px; /* Margen izquierdo para el título y la navegación */
+}
+
+.dashboard__content {
+    display: flex; /* Establece un layout de tipo flexbox */
+    justify-content: space-evenly; /* Distribuye el espacio uniformemente entre las gráficas */
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en líneas múltiples */
+}
+
+.dashboard__content__grafica {
+    flex: 1 1 45%; /* Cada gráfica toma al menos el 45% del espacio disponible */
+    max-width: 600px; /* Ancho máximo de 600px para cada gráfica */
+    height: 400px; /* Altura fija para evitar el crecimiento vertical infinito */
+    margin: 10px; /* Margen alrededor de cada gráfica para asegurar espacio entre ellas */
+    display: flex; /* Usar flexbox dentro de cada gráfica */
+    flex-direction: column; /* Organiza el contenido de la gráfica en columna */
+    align-items: center; /* Centra los elementos horizontalmente dentro de la gráfica */
+    justify-content: center; /* Centra los elementos verticalmente dentro de la gráfica */
+}
+
+@media (max-width: 768px) {
+    .dashboard__content__grafica {
+        flex: 1 1 100%; /* En pantallas pequeñas, cada gráfica toma el 100% del ancho disponible */
+    }
+}

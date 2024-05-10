@@ -7,7 +7,7 @@ export const getProblems = (categoryId) => async (dispatch) => {
 
         dispatch({
             type: SET_PROBLEMS,
-            payload: problems
+            payload: problems 
         })
 
         return { setProblemsSuccessfully: true }

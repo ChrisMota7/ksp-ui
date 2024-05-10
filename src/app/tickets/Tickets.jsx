@@ -55,6 +55,44 @@ const Tickets = () => {
     if (ticketDeletedSuccessfully) dispatch(getTableTickets())
   }
 
+  const getPriorityStyle = (priorityName) => {
+    switch (priorityName) {
+      case 'Bajo':
+        return { 
+          color: 'white', 
+          backgroundColor: '#00913f', 
+          textDecoration: 'solid', 
+          padding: '4px 18px', 
+          borderRadius: '5px' 
+        };
+      case 'Medio':
+        return { 
+          color: 'white', 
+          backgroundColor: '#E66E00', 
+          textDecoration: 'solid', 
+          padding: '3px 10px', 
+          borderRadius: '5px' 
+        };
+      case 'Crítico':
+        return { 
+          color: 'white', 
+          backgroundColor: '#E63B2C', 
+          textDecoration: 'solid', 
+          padding: '3px 10px', 
+          borderRadius: '5px' 
+        };
+      default:
+        return { 
+          color: 'white', 
+          backgroundColor: 'grey', 
+          textDecoration: 'none',
+          padding: '3px 10px', 
+          borderRadius: '5px' 
+        };
+    }
+  }
+  
+
   console.log("tickets",tickets)
 
   return(
@@ -123,9 +161,11 @@ const Tickets = () => {
                       <TableCell>{ticket.problema.name}</TableCell>
                       <TableCell>{ticket.user.email}</TableCell>
                       <TableCell>
-                        {ticket.status === '0' ? "Inactivo" : "Activo" }</TableCell>
+                        {ticket.status === '0' ? "Nuevo" : "En espera" }</TableCell>
                       <TableCell>
-                        {ticket.prioridad ? ticket.prioridad.name : "S/A"}
+                        <span style={getPriorityStyle(ticket.problema.prioridad.name)}>
+                          {ticket.problema.prioridad.name}
+                        </span>
                       </TableCell>
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
