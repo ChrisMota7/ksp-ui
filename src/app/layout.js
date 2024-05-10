@@ -5,6 +5,7 @@ import { Provider, useSelector } from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";
 import reducer from "@/redux/reducer"
 import GeneralMenu from "@/components/GeneralMenu/GeneralMenu";
+import GenericSnackBar from "@/components/GenericSnackBar/GenericSnackBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       <Provider store={store}>
         <body className={inter.className}>
           <GeneralMenu children={children} />
+          <GenericSnackBar />
         </body>
       </Provider>
     </html>

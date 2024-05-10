@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectJWT, selectUserid } from "@/redux/reducers/authReducer";
+import { showSnackbar } from "@/redux/actions/visualsAction";
 
 const Login = () => {
     const router = useRouter()
@@ -23,11 +24,9 @@ const Login = () => {
 
         if (userAuthenticationSuccessfully) {
             router.push("/tickets")
+        } else {
+            dispatch(showSnackbar("Error de autenticación", "success"))
         }
-    }
-
-    const goToRegister = () => {
-        router.push("/register"); 
     }
 
     return (
