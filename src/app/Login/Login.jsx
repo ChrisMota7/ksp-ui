@@ -35,11 +35,19 @@ const Login = () => {
             <h1 className="login__title">HELP DESK</h1>
             <h2 className="login__title">Inicio de sesión</h2>
             <form className="login__form" onSubmit={submit}>
-                <input type="text" placeholder="Email" className="login__form__input"
+                <input 
+                    type="text" 
+                    placeholder="Email" 
+                    className="login__form__input"
                     onChange={e => setEmail(e.target.value)}
+                    required
                 />
-                <input type="password" placeholder="Contraseña" className="login__form__input"
+                <input 
+                    type="password" 
+                    placeholder="Contraseña" 
+                    className="login__form__input"
                     onChange={e => setPassword(e.target.value)}
+                    required
                 />
                 <button className="login__form__button">Iniciar Sesión</button>
             </form>

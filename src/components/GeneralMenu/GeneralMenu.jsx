@@ -300,7 +300,7 @@ const GeneralMenu = ({ children }) => {
             })}
           </List>
         </Drawer> 
-        <Box component="main" sx={{ flexGrow: 1 }}>
+        <Box component="main" sx={{ flexGrow: 1, backgroundColor: "#e9f0f3" }}>
           <DrawerHeader />
           {children}
         </Box>

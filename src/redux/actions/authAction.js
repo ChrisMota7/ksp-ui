@@ -15,6 +15,8 @@ export const login = (email, password) => async (dispatch) => {
         const { is_admin } = await get("/user/user-type/", {
             Authorization: `Bearer ${access}`,
         })
+
+        console.log("is_admin",is_admin)
         
         localStorage.setItem("jwt", access)
         localStorage.setItem("userid", user_id)

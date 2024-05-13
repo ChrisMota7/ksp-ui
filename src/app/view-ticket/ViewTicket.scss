@@ -1,5 +1,6 @@
 .view-tickets {
     width: 100%;
+    background-color: #e9f0f3;
 
     &__header {
         display: flex;
@@ -65,12 +66,7 @@
 
         &__messages {
             width: 90%;
-            max-height: 80svh;
-            overflow: scroll;
             margin-top: 10px;
-            -webkit-box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
-            -moz-box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
-            box-shadow: 0px 0px 3px 0px rgba(135,135,135,0.82);
 
             &__no-messages {
                 display: flex;
