@@ -1,6 +1,6 @@
 'use client'
 import './CreateTicket.scss'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import { TextField, FormControl, InputLabel, Select, MenuItem, Card, Button, Breadcrumbs, Link, Typography } from "@mui/material"
@@ -8,18 +8,25 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket, getProblems } from '@/redux/actions/ticketAction';
 import { selectProblems } from '@/redux/reducers/ticketReducer';
+import { getCategoriesAll } from '@/redux/actions/categoryActions';
+import { selectCategoriesAll } from '@/redux/reducers/categoryReducer';
 
 const CreateTicket = () => {
     const router = useRouter()
     const dispatch = useDispatch()
 
     const possibleProblems = useSelector(selectProblems)
+    const categories = useSelector(selectCategoriesAll);
 
     const [asunto, setAsunto] = useState("");
     const [categoria, setCategoria] = useState("");
     const [problemaid, setProblemaid] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [files, setFiles] = useState([]);
+
+    useEffect(() => {
+        dispatch(getCategoriesAll());
+    }, [dispatch]);
 
     console.log("files", files)
 
@@ -83,18 +90,19 @@ const CreateTicket = () => {
                     
                     <FormControl className='create-ticket__content__top__select'>
                         <InputLabel id="select-label">Categoría</InputLabel>
-                            <Select 
-                                value={categoria} 
-                                name='categoria'
-                                labelId="select-label"
-                                id="select"
-                                label="categoria"
-                                onChange={handleCategoryChange}
-                            >
-                                <MenuItem value={1}>Hardware</MenuItem>
-                                <MenuItem value={2}>Software</MenuItem>
-                                <MenuItem value={3}>Logística</MenuItem>
-                            </Select>
+                        <Select 
+                            value={categoria}
+                            labelId="select-label"
+                            id="select"
+                            label="Categoría"
+                            onChange={handleCategoryChange}
+                        >
+                            {categories.map((categoria) => (
+                                <MenuItem key={categoria.id} value={categoria.id}>
+                                    {categoria.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </FormControl>
                 </div>
 

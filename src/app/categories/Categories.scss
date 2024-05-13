@@ -16,11 +16,21 @@
     }
 
     &__info {
+        padding-left: 5%;
+        padding-right: 5%;
+
+        &__new-problem {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding: 5px;
+        }
+
         &__new-category {
             display: flex;
             justify-content: flex-end;
             width: 100%;
-            padding: 15px;
+            padding: 5px;
         }
 
         &__table{

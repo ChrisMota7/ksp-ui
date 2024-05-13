@@ -73,8 +73,11 @@ const Categories = () => {
         </div>
 
         <div className='categories__info'>
+          <div className='categories__info__new-problem'>
+            <Button variant="contained" onClick={() => router.push('/create-category')}>Nuevo Problema</Button>
+          </div>
           <div className='categories__info__new-category'>
-            <Button variant="contained" onClick={() => router.push('/create-category')}>Nueva categoría</Button>
+            <Button variant="contained" onClick={() => router.push('/create-categories')}>Nueva Categoría</Button>
           </div>
 
           <div>
@@ -103,11 +106,6 @@ const Categories = () => {
                                 <TableCell>S/A</TableCell>
                                 <TableCell>S/A</TableCell>
                                 <TableCell>
-                                    <Tooltip title="Ver Detalles">
-                                        <IconButton onClick={() => router.push(`/tickets/${ticket.id}`)}>
-                                            <VisibilityIcon />
-                                        </IconButton>
-                                    </Tooltip>
                                     <Tooltip title="Eliminar Ticket">
                                         <IconButton onClick={() => deleteTicket(ticket.id)}>
                                             <DeleteIcon />

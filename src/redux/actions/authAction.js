@@ -7,9 +7,9 @@ export const login = (email, password) => async (dispatch) => {
         console.log("here")
         const { access } = await post("/api/token/", {
             email,
-            password
+            password,
         })
-        
+
         const { user_id } = jwtDecode(access)
 
         const { is_admin } = await get("/user/user-type/", {
@@ -34,11 +34,15 @@ export const login = (email, password) => async (dispatch) => {
         console.log("user_id",user_id)
         console.log("isAdmin",is_admin)
 
-        return { userAuthenticationSuccessfully: true }
+        return { userAuthenticationSuccessfully: true, message: undefined }
     } catch (e) {
         console.log("error", e)
 
-        return { userAuthenticationSuccessfully: false }
+        const messageString = e.request.response
+        const messageJson = JSON.parse(messageString)
+        const message = messageJson.message[0];
+
+        return { userAuthenticationSuccessfully: false, message }
     } 
 }
 

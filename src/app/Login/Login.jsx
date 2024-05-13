@@ -20,12 +20,12 @@ const Login = () => {
     const submit = async (e) =>{
         e.preventDefault();
         
-        const { userAuthenticationSuccessfully } = await dispatch(login(email, password))
+        const { userAuthenticationSuccessfully, message } = await dispatch(login(email, password))
 
         if (userAuthenticationSuccessfully) {
             router.push("/tickets")
         } else {
-            dispatch(showSnackbar("Error de autenticación", "success"))
+            dispatch(showSnackbar(message, "error"))
         }
     }
 

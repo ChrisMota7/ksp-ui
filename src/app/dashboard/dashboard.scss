@@ -28,6 +28,7 @@
     flex-direction: column; /* Organiza el contenido de la gráfica en columna */
     align-items: center; /* Centra los elementos horizontalmente dentro de la gráfica */
     justify-content: center; /* Centra los elementos verticalmente dentro de la gráfica */
+    padding-bottom: 5%;
 }
 
 @media (max-width: 768px) {

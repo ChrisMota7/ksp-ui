@@ -1,5 +1,22 @@
 import { get, post } from "@/utils/api"
-import { SET_CATEGORIES, SET_DASHBOARD, ADD_PROBLEM } from "../reducers/categoryReducer"
+import { SET_CATEGORIES, SET_DASHBOARD, ADD_PROBLEM, SET_CATEGORIES_ALL} from "../reducers/categoryReducer"
+
+export const getCategoriesAll = () => async (dispatch) => {
+    try {
+        const categories = await get('/helpdesk/categorias/')
+
+        dispatch({
+            type: SET_CATEGORIES_ALL,
+            payload: categories
+        })
+
+        return { setCategoryTableSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setCategoryTableSuccessfully: false }
+    }
+}
 
 export const getCategories = () => async (dispatch) => {
     try {
@@ -31,11 +48,30 @@ export const createProblem = (name, categoria_id, prioridad_id) => async (dispat
 
         console.log("response",response)
 
-        return { ticketCreatedSuccessfully: true }
+        return { problemCreatedSuccessfully: true }
     } catch (e) {
         console.log("error", e)
 
-        return { ticketCreatedSuccessfully: false }
+        return { problemCreatedSuccessfully: false }
+    }
+}
+
+export const createCategorie = (name) => async (dispatch) => {
+
+    const body = new FormData()
+    body.append('name', name)
+
+    try {
+        const response = await post("/helpdesk/categorias/crear/", body, {
+        })
+
+        console.log("response",response)
+
+        return { categorieCreatedSuccessfully: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { categorieCreatedSuccessfully: false }
     }
 }
 

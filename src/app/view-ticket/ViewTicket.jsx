@@ -3,9 +3,11 @@ import './ViewTicket.scss'
 
 import React, { useEffect, useState } from 'react';
 
-import { Card, Button, Link, ImageList, ImageListItem, Modal, 
-    Box, Breadcrumbs, Typography, IconButton, Dialog, DialogContent, 
-    TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material"
+import {
+    Card, Button, Link, ImageList, ImageListItem, Modal,
+    Box, Breadcrumbs, Typography, IconButton, TextField, FormControl, InputLabel, Select, MenuItem,
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CloseIcon
+} from "@mui/material";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
@@ -13,9 +15,9 @@ import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
-import CloseIcon from '@mui/icons-material/Close';
-import { createNewMessage, getTicketInfo, updateTicketPriority } from '@/redux/actions/ticketAction';
+import { createNewMessage, deleteTicket, getTicketInfo, updateTicketPriority } from '@/redux/actions/ticketAction';
 import { selectTicketMessages, selectTicketInfo, selectTicketFiles } from '@/redux/reducers/ticketReducer';
+import { showSnackbar } from '@/redux/actions/visualsAction';
 
 export default function verTicket () {
     const router = useRouter()
@@ -83,6 +85,26 @@ export default function verTicket () {
         setIsAdminUser(isAdmin === "true")
     }
 
+    const handleOpenConfirmDialog = () => {
+        setOpenConfirmDialog(true);
+    };
+
+    const handleCloseConfirmDialog = () => {
+        setOpenConfirmDialog(false);
+    };
+
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const handleDeleteTicket = async () => {
+        const result = await dispatch(deleteTicket(ticketId));
+        if (result.ticketDeletedSuccessfully) {
+            dispatch(showSnackbar("Ticket finalizado con éxito.", "success"));
+            router.push('/tickets'); 
+            handleCloseConfirmDialog();
+        } else {
+            alert("Error al finalizar el ticket.");
+        }
+    };
+
     useEffect(() => {
         loadInfo()
     }, [dispatch]);
@@ -93,6 +115,7 @@ export default function verTicket () {
         console.log("clicked!!")
     }
 
+    
     return(
         <>
             {ticketInfo ? (
@@ -104,7 +127,7 @@ export default function verTicket () {
                             <p className='view-tickets__header__container__title__subject'>{ticketInfo.asunto}</p>
                         </div>
                         <div className='view-tickets__header__container__actions'>
-                            { isAdminUser && (
+                            {/* { isAdminUser && (
                                 <FormControl className='view-tickets__header__container__actions__priority-select'>
                                     <InputLabel id="select-label">Definir prioridad</InputLabel>
                                     <Select 
@@ -114,15 +137,36 @@ export default function verTicket () {
                                         label="prioridad"
                                         onChange={handlePrioridadChange}
                                     >
-                                        <MenuItem value={1}>Alta</MenuItem>
+                                        <MenuItem value={1}>Bajo</MenuItem>
                                         <MenuItem value={2}>Media</MenuItem>
-                                        <MenuItem value={3}>Baja</MenuItem>
+                                        <MenuItem value={3}>Crítico</MenuItem>
                                     </Select>
                                 </FormControl>
-                            )}
-                            <Button variant="contained" onClick={() => router.push('/tickets')}>Finalizar Ticket</Button>
+                            )} */}
+                            <Button variant="contained" onClick={handleOpenConfirmDialog}>Finalizar Ticket</Button>
                         </div>
                     </div>
+                    <Dialog
+                        open={openConfirmDialog}
+                        onClose={handleCloseConfirmDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Confirmar Finalización"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                ¿Estás seguro de que quieres finalizar este ticket?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseConfirmDialog} color="primary">
+                                Cancelar
+                            </Button>
+                            <Button onClick={handleDeleteTicket} color="primary" autoFocus>
+                                Finalizar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
                     <div className='view-tickets__header__container'>
                         <div className='view-tickets__header__container__breadcrumbs'>

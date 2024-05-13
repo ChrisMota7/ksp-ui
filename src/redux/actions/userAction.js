@@ -1,4 +1,4 @@
-import { get } from "@/utils/api"
+import { get, put } from "@/utils/api"
 import { SET_USERS } from "../reducers/userReducer"
 
 export const getUsers = () => async (dispatch) => {
@@ -30,24 +30,25 @@ export const getUsers = () => async (dispatch) => {
     } 
 }
 
-export const updatePasswordUser = (userid, newPassword) => async (dispatch) => {
-    const accessToken = localStorage.getItem("jwt")
+export const updatePasswordUser = (userId, newPassword) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
 
-    console.log("accessToken", accessToken)
-    console.log("userid", userid)
-    console.log("newStatus", newStatus)
-    try {
-        const userPasswordUpdated = await put(`user/${userid}/UpdateUser/`, {
-            password: newPassword
-        }, {
+    console.log("accessToken", accessToken);
+    console.log("userId", userId);
+    console.log("newPassword", newPassword);
+
+    try {           //update password, cambiar nombre endpoint
+        const response = await put(`/user/${userId}/UpdateUser/`, {
             Authorization: `Bearer ${accessToken}`,
-        })
-        console.log("userPasswordUpdated", userPasswordUpdated)
+            password: newPassword
+        });
 
-        return { setupdatePasswordUserSuccessfully: true }
+        console.log("response", response);
+        
+        return { setUpdatePasswordUserSuccessfully: true };
+        
     } catch (e) {
-        console.log("error", e)
 
-        return { setupdatePasswordUserSuccessfully: false }
+        return { setUpdatePasswordUserSuccessfully: false };
     }
 }

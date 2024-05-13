@@ -124,8 +124,10 @@ const Tickets = () => {
                 label="Estado"
                 onChange={handleSearchByStatus}
               >
-                <MenuItem value={1}>Activo</MenuItem>
-                <MenuItem value={0}>Inactivo</MenuItem>
+                <MenuItem value={0}>Nuevo</MenuItem>
+                <MenuItem value={1}>En espera</MenuItem>
+                <MenuItem value={2}>Respondido</MenuItem>
+                <MenuItem value={3}>Resuelto</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -161,7 +163,7 @@ const Tickets = () => {
                       <TableCell>{ticket.problema.name}</TableCell>
                       <TableCell>{ticket.user.email}</TableCell>
                       <TableCell>
-                        {ticket.status === '0' ? "Nuevo" : "En espera" }</TableCell>
+                        {ticket.status === 'Nuevo' ? "Nuevo" : "En espera" }</TableCell>
                       <TableCell>
                         <span style={getPriorityStyle(ticket.problema.prioridad.name)}>
                           {ticket.problema.prioridad.name}
