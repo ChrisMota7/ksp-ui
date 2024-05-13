@@ -1,5 +1,5 @@
 'use client'
-import './NewCategory.scss'
+import './NewProblem.scss'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { createProblem, getCategoriesAll } from '@/redux/actions/categoryActions
 import { Button, TextField, FormControl, MenuItem, Select, InputLabel, Breadcrumbs, Link, Typography } from '@mui/material';
 import { selectCategoriesAll } from '@/redux/reducers/categoryReducer';
 
-const NewCategory = () => {
+const NewProblem = () => {
     const router = useRouter()
     const dispatch = useDispatch()
     const categories = useSelector(selectCategoriesAll);
@@ -100,4 +100,4 @@ const NewCategory = () => {
     );
 };
 
-export default NewCategory;
+export default NewProblem;

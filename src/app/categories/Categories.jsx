@@ -74,7 +74,7 @@ const Categories = () => {
 
         <div className='categories__info'>
           <div className='categories__info__new-problem'>
-            <Button variant="contained" onClick={() => router.push('/create-category')}>Nuevo Problema</Button>
+            <Button variant="contained" onClick={() => router.push('/create-problems')}>Nuevo Problema</Button>
           </div>
           <div className='categories__info__new-category'>
             <Button variant="contained" onClick={() => router.push('/create-categories')}>Nueva Categoría</Button>
