@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { showSnackbar } from "@/redux/actions/visualsAction";
 
 const Register = () => {
     const { push } = useRouter()
@@ -32,6 +33,11 @@ const Register = () => {
             return
         }
 
+        if(email.split('@')[1] !== "ksp.com.mx") {
+            dispatch(showSnackbar("Lo siento, tu correo debe permanecer a KSP Technologies", "error"))
+            return
+        }
+
         console.log("isPasswordsMatch",isPasswordsMatch)
         const { userCreatedSuccessfully } = await dispatch(
             createUser(
@@ -44,6 +50,8 @@ const Register = () => {
         )
 
         if (userCreatedSuccessfully) {
+            dispatch(showSnackbar("Usuario creado exitosamente!", "success"))
+            
             push("/")
         }
     }

@@ -108,12 +108,8 @@ const GeneralMenu = ({ children }) => {
 
   const isOpenProfileMenu = Boolean(anchorEl);
 
-  // const userId = useSelector(selectUserid)
-  // const isAdmin = useSelector(selectIsAdmin)
-  const isAdmin = "true"
-  const userId = 1
-  // const isAdmin = undefined
-  // const userId = undefined
+  const userId = useSelector(selectUserid)
+  const isAdmin = useSelector(selectIsAdmin)
 
   console.log("isAdmin",isAdmin)
   const items = [
@@ -300,7 +296,7 @@ const GeneralMenu = ({ children }) => {
             })}
           </List>
         </Drawer> 
-        <Box component="main" sx={{ flexGrow: 1 }}>
+        <Box component="main" sx={{ flexGrow: 1, backgroundColor: "#e9f0f3" }}>
           <DrawerHeader />
           {children}
         </Box>

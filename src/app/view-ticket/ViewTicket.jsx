@@ -36,34 +36,6 @@ export default function verTicket () {
     const [newMessage, setNewMessage] = useState("");
     const [file, setFile] = useState([]);
 
-    // const images = [
-    //     {
-    //         id: 1,
-    //         img: "./cat1.jpeg",
-    //         title: "Cat 1"
-    //     },
-    //     {
-    //         id: 2,
-    //         img: "./cat2.jpg",
-    //         title: "Cat 2"
-    //     },
-    //     {
-    //         id: 3,
-    //         img: "./cat3.jpg",
-    //         title: "Cat 3"
-    //     },
-    //     {
-    //         id: 4,
-    //         img: "./cat2.jpg",
-    //         title: "Cat 4"
-    //     },
-    //     {
-    //         id: 5,
-    //         img: "./cat3.jpg",
-    //         title: "Cat 5"
-    //     }
-    // ]
-
     const sendNewMessage = () => {
         dispatch(createNewMessage(newMessage, file, ticketId))
         setNewMessage("")
@@ -95,8 +67,8 @@ export default function verTicket () {
 
     return(
         <>
-            {ticketInfo ? (
-                <div className='view-tickets'>
+        {ticketInfo ? (
+            <div className='view-tickets'>
                 <div className='view-tickets__header'>
                     <div className="view-tickets__header__container">
                         <div className='view-tickets__header__container__title'>
@@ -141,12 +113,12 @@ export default function verTicket () {
                     
                         <div className='view-tickets__header__info__images'>
                             {relatedFiles.length > 0 ? (
-                                    <ImageList cols={relatedFiles.length} gap={8}>
+                                    <ImageList sx={{ height: 300 }} cols={relatedFiles.length} gap={8}>
                                         {relatedFiles.map((item) => (
                                             <ImageListItem key={item.id}>
                                                 <img
-                                                    srcSet={`${item.url}?w=82&h=82&fit=crop&auto=format&dpr=2 2x`}
-                                                    src={`${item.url}?w=82&h=82&fit=crop&auto=format`}
+                                                    srcSet={`${item.url}?w=60&h=60&fit=crop&auto=format&dpr=2 2x`}
+                                                    src={`${item.url}?w=60&h=60&fit=crop&auto=format`}
                                                     alt={item.title}
                                                     loading="lazy"
                                                     onClick={() => handleImageClick(item.url)}
@@ -195,37 +167,36 @@ export default function verTicket () {
                     </IconButton>
                 </div>
                 
-            <Dialog
-                open={openImageModal}
-                onClose={() => setOpenImageModal(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                className='view-tickets__content__modal'
-            >
-                <IconButton
-                aria-label="close"
-                onClick={() => setOpenImageModal(false)}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                }}
+                <Dialog
+                    open={openImageModal}
+                    onClose={() => setOpenImageModal(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    className='view-tickets__content__modal'
                 >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent>
-                    <Box>
-                        <img src={selectedImage} alt="Imagen seleccionada" />
-                    </Box>
-                </DialogContent>
-            </Dialog>
-        </div>
-            ) : (
-                <div>
-                    <h1>No hay información del ticket</h1>
-                </div>
-            )}
-            
+                    <IconButton
+                    aria-label="close"
+                    onClick={() => setOpenImageModal(false)}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                    }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <DialogContent>
+                        <Box>
+                            <img src={selectedImage} alt="Imagen seleccionada" />
+                        </Box>
+                    </DialogContent>
+                </Dialog>
+            </div>
+        ) : (
+            <div>
+                <h1>No hay información del ticket</h1>
+            </div>
+        )}
         </>
         
     )

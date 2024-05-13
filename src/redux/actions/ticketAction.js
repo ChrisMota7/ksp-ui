@@ -151,6 +151,39 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
     } catch (e) {
         console.log("error",e)
     }
+    
+    // relatedFiles = [
+    //     {
+    //         id: 1,
+    //         url: "./cat1.jpeg",
+    //         title: "Cat 1"
+    //     },
+    //     {
+    //         id: 2,
+    //         url: "./cat2.jpg",
+    //         title: "Cat 2"
+    //     },
+    //     {
+    //         id: 3,
+    //         url: "./cat3.jpg",
+    //         title: "Cat 3"
+    //     },
+    //     {
+    //         id: 4,
+    //         url: "./cat2.jpg",
+    //         title: "Cat 4"
+    //     },
+    //     {
+    //         id: 5,
+    //         url: "./cat3.jpg",
+    //         title: "Cat 5"
+    //     },
+    //     {
+    //         id: 5,
+    //         url: "./bg-test.png",
+    //         title: "Cat 5"
+    //     }
+    // ]
 
     try{
         const ticketInfo = await get(`/helpdesk/tickets/${ticketid}/`, {
@@ -160,6 +193,36 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
         const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
             Authorization: `Bearer ${accessToken}`,
         })
+
+        // const ticketInfo = {
+        //     id: 1,
+        //     asunto: "Este es el asunto",
+        //     descripcion: "Esta es la descripción",
+        //     created_at: "2024-04-28T05:30:42.136946Z"
+        // }
+
+        // const messages = [
+        //     {
+        //         id: 1,
+        //         isFromClient: "0",
+        //         texto: "Hola, qué tal??"
+        //     },
+        //     {
+        //         id: 2,
+        //         isFromClient: "1",
+        //         texto: "Mi compu no charcha"
+        //     },
+        //     {
+        //         id: 3,
+        //         isFromClient: "0",
+        //         texto: "Anoma, y luego?? :0"
+        //     },
+        //     {
+        //         id: 4,
+        //         isFromClient: "1",
+        //         texto: "Ps tú dime"
+        //     }
+        // ]
 
         console.log("ticketInfo",ticketInfo)
         console.log("messages",messages)
