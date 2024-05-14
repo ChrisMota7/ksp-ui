@@ -2,58 +2,64 @@
 import './Tickets.scss'
 import React, { useEffect, useState } from 'react';
 
-import { Button, Breadcrumbs, Typography, Link, Card, TextField, FormControl, InputLabel, Select, MenuItem, CardContent, } from "@mui/material"
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, Tooltip } from '@mui/material';
+import { Button, Breadcrumbs, Typography, Link, TextField, FormControl, InputLabel, Select, MenuItem, Paper, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus, updateTicketStatus } from '@/redux/actions/ticketAction';
+import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 import { selectIsAdmin } from '@/redux/reducers/authReducer';
 
 const Tickets = () => {
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
-  const tickets = useSelector(selectTickets) 
-  const isAdmin = useSelector(selectIsAdmin) 
+  const tickets = useSelector(selectTickets);
+  const isAdmin = useSelector(selectIsAdmin);
 
-  const [search, setSearch] = useState("")
-  const [filterStatus, setFilterStatus] = useState("")
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [ticketToDelete, setTicketToDelete] = useState(null);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value)
-    console.log(e.target.value)
-    
+    setSearch(e.target.value);
     dispatch(searchTicketByInfo(e.target.value));
-  }
+  };
 
   const handleSearchByStatus = (e) => {
-    setFilterStatus(e.target.value)
+    setFilterStatus(e.target.value);
     dispatch(searchTicketByStatus(e.target.value));
-  }
+  };
 
   useEffect(() => {
-      dispatch(getTableTickets());
+    dispatch(getTableTickets());
   }, [dispatch]);
 
-  const handleViewTicket = async (ticketId, status) => {
-    console.log("status",status)
+  const handleViewTicket = (ticketId) => {
+    router.push(`/view-ticket/?ticketId=${ticketId}`);
+  };
 
-    if (status === "0") {
-      await dispatch(updateTicketStatus(ticketId, 1))
+  const handleOpenConfirmDialog = (ticketId) => {
+    setTicketToDelete(ticketId);
+    setOpenConfirmDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false);
+    setTicketToDelete(null);
+  };
+
+  const handleDeleteTicket = async () => {
+    if (ticketToDelete !== null) {
+      const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketToDelete));
+      if (ticketDeletedSuccessfully) dispatch(getTableTickets());
+      handleCloseConfirmDialog();
     }
-
-    router.push(`/view-ticket/?ticketId=${ticketId}`)
-  }
-
-  const handleDeleteTicket = async (ticketId) => {
-    const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketId))
-
-    if (ticketDeletedSuccessfully) dispatch(getTableTickets())
-  }
+  };
 
   const getPriorityStyle = (priorityName) => {
     switch (priorityName) {
@@ -90,12 +96,24 @@ const Tickets = () => {
           borderRadius: '5px' 
         };
     }
-  }
-  
+  };
 
-  console.log("tickets",tickets)
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'Nuevo':
+        return { color: 'red', fontWeight: 'bold' };
+      case 'En espera':
+        return { color: 'orange', fontWeight: 'bold' };
+      case 'Respondido':
+        return { color: 'blue', fontWeight: 'bold' };
+      case 'Resuelto':
+        return { color: 'green', fontWeight: 'bold' };
+      default:
+        return { color: 'black', fontWeight: 'bold' };
+    }
+  };
 
-  return(
+  return (
     <div className='tickets'>
       <div className='tickets__header__title'>
         <h1>Tickets</h1>
@@ -122,12 +140,13 @@ const Tickets = () => {
                 labelId="select-label"
                 id="select"
                 label="Estado"
+                value={filterStatus}
                 onChange={handleSearchByStatus}
               >
-                <MenuItem value={0}>Nuevo</MenuItem>
-                <MenuItem value={1}>En espera</MenuItem>
-                <MenuItem value={2}>Respondido</MenuItem>
-                <MenuItem value={3}>Resuelto</MenuItem>
+                <MenuItem value="Nuevo">Nuevo</MenuItem>
+                <MenuItem value="En espera">En espera</MenuItem>
+                <MenuItem value="Respondido">Respondido</MenuItem>
+                <MenuItem value="Resuelto">Resuelto</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -149,7 +168,7 @@ const Tickets = () => {
                     <TableCell className='tickets__content__info-section__table__headers'>Problema</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Usuario</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Status</TableCell>
-                    <TableCell className='tickets__content__info-section__table__headers'>prioridad</TableCell>
+                    <TableCell className='tickets__content__info-section__table__headers'>Prioridad</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Fecha de Creación</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Acciones</TableCell>
                   </TableRow>
@@ -162,8 +181,8 @@ const Tickets = () => {
                       <TableCell>{ticket.descripcion}</TableCell>
                       <TableCell>{ticket.problema.name}</TableCell>
                       <TableCell>{ticket.user.email}</TableCell>
-                      <TableCell>
-                        {ticket.status === 'Nuevo' ? "Nuevo" : "En espera" }</TableCell>
+                      {/* Aplicar estilo basado en el estado del ticket */}
+                      <TableCell style={getStatusStyle(ticket.status)}>{ticket.status}</TableCell>
                       <TableCell>
                         <span style={getPriorityStyle(ticket.problema.prioridad.name)}>
                           {ticket.problema.prioridad.name}
@@ -172,12 +191,12 @@ const Tickets = () => {
                       <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => handleViewTicket(ticket.id, ticket.status)}>
+                          <IconButton onClick={() => handleViewTicket(ticket.id)}>
                             <VisibilityIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Eliminar Ticket">
-                          <IconButton onClick={() => handleDeleteTicket(ticket.id)}>
+                          <IconButton onClick={() => handleOpenConfirmDialog(ticket.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -190,6 +209,28 @@ const Tickets = () => {
           </div>  
         </div>
       </div>
+
+      <Dialog
+        open={openConfirmDialog}
+        onClose={handleCloseConfirmDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmar Eliminación"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Estás seguro de que quieres eliminar este ticket?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleDeleteTicket} color="primary" autoFocus>
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

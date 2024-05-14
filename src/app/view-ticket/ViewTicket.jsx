@@ -115,7 +115,7 @@ export default function verTicket () {
                                     </Select>
                                 </FormControl>
                             )} */}
-                            <Button variant="contained" onClick={handleOpenConfirmDialog}>Finalizar Ticket</Button>
+                            <Button variant="contained" onClick={handleOpenConfirmDialog}>Cerrar Ticket</Button>
                         </div>
                     </div>
                     <Dialog
@@ -176,9 +176,9 @@ export default function verTicket () {
                         </div>
 
                         <hr />
-                        <Typography color="text">Creado en: {new Date(ticketInfo.created_at).toLocaleDateString()}</Typography>
-                        <Typography color="text.primary">Respuestas: </Typography>
-                        <Typography color="text.primary">Ultima respuesta: </Typography>
+                        <Typography color="text">Creado en: {new Date(ticketInfo.ticket_data.created_at).toLocaleDateString()}</Typography>
+                        <Typography color="text.primary">Respuestas: {ticketInfo.total_mensajes} </Typography>
+                        <Typography color="text.primary">Ultima respuesta: {ticketInfo.ultimo_remitente}</Typography>
                     </div>
                 </div>
                 

@@ -39,28 +39,6 @@ export const updateTicketPriority = (ticketid, newPriority) => async (dispatch) 
     }
 }
 
-export const updateTicketStatus = (ticketid, newStatus) => async (dispatch) => {
-    const accessToken = localStorage.getItem("jwt")
-
-    console.log("accessToken", accessToken)
-    console.log("ticketid", ticketid)
-    console.log("newStatus", newStatus)
-    try {
-        const ticketStatusUpdated = await put(`/helpdesk/tickets/${ticketid}/update-status/`, {
-            status: newStatus
-        }, {
-            Authorization: `Bearer ${accessToken}`,
-        })
-        console.log("ticketStatusUpdated", ticketStatusUpdated)
-
-        return { setUpdateStatusTicketSuccessfully: true }
-    } catch (e) {
-        console.log("error", e)
-
-        return { setUpdateStatusTicketSuccessfully: false }
-    }
-}
-
 export const getTableTickets = () => async (dispatch) => {
     // const isAdmin = "false"
     // const userId = 2
@@ -310,37 +288,26 @@ export const searchTicketByInfo = (searchWord) => async (dispatch, getState) => 
     console.log("curentTickets",curentTickets)
     console.log("searchWord",searchWord)
 
-    console.log("aaaa", curentTickets.map((ticket) => ticket.id))
+    let searchDate = null;
+    try {
+        searchDate = new Date(searchWord);
+        if (isNaN(searchDate)) {
+            searchDate = null;
+        }
+    } catch (e) {
+        console.log("Invalid date format");
+    }
 
-    const searchedTickets = curentTickets.filter((ticket) => 
-        ticket.id == searchWord ||
-        ticket.asunto.includes(searchWord) ||
-        ticket.user.email.includes(searchWord) ||
-        //todo: filtrar por fecha
-        ticket.created_at.includes(searchWord)
-    )
-
-    console.log("searchedTickets",searchedTickets)
-
-    dispatch({
-        type: SET_TICKETS_TABLE,
-        payload: searchedTickets
-    })
-
-    return { setTicketsTableSuccessfully: true}
-}
-
-export const searchTicketByStatus = (statusId) => async (dispatch, getState) => {
-    const curentTickets = selectTicketsDuplication(getState())
-
-    console.log("curentTickets",curentTickets)
-    console.log("statusId",statusId)
-
-    console.log("map", curentTickets.map((ticket) => ticket.status.includes(statusId) ))
-
-    const searchedTickets = curentTickets.filter((ticket) => 
-        ticket.status.includes(statusId) 
-    )
+    const searchedTickets = curentTickets.filter((ticket) => {
+        const ticketDate = new Date(ticket.created_at);
+        return (
+            ticket.id == searchWord ||
+            ticket.asunto.toLowerCase().includes(searchWord.toLowerCase()) ||
+            ticket.problema.prioridad.name.toLowerCase().includes(searchWord.toLowerCase()) ||
+            ticket.user.email.toLowerCase().includes(searchWord.toLowerCase()) ||
+            (searchDate && ticketDate.toDateString() === searchDate.toDateString())
+        );
+    });
 
     console.log("searchedTickets",searchedTickets)
 
@@ -351,6 +318,28 @@ export const searchTicketByStatus = (statusId) => async (dispatch, getState) => 
 
     return { setTicketsTableSuccessfully: true}
 }
+
+export const searchTicketByStatus = (status) => async (dispatch, getState) => {
+    const currentTickets = selectTicketsDuplication(getState());
+
+    console.log("currentTickets", currentTickets);
+    console.log("status", status);
+
+    // Filtra los tickets por el estado seleccionado
+    const searchedTickets = currentTickets.filter((ticket) => 
+        ticket.status === status
+    );
+
+    console.log("searchedTickets", searchedTickets);
+
+    // Despacha la acción para actualizar la tabla de tickets con los tickets filtrados
+    dispatch({
+        type: SET_TICKETS_TABLE,
+        payload: searchedTickets
+    });
+
+    return { setTicketsTableSuccessfully: true };
+};
 
 export const deleteTicket = (ticketid) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
