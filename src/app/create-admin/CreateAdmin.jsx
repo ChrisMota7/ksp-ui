@@ -7,6 +7,7 @@ import { createUser } from '@/redux/actions/authAction';
 import { useDispatch } from 'react-redux';
 import { Breadcrumbs, Button, TextField, Typography, Link } from '@mui/material';
 import LockResetIcon from '@mui/icons-material/LockReset';
+import { showSnackbar } from "@/redux/actions/visualsAction";
 
 const CreateAdmin = () => {
     const { push } = useRouter()
@@ -24,7 +25,11 @@ const CreateAdmin = () => {
     const handleCreateUser = async (e) => {
         e.preventDefault();
 
-        // console.log("isPasswordsMatch", isPasswordsMatch)
+        if(email.split('@')[1] !== "ksp.com.mx") {
+            dispatch(showSnackbar("Lo siento, tu correo debe permanecer a KSP Technologies", "error"))
+            return
+        }
+
         const { userCreatedSuccessfully } = await dispatch(
             createUser(
                 firstName, 
@@ -36,7 +41,8 @@ const CreateAdmin = () => {
         )
 
         if (userCreatedSuccessfully) {
-            push("/")
+            dispatch(showSnackbar("Usuario creado satisfactoriamente", "success"))
+            push("/users")
         }
     }
 

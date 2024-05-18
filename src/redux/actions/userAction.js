@@ -52,3 +52,25 @@ export const updatePasswordUser = (userId, newPassword) => async (dispatch) => {
         return { setUpdatePasswordUserSuccessfully: false };
     }
 }
+
+export const deleteUser = (userId) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
+
+    console.log("accessToken", accessToken);
+    console.log("userId", userId);
+
+    try {
+        const response = await put(`/user/${userId}/delete/`, {
+            Authorization: `Bearer ${accessToken}`,
+            userId: userId
+        });
+
+        console.log("response", response);
+        
+        return { setUserDeletedSuccessfully: true };
+    } catch (e) {
+        console.log("e",e)
+
+        return { setUserDeletedSuccessfully: false };
+    }
+}
