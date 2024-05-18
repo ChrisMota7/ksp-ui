@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Card, Button, Link, ImageList, ImageListItem, Modal,
     Box, Breadcrumbs, Typography, IconButton, TextField, FormControl, InputLabel, Select, MenuItem,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CloseIcon
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from "@mui/material";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,11 +15,12 @@ import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
-import { createNewMessage, deleteTicket, getTicketInfo, updateTicketPriority } from '@/redux/actions/ticketAction';
+import CloseIcon from '@mui/icons-material/Close';
+import { createNewMessage, deleteTicket, getTicketInfo } from '@/redux/actions/ticketAction';
 import { selectTicketMessages, selectTicketInfo, selectTicketFiles } from '@/redux/reducers/ticketReducer';
 import { showSnackbar } from '@/redux/actions/visualsAction';
 
-export default function verTicket () {
+const ViewTicket = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const searchParams = useSearchParams()
@@ -41,14 +42,6 @@ export default function verTicket () {
     const sendNewMessage = () => {
         dispatch(createNewMessage(newMessage, file, ticketId))
         setNewMessage("")
-    }
-
-    const handlePrioridadChange = async (event) => {
-        const prioridadId = event.target.value
-
-        setPrioridad(prioridadId)
-        console.log("prioridad", prioridadId)
-        const { setPrioridadSuccessfully } = await dispatch(updateTicketPriority(ticketId, prioridadId))
     }
 
     const loadInfo = async () => {
@@ -87,7 +80,7 @@ export default function verTicket () {
         console.log("clicked!!")
     }
 
-    
+    console.log("openImageModal", openImageModal)
     return(
         <>
         {ticketInfo ? (
@@ -95,26 +88,10 @@ export default function verTicket () {
                 <div className='view-tickets__header'>
                     <div className="view-tickets__header__container">
                         <div className='view-tickets__header__container__title'>
-                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.id}</h1>
-                            <p className='view-tickets__header__container__title__subject'>{ticketInfo.asunto}</p>
+                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id}</h1>
+                            <p className='view-tickets__header__container__title__subject'>{ticketInfo.ticket_data.asunto}</p>
                         </div>
                         <div className='view-tickets__header__container__actions'>
-                            {/* { isAdminUser && (
-                                <FormControl className='view-tickets__header__container__actions__priority-select'>
-                                    <InputLabel id="select-label">Definir prioridad</InputLabel>
-                                    <Select 
-                                        value={prioridad} name='prioridad'
-                                        labelId="select-label"
-                                        id="select"
-                                        label="prioridad"
-                                        onChange={handlePrioridadChange}
-                                    >
-                                        <MenuItem value={1}>Bajo</MenuItem>
-                                        <MenuItem value={2}>Media</MenuItem>
-                                        <MenuItem value={3}>Crítico</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            )} */}
                             <Button variant="contained" onClick={handleOpenConfirmDialog}>Cerrar Ticket</Button>
                         </div>
                     </div>
@@ -153,7 +130,7 @@ export default function verTicket () {
                     </div>
 
                     <div className='view-tickets__header__info'> 
-                        <Typography color="text.primary">Descripción: {ticketInfo.descripcion}</Typography>
+                        <Typography color="text.primary">Descripción: {ticketInfo.ticket_data.descripcion}</Typography>
                     
                         <div className='view-tickets__header__info__images'>
                             {relatedFiles.length > 0 ? (
@@ -242,6 +219,7 @@ export default function verTicket () {
             </div>
         )}
         </>
-        
     )
 }
+
+export default ViewTicket;

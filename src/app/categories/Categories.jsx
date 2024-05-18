@@ -90,7 +90,7 @@ const Categories = () => {
                             <TableCell className='categories__info__table__headers'>Prioridad</TableCell>
                             <TableCell className='categories__info__table__headers'>Tickets</TableCell>
                             <TableCell className='categories__info__table__headers'>Fecha de vencimiento por defecto</TableCell>
-                            <TableCell className='categories__info__table__headers'>Acciones</TableCell>
+                            {/* <TableCell className='categories__info__table__headers'>Acciones</TableCell> */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -105,13 +105,13 @@ const Categories = () => {
                                 </TableCell>
                                 <TableCell>S/A</TableCell>
                                 <TableCell>S/A</TableCell>
-                                <TableCell>
+                                {/* <TableCell>
                                     <Tooltip title="Eliminar Ticket">
                                         <IconButton onClick={() => deleteTicket(ticket.id)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
-                                </TableCell>
+                                </TableCell> */}
                             </TableRow>
                         ))}    
                     </TableBody>

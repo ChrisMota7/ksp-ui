@@ -23,6 +23,8 @@ const Settings = () => {
 
         if ( setUpdatePasswordUserSuccessfully ) {
             dispatch(showSnackbar("Contraseña actualizada", "success"));
+            setNewPassword('');
+            setConfirmNewPassword('');
         } else {
             dispatch(showSnackbar("Error al actualizar el ticket", "error"));
         }

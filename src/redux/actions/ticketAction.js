@@ -18,27 +18,6 @@ export const getProblems = (categoryId) => async (dispatch) => {
     } 
 }
 
-export const updateTicketPriority = (ticketid, newPriority) => async (dispatch) => {
-    const accessToken = localStorage.getItem("jwt")
-
-    console.log("accessToken", accessToken)
-    console.log("ticketid", ticketid)
-    try {
-        const ticketUpdated = await put(`/helpdesk/tickets/${ticketid}/update-priority/`, {
-            prioridad: newPriority
-        }, {
-            Authorization: `Bearer ${accessToken}`,
-        })
-        console.log("ticketPriorityUpdated", ticketUpdated)
-
-        return { setUpdateTicketSuccessfully: true }
-    } catch (e) {
-        console.log("error", e)
-
-        return { setUpdateTicketSuccessfully: false }
-    }
-}
-
 export const getTableTickets = () => async (dispatch) => {
     // const isAdmin = "false"
     // const userId = 2
@@ -47,45 +26,6 @@ export const getTableTickets = () => async (dispatch) => {
 
     try{
         const ticketsTable = await get('/helpdesk/tickets/table/')
-        
-        // const ticketsTable = [
-        //     {
-        //         asunto:  "asunto 1",
-        //         created_at: "2024-04-28T05:30:42.136946Z",
-        //         descripcion: "aaaaa",
-        //         id: 1,
-        //         prioridad: null,
-        //         problema: {id: 1, name: 'Administrar equipos', isDeleted: '0', categoria: 1},
-        //         status: "0",
-        //         user: {
-        //             id: 1, 
-        //             firstName: 'Christian', 
-        //             lastName: 'López', 
-        //             email: 'chris@ksp.com.mx', 
-        //             isDeleted: '0', 
-        //             createdAt: "2024-04-28T05:28:59.163412Z",
-        //             isAdmin: "0"
-        //         }
-        //     },
-        //     {
-        //         asunto: "Prueba 1 crear ticket",
-        //         created_at: "2024-04-28T05:30:51.042209Z",
-        //         descripcion: "desc 1",
-        //         id: 2,
-        //         prioridad: null,
-        //         problema: {id: 2, name: 'Administrar cuentas', isDeleted: '0', categoria: 2},
-        //         status: "0",
-        //         user: {
-        //             id: 2, 
-        //             firstName: 'prueba', 
-        //             lastName: 'López', 
-        //             email: 'isra', 
-        //             isDeleted: '0', 
-        //             createdAt: "2024-04-28T05:28:59.163412Z",
-        //             isAdmin: "0"
-        //         }
-        //     }
-        // ]
 
         console.log("isAdmin", isAdmin)
         console.log("userId", userId)
@@ -129,39 +69,6 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
     } catch (e) {
         console.log("error",e)
     }
-    
-    // relatedFiles = [
-    //     {
-    //         id: 1,
-    //         url: "./cat1.jpeg",
-    //         title: "Cat 1"
-    //     },
-    //     {
-    //         id: 2,
-    //         url: "./cat2.jpg",
-    //         title: "Cat 2"
-    //     },
-    //     {
-    //         id: 3,
-    //         url: "./cat3.jpg",
-    //         title: "Cat 3"
-    //     },
-    //     {
-    //         id: 4,
-    //         url: "./cat2.jpg",
-    //         title: "Cat 4"
-    //     },
-    //     {
-    //         id: 5,
-    //         url: "./cat3.jpg",
-    //         title: "Cat 5"
-    //     },
-    //     {
-    //         id: 5,
-    //         url: "./bg-test.png",
-    //         title: "Cat 5"
-    //     }
-    // ]
 
     try{
         const ticketInfo = await get(`/helpdesk/tickets/${ticketid}/`, {
@@ -171,36 +78,6 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
         const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
             Authorization: `Bearer ${accessToken}`,
         })
-
-        // const ticketInfo = {
-        //     id: 1,
-        //     asunto: "Este es el asunto",
-        //     descripcion: "Esta es la descripción",
-        //     created_at: "2024-04-28T05:30:42.136946Z"
-        // }
-
-        // const messages = [
-        //     {
-        //         id: 1,
-        //         isFromClient: "0",
-        //         texto: "Hola, qué tal??"
-        //     },
-        //     {
-        //         id: 2,
-        //         isFromClient: "1",
-        //         texto: "Mi compu no charcha"
-        //     },
-        //     {
-        //         id: 3,
-        //         isFromClient: "0",
-        //         texto: "Anoma, y luego?? :0"
-        //     },
-        //     {
-        //         id: 4,
-        //         isFromClient: "1",
-        //         texto: "Ps tú dime"
-        //     }
-        // ]
 
         console.log("ticketInfo",ticketInfo)
         console.log("messages",messages)
