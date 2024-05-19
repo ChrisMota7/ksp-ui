@@ -1,4 +1,4 @@
-import { get, post } from "@/utils/api"
+import { get, post, put } from "@/utils/api"
 import { SET_CATEGORIES, SET_DASHBOARD, ADD_PROBLEM, SET_CATEGORIES_ALL} from "../reducers/categoryReducer"
 
 export const getCategoriesAll = () => async (dispatch) => {
@@ -21,6 +21,8 @@ export const getCategoriesAll = () => async (dispatch) => {
 export const getCategories = () => async (dispatch) => {
     try {
         const categories = await get('/helpdesk/problemas/')
+
+        console.log("categories",categories)
 
         dispatch({
             type: SET_CATEGORIES,
@@ -72,6 +74,33 @@ export const createCategorie = (name) => async (dispatch) => {
         console.log("error", e)
 
         return { categorieCreatedSuccessfully: false }
+    }
+}
+
+export const updateCategory = (categoryId, categoryName) => async (dispatch) => {
+    try {
+        const response = await put(`/helpdesk/problems/${categoryId}/update/`, 
+        { 
+            name: categoryName 
+        })
+
+        return { setUpdateCategerySuccess: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setUpdateCategerySuccess: false }
+    }
+}
+
+export const deleteCategory = (categoryId) => async (dispatch) => {
+    try {
+        await put(`/helpdesk/problems/${categoryId}/delete/`);
+
+        return { setDeleteCategerySuccess: true }
+    } catch (e) {
+        console.log("error", e)
+
+        return { setDeleteCategerySuccess: false }
     }
 }
 
