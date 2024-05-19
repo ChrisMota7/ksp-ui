@@ -28,8 +28,6 @@ const ViewTicket = () => {
     const relatedFiles = useSelector(selectTicketFiles)
     const messages = useSelector(selectTicketMessages)
 
-    console.log("ticketInfo",ticketInfo)
-    
     const ticketId = searchParams.get('ticketId')
 
     const [isAdminUser, setIsAdminUser] = useState(false)
@@ -39,9 +37,14 @@ const ViewTicket = () => {
     const [newMessage, setNewMessage] = useState("");
     const [file, setFile] = useState([]);
 
-    const sendNewMessage = () => {
-        dispatch(createNewMessage(newMessage, file, ticketId))
+    const sendNewMessage = async () => {
         setNewMessage("")
+
+        const { messageCreatedSuccessfully } = await dispatch(createNewMessage(newMessage, file, ticketId))
+
+        if (!messageCreatedSuccessfully) {
+            dispatch(showSnackbar("Error al enviar mensaje", "error"))
+        }
     }
 
     const loadInfo = async () => {
@@ -77,10 +80,8 @@ const ViewTicket = () => {
     const handleImageClick = async (imageUrl) => {
         await setSelectedImage(imageUrl)
         setOpenImageModal(true)
-        console.log("clicked!!")
     }
 
-    console.log("openImageModal", openImageModal)
     return(
         <>
         {ticketInfo ? (
@@ -175,7 +176,16 @@ const ViewTicket = () => {
                 </div>
 
                 <div className='view-tickets__content__input-container'>
-                    <TextField value={newMessage} onChange={event => setNewMessage(event.target.value)} className='view-tickets__content__input-container__input' id="outlined" label="Escribe algo..." />    
+                    <TextField 
+                        value={newMessage} 
+                        onChange={event => setNewMessage(event.target.value)} 
+                        className='view-tickets__content__input-container__input' 
+                        id="outlined" 
+                        label="Escribe algo..." 
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') sendNewMessage()
+                        }}
+                    />    
                     <IconButton aria-label="uploadFile" size="large">
                         <FileUploadOutlinedIcon fontSize="large" />
                         <input type="file" name="myfile" className='view-tickets__content__input-container__file' />

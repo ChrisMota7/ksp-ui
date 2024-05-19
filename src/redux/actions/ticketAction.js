@@ -1,5 +1,5 @@
 import { get, post, put } from "@/utils/api"
-import { SET_PROBLEMS, SET_PRIORIDAD, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_TICKET_INFO, selectTicketsDuplication } from "../reducers/ticketReducer"
+import { SET_PROBLEMS, SET_PRIORIDAD, SET_TICKETS_DUPLICATION, SET_TICKETS_TABLE, SET_TICKET_INFO, selectTicketsDuplication, SET_MESSAGES, selectTicketMessages } from "../reducers/ticketReducer"
 
 export const getProblems = (categoryId) => async (dispatch) => {
     try {
@@ -100,7 +100,9 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
     }
 }
 
-export const createNewMessage = (texto, file, ticketId) => async (dispatch) => {
+export const createNewMessage = (texto, file, ticketId) => async (dispatch, getState) => {
+    const currentMessages = selectTicketMessages(getState()).map((message) => message)
+
     const accessToken = localStorage.getItem("jwt")
     const isAdmin = localStorage.getItem("isAdmin")  === "true"
     const isFromClient = isAdmin === true ? "0" : "1"
@@ -117,11 +119,23 @@ export const createNewMessage = (texto, file, ticketId) => async (dispatch) => {
     console.log("isFromClient", isFromClient)
 
     try {
-        const response = await post("/helpdesk/mensajes/crear/", body, {
+        const tempMessages = currentMessages.map((message) => message)
+        tempMessages.push({
+            isFromClient,
+            texto,
+            file
+        })
+
+        dispatch({
+            type: SET_MESSAGES,
+            payload: tempMessages
+        })
+
+        const sentMessage = await post("/helpdesk/mensajes/crear/", body, {
             Authorization: `Bearer ${accessToken}`,
         })
 
-        console.log("response",response)
+        currentMessages.push(sentMessage)
 
         return { messageCreatedSuccessfully: true }
     } catch (e) {

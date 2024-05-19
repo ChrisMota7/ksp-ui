@@ -3,6 +3,7 @@ export const SET_TICKETS_TABLE = "SET_TICKETS_TABLE"
 export const SET_TICKET_INFO = "SET_TICKETS_INFO"
 export const SET_TICKETS_DUPLICATION = "SET_TICKETS_DUPLICATION"
 export const SET_PRIORIDAD = "SET_PRIORIDAD"
+export const SET_MESSAGES = "SET_MESSAGES"
 
 export const defaultState = {
   problems: [],
@@ -36,6 +37,11 @@ const ticketReducer = (state = defaultState, action) => {
       return {
         ...state,
         ticketsDuplication: action.payload
+      }
+    case SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.payload
       }
     default:
       return state;
