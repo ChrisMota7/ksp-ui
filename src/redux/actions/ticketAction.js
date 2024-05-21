@@ -100,6 +100,27 @@ export const getTicketInfo = (ticketid) => async (dispatch) => {
     }
 }
 
+export const getMessages = (ticketid) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt")
+
+    try{
+        const messages = await get(`/helpdesk/tickets/${ticketid}/mensajes/`, {
+            Authorization: `Bearer ${accessToken}`,
+        })
+
+        dispatch({
+            type: SET_MESSAGES,
+            payload: messages,
+        })
+
+        return { setMessagesSuccessfully: true}
+    } catch (e) {
+        console.log("error", e)
+
+        return {setMessagesSuccessfully: false}
+    }
+}
+
 export const createNewMessage = (texto, file, ticketId) => async (dispatch, getState) => {
     const currentMessages = selectTicketMessages(getState()).map((message) => message)
 

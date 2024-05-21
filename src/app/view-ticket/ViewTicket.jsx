@@ -16,7 +16,7 @@ import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import { createNewMessage, deleteTicket, getTicketInfo } from '@/redux/actions/ticketAction';
+import { createNewMessage, deleteTicket, getMessages, getTicketInfo } from '@/redux/actions/ticketAction';
 import { selectTicketMessages, selectTicketInfo, selectTicketFiles } from '@/redux/reducers/ticketReducer';
 import { showSnackbar } from '@/redux/actions/visualsAction';
 
@@ -36,6 +36,14 @@ const ViewTicket = () => {
     const [prioridad, setPrioridad] = useState("");
     const [newMessage, setNewMessage] = useState("");
     const [file, setFile] = useState([]);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+          dispatch(getMessages(ticketId))
+        }, 30000);
+      
+        return () => clearInterval(interval)
+      }, [])
 
     const sendNewMessage = async () => {
         setNewMessage("")
