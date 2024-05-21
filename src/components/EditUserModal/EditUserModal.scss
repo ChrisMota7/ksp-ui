@@ -1,0 +1,23 @@
+.edit-user {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    gap: 10px;
+    height: 40%;
+    width: 40%;
+
+    &__field {
+        width: 80%;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 50%;
+    }
+}

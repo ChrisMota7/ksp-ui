@@ -113,6 +113,13 @@ const Tickets = () => {
     }
   };
 
+  const filteredTickets = tickets.filter(ticket => {
+    if (filterStatus === 'Resuelto') {
+      return ticket.status === 'Resuelto';
+    }
+    return ticket.status !== 'Resuelto' && ticket.isDeleted === "0";
+  });
+
   return (
     <div className='tickets'>
       <div className='tickets__header__title'>
@@ -174,14 +181,13 @@ const Tickets = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tickets.map(ticket => ticket.isDeleted === "0" && (
+                  {filteredTickets.map(ticket => (
                     <TableRow key={ticket.id}>
                       <TableCell>{ticket.id}</TableCell>
                       <TableCell>{ticket.asunto}</TableCell>
                       <TableCell>{ticket.descripcion}</TableCell>
                       <TableCell>{ticket.problema.name}</TableCell>
                       <TableCell>{ticket.user.email}</TableCell>
-                      {/* Aplicar estilo basado en el estado del ticket */}
                       <TableCell style={getStatusStyle(ticket.status)}>{ticket.status}</TableCell>
                       <TableCell>
                         <span style={getPriorityStyle(ticket.problema.prioridad.name)}>

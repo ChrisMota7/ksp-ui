@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { deleteUser, getUsers } from "@/redux/actions/userAction";
 import { showSnackbar } from "@/redux/actions/visualsAction";
 
-const UserCard = ({ userid, name, email, createdAt }) => {
+const UserCard = ({ userid, name, email, createdAt, onEdit }) => {
   const dispatch = useDispatch()
 
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
@@ -42,6 +42,7 @@ const UserCard = ({ userid, name, email, createdAt }) => {
         <p>Creación: {new Date(createdAt).toLocaleDateString()}</p>
         <div className="user-card__delete">
             <Button onClick={handleOpenDeleteConfirmation}>Eliminar</Button>
+            <Button onClick={onEdit}>Editar</Button>
         </div>
 
         <Dialog
