@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { AdminMessage } from '@/components/AdminMessage/AdminMessage';
-import { ClientMessage } from '@/components/ClientMessage/ClientMessage';
+import { Message } from '@/components/Message/Message';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined';
@@ -172,9 +171,10 @@ const ViewTicket = () => {
                     <div className='view-tickets__content__messages'>
                         { messages.length > 0 ? 
                             messages?.map ((message) => 
-                                message.isFromClient === '0' ? 
-                                <AdminMessage text={message.texto}/> : 
-                                <ClientMessage text={message.texto}/>)
+                                <Message 
+                                    text={message.texto} 
+                                    createdAt={message.created_at} 
+                                    isFromClient={message.isFromClient}/>) 
                             :
                             <div className='view-tickets__content__messages__no-messages'>
                                 <p>Aún no hay mensajes</p>
