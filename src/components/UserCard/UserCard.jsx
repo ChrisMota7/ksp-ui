@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { deleteUser, getUsers } from "@/redux/actions/userAction";
 import { showSnackbar } from "@/redux/actions/visualsAction";
 
-const UserCard = ({ userid, name, email, createdAt }) => {
+const UserCard = ({ userid, name, email, createdAt, isAdmin = false, filteredUser = false }) => {
   const dispatch = useDispatch()
 
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
@@ -39,6 +39,9 @@ const UserCard = ({ userid, name, email, createdAt }) => {
     <div className='user-card'>
         <p className="user-card__fullname">{name}</p>
         <p>{email}</p>
+        {filteredUser && (
+          <p className="user-card__typeOfUser">{isAdmin ? "Administrador" : "Colaborador"}</p>
+        )}
         <p>Creación: {new Date(createdAt).toLocaleDateString()}</p>
         <div className="user-card__delete">
             <Button onClick={handleOpenDeleteConfirmation}>Eliminar</Button>

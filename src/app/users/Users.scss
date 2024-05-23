@@ -61,6 +61,14 @@
             margin: 15px;
         }
 
+        &__not-found {
+            display: flex;
+            justify-content: center;
+            font-size: 25;
+            font-weight: bold;
+            align-items: center;
+        }
+
         &__cards {
             display: flex;
             width: 90vw;
@@ -68,6 +76,19 @@
             margin: 10px;
             overflow-x: scroll;
             overflow-y: hidden;
-        }        
+        }  
+
+        &__all-users-cards {
+            display: flex;
+            width: 90vw;
+            gap: 20px;
+            margin: 10px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }       
     }
+}
+
+.iconFiltered {
+    color: blue;
 }

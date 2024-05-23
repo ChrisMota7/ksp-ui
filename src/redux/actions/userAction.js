@@ -1,5 +1,6 @@
 import { get, put } from "@/utils/api"
-import { SET_USERS } from "../reducers/userReducer"
+import { SET_FILTERED_USERS, SET_USERS, selectAdminUsers, selectClientUsers } from "../reducers/userReducer"
+import { filterUsersByFullName } from "@/app/constants"
 
 export const getUsers = () => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
@@ -73,4 +74,25 @@ export const deleteUser = (userId) => async (dispatch) => {
 
         return { setUserDeletedSuccessfully: false };
     }
+}
+
+export const filterUsersByName = (userName) => async (dispatch, getState) => {
+    const clientUsers = selectClientUsers(getState()).map((message) => message)
+    const adminUsers = selectAdminUsers(getState()).map((message) => message)
+
+    const filteredClientUsers = filterUsersByFullName(clientUsers, userName)
+    const filteredAdminUsers = filterUsersByFullName(adminUsers, userName)
+
+    const filteredUsers = [...filteredClientUsers, ...filteredAdminUsers]
+
+    dispatch({
+        type: SET_FILTERED_USERS,
+        payload: filteredUsers
+    })
+}
+
+export const removeUsersFilter = () => async (dispatch) => {
+    dispatch({
+        type: SET_FILTERED_USERS,
+    })
 }

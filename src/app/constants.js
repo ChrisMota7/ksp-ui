@@ -20,3 +20,11 @@ export const convertMsToCorrespondingTime = (milliseconds) => {
 
     return time
 }
+
+export const filterUsersByFullName = (users, nameToFilterOn) => {
+    const filteredUsers = users.filter((user) => {
+        const fullName = `${user.firstName} ${user.lastName}`
+        return fullName.includes(nameToFilterOn)
+    })
+    return filteredUsers
+}
