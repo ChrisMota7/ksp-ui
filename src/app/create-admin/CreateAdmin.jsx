@@ -69,7 +69,7 @@ const CreateAdmin = () => {
 
                 <div className='create-admin__header__nav'>
                 <Breadcrumbs aria-label="breadcrumb">
-                    <Link underline="hover" color="inherit" onClick={() => router.push('/users')}>
+                    <Link underline="hover" color="inherit" onClick={() => push('/users')}>
                         Usuarios
                     </Link>
                     <Typography color="text.primary">Crear Administrador</Typography>

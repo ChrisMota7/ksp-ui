@@ -38,7 +38,7 @@ export const updatePasswordUser = (userId, newPassword) => async (dispatch) => {
     console.log("userId", userId);
     console.log("newPassword", newPassword);
 
-    try {           //update password, cambiar nombre endpoint
+    try {           
         const response = await put(`/user/${userId}/UpdateUser/`, {
             Authorization: `Bearer ${accessToken}`,
             password: newPassword
@@ -51,6 +51,30 @@ export const updatePasswordUser = (userId, newPassword) => async (dispatch) => {
     } catch (e) {
 
         return { setUpdatePasswordUserSuccessfully: false };
+    }
+}
+
+export const updateUserDetails = (userId, newEmail, newPassword) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
+
+    console.log("accessToken", accessToken);
+    console.log("userId", userId);
+    console.log("newEmail", newEmail);
+    console.log("newPassword", newPassword);
+
+    try {
+        const response = await put(`/user/${userId}/UpdateUser/`, {
+            Authorization: `Bearer ${accessToken}`,
+            email: newEmail,
+            password: newPassword
+        });
+
+        console.log("response", response);
+        
+        return { setUpdateUserSuccess: true };
+        
+    } catch (e) {
+        return { setUpdateUserSuccess: false };
     }
 }
 
