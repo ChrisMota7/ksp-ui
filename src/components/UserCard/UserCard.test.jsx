@@ -61,7 +61,7 @@ describe("<UserCard />", () => {
             expect(getByText("¿Desea eliminar a este usuario?")).toBeInTheDocument()
         })
 
-        describe("and cancel button is clicked", () => {
+        describe("and dialog cancel button is clicked", () => {
             it("should not delete the user and close the modal", () => {
                 const { getByTestId, queryByText, getByText } = render(
                     <UserCard 
@@ -90,7 +90,7 @@ describe("<UserCard />", () => {
             })
         })
 
-        describe("and delete button is clicked", () => {
+        describe("and dialog delete button is clicked", () => {
             it("should delete the user and close the modal", () => {
                 dispatchMock.mockReturnValue({
                     setUserDeletedSuccessfully: true
@@ -115,7 +115,7 @@ describe("<UserCard />", () => {
                 const dialogDeleteButton = getByTestId("dialog-delete-button")
                 fireEvent.click(dialogDeleteButton)
 
-                expect(deleteUser).toBeCalled()
+                expect(deleteUser).toBeCalledWith(1)
 
                 waitFor(() => {
                     expect(queryByText("¿Desea eliminar a este usuario?")).not.toBeInTheDocument()
@@ -149,7 +149,7 @@ describe("<UserCard />", () => {
             })
             
             describe("when the user is NOT deleted successfully", () => {
-                it("should show snackbar with success message", async () => {
+                it("should show snackbar with error message", async () => {
                     dispatchMock.mockReturnValue({
                         setUserDeletedSuccessfully: false
                     })
