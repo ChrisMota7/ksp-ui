@@ -37,15 +37,15 @@ const UserCard = ({ userid, name, email, createdAt, isAdmin = false, filteredUse
 
   return (
     <div className='user-card'>
-        <p className="user-card__fullname">{name}</p>
+        <p className="user-card__fullname" data-testid="username">{name}</p>
         <p>{email}</p>
         {filteredUser && (
           <p className="user-card__typeOfUser">{isAdmin ? "Administrador" : "Colaborador"}</p>
         )}
         <p>Creación: {new Date(createdAt).toLocaleDateString()}</p>
         <div className="user-card__delete">
-            <Button onClick={handleOpenDeleteConfirmation}>Eliminar</Button>
-            <Button onClick={onEdit}>Editar</Button>
+            <Button data-testid="delete-button" onClick={handleOpenDeleteConfirmation}>Eliminar</Button>
+            <Button data-testid="edit-button" onClick={onEdit}>Editar</Button>
         </div>
 
         <Dialog
@@ -63,8 +63,8 @@ const UserCard = ({ userid, name, email, createdAt, isAdmin = false, filteredUse
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleCloseDeleteConfirmation} autoFocus>Cancelar</Button>
-            <Button onClick={handleDelete}>
+            <Button data-testid="dialog-cancel-button" onClick={handleCloseDeleteConfirmation} autoFocus>Cancelar</Button>
+            <Button data-testid="dialog-delete-button" onClick={handleDelete}>
                 Eliminar
             </Button>
             </DialogActions>
