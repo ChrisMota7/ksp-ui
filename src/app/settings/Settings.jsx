@@ -26,7 +26,7 @@ const Settings = () => {
             setNewPassword('');
             setConfirmNewPassword('');
         } else {
-            dispatch(showSnackbar("Error al actualizar el ticket", "error"));
+            dispatch(showSnackbar("Error al actualizar la contraseña", "error"));
         }
     }
 
@@ -47,29 +47,29 @@ const Settings = () => {
             </div>
 
              <form className='settings__form' onSubmit={handleSubmit}>
-            <TextField
-                type="password"
-                label="Nueva Contraseña"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className='settings__form__input'
-            />
-            <TextField
-                type="password"
-                label="Confirmar Nueva Contraseña"
-                value={confirmNewPassword}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                className='settings__form__input'
-            />
-            <Button
-                type="submit" 
-                variant="contained" 
-                color="primary"
-                className="settings__form__button"
-            >
-                Cambiar contraseña
-            </Button>
-        </form>
+                <TextField
+                    type="password"
+                    label="Nueva Contraseña"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className='settings__form__input'
+                />
+                <TextField
+                    type="password"
+                    label="Confirmar Nueva Contraseña"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    className='settings__form__input'
+                />
+                <Button
+                    type="submit" 
+                    variant="contained" 
+                    color="primary"
+                    className="settings__form__button"
+                >
+                    Cambiar contraseña
+                </Button>
+            </form>
         </div>
     )
 }

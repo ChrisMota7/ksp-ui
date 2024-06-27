@@ -24,6 +24,7 @@ const Tickets = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [ticketToDelete, setTicketToDelete] = useState(null);
+  const [deleteReason, setDeleteReason] = useState("");
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -51,11 +52,12 @@ const Tickets = () => {
   const handleCloseConfirmDialog = () => {
     setOpenConfirmDialog(false);
     setTicketToDelete(null);
+    setDeleteReason(""); // Reset the reason when closing the dialog
   };
 
   const handleDeleteTicket = async () => {
     if (ticketToDelete !== null) {
-      const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketToDelete));
+      const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketToDelete, deleteReason));
       if (ticketDeletedSuccessfully) dispatch(getTableTickets());
       handleCloseConfirmDialog();
     }
@@ -139,7 +141,7 @@ const Tickets = () => {
               id="outlined-basic" 
               value={search}
               onChange={handleSearch}
-              label="Asunto, usuario..." 
+              label="ID, asunto, usuario, prioridad..." 
             />    
             <FormControl className='tickets__content__searcher__top__select'>
               <InputLabel id="select-label">Estado</InputLabel>
@@ -174,7 +176,7 @@ const Tickets = () => {
                     <TableCell className='tickets__content__info-section__table__headers'>Descripción</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Problema</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Usuario</TableCell>
-                    <TableCell className='tickets__content__info-section__table__headers'>Status</TableCell>
+                    <TableCell className='tickets__content__info-section__table__headers'>Estatus</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Prioridad</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Fecha de Creación</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Acciones</TableCell>
@@ -227,6 +229,16 @@ const Tickets = () => {
           <DialogContentText id="alert-dialog-description">
             ¿Estás seguro de que quieres eliminar este ticket?
           </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="reason"
+            label="Razón de eliminación"
+            type="text"
+            fullWidth
+            value={deleteReason}
+            onChange={(e) => setDeleteReason(e.target.value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseConfirmDialog} color="primary">

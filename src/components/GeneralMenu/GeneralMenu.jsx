@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -20,7 +19,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListItemText from '@mui/material/ListItemText';
-
+import Tooltip from '@mui/material/Tooltip';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DnsIcon from '@mui/icons-material/Dns';
@@ -31,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAdmin, selectUserid } from '@/redux/reducers/authReducer';
 import { logout, setAuthInfo } from '@/redux/actions/authAction';
 import { ClickAwayListener, Grow, MenuList, Paper, Popper } from '@mui/material';
+import Loader from '../../components/Loader/Loader';
 
 const drawerWidth = 240;
 
@@ -60,7 +60,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -100,33 +99,34 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const GeneralMenu = ({ children }) => {
-  const { push } = useRouter()
-  const dispatch = useDispatch()
+  const { push } = useRouter();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(false);
-
+  const [menuItems, setMenuItems] = useState([]);
   const isOpenProfileMenu = Boolean(anchorEl);
+  const [loading, setLoading] = useState(true);
 
-  const userId = useSelector(selectUserid)
-  const isAdmin = useSelector(selectIsAdmin)
-
-  console.log("isAdmin",isAdmin)
-  const items = [
-    isAdmin === "true" ? "Tickets" : "Mis Tickets", 
-    isAdmin === "false" ? "Crear Ticket" : null, 
-    isAdmin === "true" ? "Usuarios" : null,
-    isAdmin === "true" ? "Categorías" : null,
-    isAdmin === "true" ? "Dashboard" : null, 
-    "Configuración"
-  ]
-
-  const menuItems = items.filter(n => n)
+  const userId = useSelector(selectUserid);
+  const isAdmin = useSelector(selectIsAdmin);
 
   useEffect(() => {
-    dispatch(setAuthInfo())
-    console.log("setAuthInfo")
-  }, [])
+    const fetchData = async () => {
+      await dispatch(setAuthInfo());
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isAdmin === "true") {
+      setMenuItems(["Tickets", "Usuarios", "Categorías", "Dashboard", "Configuración"]);
+    } else if (isAdmin === "false") {
+      setMenuItems(["Mis Tickets", "Crear Ticket", "Configuración"]);
+    }
+  }, [isAdmin]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -140,167 +140,149 @@ const GeneralMenu = ({ children }) => {
     switch (itemText) {
       case "Mis Tickets":
       case "Tickets":
-        return (
-          <ListAltIcon />
-        )
+        return <ListAltIcon />;
       case "Crear Ticket":
-        return (
-          <PlaylistAddIcon />
-        )
+        return <PlaylistAddIcon />;
       case "Usuarios":
-        return (
-          <PeopleAltIcon />
-        )
+        return <PeopleAltIcon />;
       case "Categorías":
-        return (
-          <DnsIcon />
-        )
+        return <DnsIcon />;
       case "Dashboard":
-        return (
-          <EqualizerIcon />
-        )
+        return <EqualizerIcon />;
       case "Configuración":
-        return (
-          <SettingsIcon />
-        )
+        return <SettingsIcon />;
     }
-  }
+  };
 
-  const handleItemClick = (itemText)=> {
-    console.log("itemText",itemText)
+  const handleItemClick = (itemText) => {
     switch (itemText) {
       case "Mis Tickets":
       case "Tickets":
-        push("/tickets")
+        push("/tickets");
         break;
       case "Crear Ticket":
-        push("/create-ticket")
+        push("/create-ticket");
         break;
       case "Usuarios":
-        push("/users")
+        push("/users");
         break;
       case "Categorías":
-        push("/categories")
+        push("/categories");
         break;
       case "Dashboard":
-        push("/dashboard")
+        push("/dashboard");
         break;
       case "Configuración":
-        push("/settings")
+        push("/settings");
         break;
     }
-  }
+  };
 
   const handleClickProfileMenu = (event) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
   const handleCloseProfileMenu = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleLogout = async () => {
-    const { userLoggedOutSuccessfully } = await dispatch(logout())
+    push('/Logout');
+  };
 
-    console.log("userLoggedOutSuccessfully",userLoggedOutSuccessfully)
-    if (userLoggedOutSuccessfully) push("/")
+  if (loading) {
+    return <Loader />; 
   }
 
   return (
     <>
       {userId ? (
         <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <div>
+          <CssBaseline />
+          <AppBar position="fixed" open={open}>
+            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                anchorEl={anchorEl}
-                onClick={handleClickProfileMenu}
+                onClick={handleDrawerOpen}
                 edge="start"
+                sx={{
+                  marginRight: 5,
+                  ...(open && { display: 'none' }),
+                }}
               >
-                <AccountCircleIcon fontSize='large' />
+                <MenuIcon />
               </IconButton>
-              
-              <Popper 
-                open={isOpenProfileMenu} 
-                anchorEl={anchorEl}
-                transition
-                disablePortal
-              >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom' ? 'center top' : 'center bottom',
-                  }}
+              <div>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  anchorEl={anchorEl}
+                  onClick={handleClickProfileMenu}
+                  edge="start"
                 >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleCloseProfileMenu}>
-                    <MenuList id="split-button-menu" autoFocusItem>
-                      <MenuItem onClick={handleLogout} >
-                        Cerrar Sesión
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-                </Grow>
-              )}
-              </Popper>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingLeft: 2
-          }}>
+                  <AccountCircleIcon fontSize='large' />
+                </IconButton>
+                <Popper 
+                  open={isOpenProfileMenu} 
+                  anchorEl={anchorEl}
+                  transition
+                  disablePortal
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === 'bottom' ? 'center top' : 'center bottom',
+                      }}
+                    >
+                      <Paper>
+                        <ClickAwayListener onClickAway={handleCloseProfileMenu}>
+                          <MenuList id="split-button-menu" autoFocusItem>
+                            <MenuItem onClick={handleLogout}>
+                              Cerrar Sesión
+                            </MenuItem>
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </div>
+            </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={open}>
+            <DrawerHeader sx={{ display: "flex", justifyContent: "space-between", paddingLeft: 2 }}>
               <img src="/LogoNegro.png" alt="KSP" height={30} />
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {menuItems.map((itemText) => {
-              return (
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <List>
+              {menuItems.map((itemText) => (
                 <div key={itemText}>
-                <ListItem disablePadding sx={{ display: 'block' }}>
-                  <ListItemButton onClick={() => handleItemClick(itemText)} className={open ? "menu__open-list-item" : "menu__list-item"}>
-                    <ListItemIcon className={open ? "menu__open-list-item__list-icon" : "menu__list-item__list-icon"}>
-                      {renderItemIcon(itemText)}
-                    </ListItemIcon>
-                    <ListItemText primary={itemText} sx={{ opacity: open ? 1 : 0 }} />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
+                  <ListItem disablePadding sx={{ display: 'block' }}>
+                    <Tooltip title={itemText} placement="right" arrow>
+                      <ListItemButton onClick={() => handleItemClick(itemText)} className={open ? "menu__open-list-item" : "menu__list-item"}>
+                        <ListItemIcon className={open ? "menu__open-list-item__list-icon" : "menu__list-item__list-icon"}>
+                          {renderItemIcon(itemText)}
+                        </ListItemIcon>
+                        <ListItemText primary={itemText} sx={{ opacity: open ? 1 : 0 }} />
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                  <Divider />
                 </div>
-              )
-            })}
-          </List>
-        </Drawer> 
-        <Box component="main" sx={{ flexGrow: 1, backgroundColor: "#e9f0f3" }}>
-          <DrawerHeader />
-          {children}
+              ))}
+            </List>
+          </Drawer> 
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <DrawerHeader />
+            {children}
+          </Box>
         </Box>
-      </Box>
       ) : (
         children
       )}
@@ -308,4 +290,4 @@ const GeneralMenu = ({ children }) => {
   );
 }
 
-export default GeneralMenu
+export default GeneralMenu;

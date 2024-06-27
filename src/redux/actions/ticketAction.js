@@ -19,8 +19,6 @@ export const getProblems = (categoryId) => async (dispatch) => {
 }
 
 export const getTableTickets = () => async (dispatch) => {
-    // const isAdmin = "false"
-    // const userId = 2
     const isAdmin = localStorage.getItem("isAdmin")
     const userId = localStorage.getItem("userid")
 
@@ -253,14 +251,17 @@ export const searchTicketByStatus = (status) => async (dispatch, getState) => {
     return { setTicketsTableSuccessfully: true };
 };
 
-export const deleteTicket = (ticketid) => async (dispatch) => {
+export const deleteTicket = (ticketid, reason) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
 
     console.log("accessToken", accessToken)
     console.log("ticketid", ticketid)
     try {
-        const ticketDeleted = await put(`/helpdesk/tickets/${ticketid}/delete/`, {}, {
+        const ticketDeleted = await put(`/helpdesk/tickets/${ticketid}/delete/`, {
+            reason: reason
+        }, {
             Authorization: `Bearer ${accessToken}`,
+            
         })
         console.log("ticketDeleted", ticketDeleted)
 

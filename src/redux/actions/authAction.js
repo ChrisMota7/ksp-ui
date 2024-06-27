@@ -14,14 +14,12 @@ export const login = (email, password) => async (dispatch) => {
 
         const { is_admin } = await get("/user/user-type/", {
             Authorization: `Bearer ${access}`,
-        })
-
-        console.log("is_admin",is_admin)
+        });
         
-        localStorage.setItem("jwt", access)
-        localStorage.setItem("userid", user_id)
-        localStorage.setItem("user_email", email)
-        localStorage.setItem("isAdmin", is_admin)
+        localStorage.setItem("jwt", access);
+        localStorage.setItem("userid", user_id);
+        localStorage.setItem("user_email", email);
+        localStorage.setItem("isAdmin", is_admin);
 
         dispatch({
             type: AUTHENTICATE_USER,
@@ -30,18 +28,18 @@ export const login = (email, password) => async (dispatch) => {
                 userid: user_id,
                 isAdmin: is_admin,
             }
-        })
+        });
 
-        console.log("access",access)
-        console.log("user_id",user_id)
-        console.log("isAdmin",is_admin)
-
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
+        
         return { userAuthenticationSuccessfully: true, message: undefined }
     } catch (e) {
-        console.log("error", e)
+        console.log("error", e);
 
-        const messageString = e.request.response
-        const messageJson = JSON.parse(messageString)
+        const messageString = e.request.response;
+        const messageJson = JSON.parse(messageString);
         const message = messageJson.message[0];
 
         return { userAuthenticationSuccessfully: false, message }
@@ -50,18 +48,18 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
     try {        
-        localStorage.removeItem("jwt")
-        localStorage.removeItem("userid")
-        localStorage.removeItem("user_email")
-        localStorage.removeItem("isAdmin")
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("userid");
+        localStorage.removeItem("user_email");
+        localStorage.removeItem("isAdmin");
 
         dispatch({
             type: LOGOUT_USER
-        })
+        });
 
         return { userLoggedOutSuccessfully: true }
     } catch (e) {
-        console.log("error", e)
+        console.log("error", e);
 
         return { userLoggedOutSuccessfully: false }
     } 
@@ -69,9 +67,9 @@ export const logout = () => async (dispatch) => {
 
 export const setAuthInfo = () => async (dispatch) => {
     try {        
-        const jwt = localStorage.getItem("jwt")
-        const userid = localStorage.getItem("userid")
-        const isAdmin = localStorage.getItem("isAdmin")
+        const jwt = localStorage.getItem("jwt");
+        const userid = localStorage.getItem("userid");
+        const isAdmin = localStorage.getItem("isAdmin");
 
         dispatch({
             type: AUTHENTICATE_USER,
@@ -80,32 +78,29 @@ export const setAuthInfo = () => async (dispatch) => {
                 userid: userid,
                 isAdmin: isAdmin,
             }
-        })
-
-        console.log("userid",userid)
-        console.log("isAdmin",isAdmin)
+        });
 
         return { userAuthenticationSuccessfully: true }
     } catch (e) {
-        console.log("error", e)
+        console.log("error", e);
 
         return { userAuthenticationSuccessfully: false }
     } 
 }
 
 export const createUser = (firstName, lastName, email, password, isAdmin) => async (dispatch) => {
-    try{
+    try {
       await post("/user/create/", {
         firstName,
         lastName,
         email,
         password,
         isAdmin: isAdmin ? "1" : "0"
-      })
+        });
   
       return { userCreatedSuccessfully: true }
     } catch (e) {
-      console.log("error", e)
+        console.log("error", e);
   
       return { userCreatedSuccessfully: false }
     }

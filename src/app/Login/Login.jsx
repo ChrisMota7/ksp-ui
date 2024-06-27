@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectJWT, selectUserid } from "@/redux/reducers/authReducer";
 import { showSnackbar } from "@/redux/actions/visualsAction";
+import { Link } from "@mui/material";
 
 const Login = () => {
     const router = useRouter()
@@ -32,8 +33,8 @@ const Login = () => {
     return (
         <div className="login">
             <img src="/LogoNegro.png" alt="user-login" className="login__image"/>
-            <h1 className="login__title">HELP DESK</h1>
-            <h2 className="login__title">Inicio de sesión</h2>
+            <h2 className="login__title">HELP DESK</h2>
+            <h1 className="login__title">Inicio de sesión</h1>
             <form className="login__form" onSubmit={submit}>
                 <input 
                     type="text" 
@@ -49,10 +50,13 @@ const Login = () => {
                     onChange={e => setPassword(e.target.value)}
                     required
                 />
+                <div className="login__form__link">
+                    <Link  href="/requestPassword" underline="hover" color="inherit">¿Olvidaste tu contraseña?</Link>
+                </div>
                 <button className="login__form__button">Iniciar Sesión</button>
             </form>
             <div className="login__footer">
-                <a href="/register">Registrarse</a>
+                <Link href="/register" underline="hover" color="inherit">Registrarse</Link>
             </div>
         </div>
     )

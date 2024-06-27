@@ -100,7 +100,7 @@ const Register = () => {
                 />
                 <TextField
                     type="email"
-                    placeholder="Correo electrónico"
+                    placeholder="Email: ejemplo@ksp.com.mx"
                     className='register__form__input'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

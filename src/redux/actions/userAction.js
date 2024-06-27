@@ -1,6 +1,43 @@
-import { get, put } from "@/utils/api"
+import { get, put, post } from "@/utils/api"
 import { SET_FILTERED_USERS, SET_USERS, selectAdminUsers, selectClientUsers } from "../reducers/userReducer"
 import { filterUsersByFullName } from "@/app/constants"
+
+import { RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAILURE } from "../reducers/userReducer";
+
+export const resetPassword = (uid, token, newPassword) => async (dispatch) => {
+    dispatch({ type: RESET_PASSWORD_REQUEST });
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        const url = `/user/reset-password/${uid}&/${token}/`;
+        const body = { password: newPassword };
+
+        console.log("URL:", url);
+        console.log("Request Body:", body);
+
+        const response = await post(url, body, config);
+
+        dispatch({
+            type: RESET_PASSWORD_SUCCESS,
+            payload: response.data
+        });
+        console.log("Response Data:", response.data);
+        return { resetPasswordSuccessfully: true };
+    } catch (error) {
+        dispatch({
+            type: RESET_PASSWORD_FAILURE,
+            payload: error.response && error.response.data.message
+                   ? error.response.data.message
+                   : error.message
+        });
+        console.log("Error Response:", error.response);
+        return { resetPasswordSuccessfully: false, message: error.message };
+    }
+};
+
 
 export const getUsers = () => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt")
@@ -119,4 +156,23 @@ export const removeUsersFilter = () => async (dispatch) => {
     dispatch({
         type: SET_FILTERED_USERS,
     })
+}
+
+export const sendPasswordResetEmail = (email) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
+
+    try {
+        const response = await post(`/user/send-reset-email/`, {
+            Authorization: `Bearer ${accessToken}`,
+            email: email
+        });
+
+        console.log("response", response);
+        
+        return { sendPasswordResetEmailSuccessfully: true };
+        
+    } catch (e) {
+        console.error("error", e);
+        return { sendPasswordResetEmailSuccessfully: false };
+    }
 }

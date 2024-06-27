@@ -25,9 +25,10 @@ body{
     box-shadow: 1px 0px 16px -7px rgba(0,0,0,0.88);
 
     &__image {
-        width: 150px;
+        width: 100px;
         display: block;
         margin: 20px auto;
+        padding-top: 30px;
     }
 
     &__title {
@@ -55,10 +56,18 @@ body{
             outline: none;
         }
 
+        &__link {
+            display: block;
+            margin: auto;
+            margin-top: 2px;
+            width: 75%;
+            font-size: 0.85rem;
+        }
+
         &__button {
             display: block;
             margin: auto;
-            margin-top: 25px;
+            margin-top: 15px;
             margin-bottom: 30px;
             height: 40px;
             width: 78%;
@@ -76,6 +85,12 @@ body{
             border: 2px solid $blue_light;
             background: linear-gradient($dark_blue,$darker_blue);
         }
+    }
+
+    &__footer {
+        display: block;
+        margin: auto;
+        text-align: center;
     }
 }
 

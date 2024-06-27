@@ -3,7 +3,7 @@ import "./Message.scss"
 import React from 'react'
 
 export const Message = ({text, createdAt, isFromClient}) => {
-  const createdFrom = isFromClient === "0" ? "Colaborador" : "Administrador"
+  const createdFrom = isFromClient === "0" ? "Administrador" : "Colaborador"
   const createdAtDateObject = new Date(createdAt)
   const currentDate = new Date()
   const differenceOnMilliseconds = Math.abs(currentDate-createdAtDateObject)
