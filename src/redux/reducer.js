@@ -5,6 +5,8 @@ import categoryReducer from './reducers/categoryReducer';
 import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
 import visualsReducer from './reducers/visualsReducer';
+import incidenteReducer from './reducers/incidenteReducer';
+import empresaReducer from './reducers/empresaReducer';
 
 export default combineReducers({
   ticketReducer,
@@ -12,4 +14,6 @@ export default combineReducers({
   authReducer,
   userReducer,
   visualsReducer,
+  incidenteReducer,
+  empresaReducer
 });

@@ -18,27 +18,56 @@
         padding-left: 5%;
         padding-right: 5%;
 
-        &__new-problem {
+        &__buttons {
             display: flex;
             justify-content: flex-end;
-            width: 100%;
+            gap: 10px;
             padding: 5px;
-        }
 
-        &__new-category {
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
-            padding: 5px;
+            .problem-button, .category-button {
+                font-weight: bold;
+                border-radius: 4px;
+                // padding: 10px 20px;
+                margin-bottom: 10px;
+            }
+
+            .problem-button {
+                background-color: #636060;
+                color: white;
+                width: 200px;
+
+                &:hover {
+                    background-color: black;
+                }
+            }
+
+            .category-button {
+                background-color: #1976d2;
+                color: white;
+                width: 200px;
+
+                &:hover {
+                    background-color: #303f9f;
+                }
+            }
         }
 
         &__table{
-            background-color: rgb(202, 202, 202);
+            background-color:#636060;
+            color: white;
             margin: 15px;
+            
+            .MuiTableCell-root {
+                color: white;
+            }
             
             &__headers {
                 font-weight: bold;
             }
         }
+    }
+
+    &__dialog {
+        color: red;
     }
 }

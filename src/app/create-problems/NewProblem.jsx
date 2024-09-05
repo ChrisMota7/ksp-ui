@@ -8,23 +8,30 @@ import { Button, TextField, FormControl, MenuItem, Select, InputLabel, Breadcrum
 import { selectCategoriesAll } from '@/redux/reducers/categoryReducer';
 
 const NewProblem = () => {
-    const router = useRouter()
-    const dispatch = useDispatch()
+    const router = useRouter();
+    const dispatch = useDispatch();
     const categories = useSelector(selectCategoriesAll);
 
     const [name, setName] = useState("");
     const [categoriaid, setCategoriaid] = useState("");
     const [prioridadid, setPrioridad] = useState("");
 
-    const submitCreateProblem = (e) => {
+    const submitCreateProblem = async (e) => {
         e.preventDefault();
 
-        dispatch(createProblem(name, categoriaid, prioridadid))
-    }
+        const { problemCreatedSuccessfully } = await dispatch(createProblem(name, categoriaid, prioridadid));
+
+        if (problemCreatedSuccessfully) {
+            router.push('/categories/');
+        }
+    };
 
     useEffect(() => {
         dispatch(getCategoriesAll());
     }, [dispatch]);
+
+    // Filtrar categorías activas
+    const activeCategories = categories.filter(categoria => categoria.isDeleted === "0");
 
     return (
         <div className='create-problem'>
@@ -36,65 +43,70 @@ const NewProblem = () => {
                 <div className='create-problem__header__nav'>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" onClick={() => router.push('/categories/')}>
-                            Categorias
+                            Categorías
                         </Link>
-                        <Typography color="text.primary">Nueva</Typography>
+                        <Typography color="text.primary">Nuevo Problema</Typography>
                     </Breadcrumbs>
                 </div>
             </div>
 
-            <form className='create-problem__content' onSubmit={submitCreateProblem}>
-                <div className='create-problem__content__top'> 
-                    <TextField
-                        className='create-problem__content__top__input'
-                        label="Nombre del Problema"
-                        value={name} 
-                        name='name' 
-                        type='text'
-                        onChange={event => setName(event.target.value)}
-                        required
-                    />
-                    <FormControl className='create-problem__content__top__select'>
-                        <InputLabel id="select-label">Categoría</InputLabel>
-                        <Select 
-                            value={categoriaid}
-                            labelId="select-label"
-                            id="select"
-                            label="Categoría"
-                            onChange={event => setCategoriaid(event.target.value)}
-                        >
-                            {categories.map((categoria) => (
-                                <MenuItem key={categoria.id} value={categoria.id}>
-                                    {categoria.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl className='create-problem__content__top__select'>
-                        <InputLabel id="select-label">Prioridad</InputLabel>
-                        <Select 
-                            value={prioridadid} name='categoria'
-                            labelId="select-label"
-                            id="select"
-                            label="categoria"
-                            onChange={event => setPrioridad(event.target.value)}
-                        >
-                            <MenuItem value={1}>Bajo</MenuItem>
-                            <MenuItem value={2}>Medio</MenuItem>
-                            <MenuItem value={3}>Crítico</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <div className='create-problem__button-container'>
-                        <Button 
-                            type="submit" 
-                            variant="contained" 
-                            color="primary"
-                            onClick={() => router.push(`/categories/`)}>
-                                Crear Categoría
-                        </Button>
-                    </div>
+            <form className='create-problem__form' onSubmit={submitCreateProblem}>
+                <TextField
+                    className='create-problem__form__input'
+                    label="Nombre del Problema"
+                    value={name} 
+                    name='name' 
+                    type='text'
+                    onChange={event => setName(event.target.value)}
+                    required
+                />
+                <FormControl className='create-problem__form__select'>
+                    <InputLabel id="select-categoria-label">Categoría</InputLabel>
+                    <Select 
+                        value={categoriaid}
+                        labelId="select-categoria-label"
+                        id="select-categoria"
+                        label="Categoría"
+                        onChange={event => setCategoriaid(event.target.value)}
+                    >
+                        {activeCategories.map((categoria) => (
+                            <MenuItem key={categoria.id} value={categoria.id}>
+                                {categoria.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl className='create-problem__form__select'>
+                    <InputLabel id="select-prioridad-label">Prioridad</InputLabel>
+                    <Select 
+                        value={prioridadid}
+                        labelId="select-prioridad-label"
+                        id="select-prioridad"
+                        label="Prioridad"
+                        onChange={event => setPrioridad(event.target.value)}
+                    >
+                        <MenuItem value={1}>Bajo</MenuItem>
+                        <MenuItem value={2}>Medio</MenuItem>
+                        <MenuItem value={3}>Crítico</MenuItem>
+                    </Select>
+                </FormControl>
+                <div className='create-problem__form__button'>
+                    <Button 
+                        variant="contained" 
+                        className='create-problem__form__button__cancel'
+                        onClick={() => router.push(`/categories/`)}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        className='create-problem__form__button__create'
+                    >
+                        Crear Problema
+                    </Button>
                 </div>
+                
             </form>
         </div>
     );

@@ -272,3 +272,49 @@ export const deleteTicket = (ticketid, reason) => async (dispatch) => {
         return { ticketDeletedSuccessfully: false }
     }
 }
+
+export const filterTicketsByDate = (date) => async (dispatch, getState) => {
+    const currentTickets = selectTicketsDuplication(getState());
+  
+    // Si la fecha no es válida o está vacía, restablecer los tickets a la lista original
+    if (!date || isNaN(date.getTime())) {
+      dispatch({
+        type: SET_TICKETS_TABLE,
+        payload: currentTickets,
+      });
+      return { setTicketsTableSuccessfully: true };
+    }
+  
+    const formattedDate = date.toISOString().split('T')[0]; // Formatear la fecha a YYYY-MM-DD
+  
+    const filteredTickets = currentTickets.filter((ticket) => {
+      const ticketDate = new Date(ticket.created_at).toISOString().split('T')[0];
+      return ticketDate === formattedDate;
+    });
+  
+    dispatch({
+      type: SET_TICKETS_TABLE,
+      payload: filteredTickets,
+    });
+  
+    return { setTicketsTableSuccessfully: true };
+  };
+
+  export const searchTicketByPriority = (priority) => async (dispatch, getState) => {
+    const currentTickets = selectTicketsDuplication(getState());
+  
+    const searchedTickets = currentTickets.filter((ticket) => 
+      ticket.problema.prioridad.name === priority
+    );
+  
+    dispatch({
+      type: SET_TICKETS_TABLE,
+      payload: searchedTickets
+    });
+  
+    return { setTicketsTableSuccessfully: true };
+  };
+  
+
+  
+  

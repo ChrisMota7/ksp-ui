@@ -1,10 +1,9 @@
 'use client'
 import './Categories.scss'
 import React, { useEffect, useState } from 'react';
-
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCategory, getCategories, getProblems } from '@/redux/actions/categoryActions';
+import { deleteCategory, deleteProblem, getCategories, getProblems } from '@/redux/actions/categoryActions';
 import { selectCategories } from '@/redux/reducers/categoryReducer';
 import { Breadcrumbs, Link, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Modal, Box } from '@mui/material';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, Tooltip } from '@mui/material';
@@ -12,7 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { showSnackbar } from '@/redux/actions/visualsAction';
-import EditCategoryModal from '@/components/EdtiCategoryModal/EditCategoryModal';
+import EditProblemModal from '@/components/EditProblemModal/EditProblemModal';
 
 const Categories = () => {
     const router = useRouter()
@@ -25,7 +24,7 @@ const Categories = () => {
     const [openEditCategory, setOpenEditCategory] = useState(false)
   
     useEffect(() => {
-        dispatch(getCategories());
+        dispatch(getProblems());
     }, [dispatch]);
 
     const getPriorityStyle = (priorityName) => {
@@ -66,11 +65,11 @@ const Categories = () => {
     }
 
     const handleDeleteCategory = async () => {
-      const { setDeleteCategerySuccess } = await dispatch(deleteCategory(seletedCategoryId))
+      const { setDeleteCategerySuccess } = await dispatch(deleteProblem(seletedCategoryId))
 
       if (setDeleteCategerySuccess) {
         dispatch(showSnackbar("Categoría eliminada satisfactoriamente", "success"))
-        dispatch(getCategories());
+        dispatch(getProblems());
         clearStates()
       } else {
         dispatch(showSnackbar("No se pudo aliminar la categoría", "error"))
@@ -117,19 +116,15 @@ const Categories = () => {
 
         <div className='categories__header__nav'>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" >
-              HelpDesk
-            </Link>
+            <Typography color="text.primary">Tickets</Typography>
             <Typography color="text.primary">Categorías</Typography>
           </Breadcrumbs>
         </div>
 
         <div className='categories__info'>
-          <div className='categories__info__new-problem'>
-            <Button variant="contained" onClick={() => router.push('/create-problems')}>Nuevo Problema</Button>
-          </div>
-          <div className='categories__info__new-category'>
-            <Button variant="contained" onClick={() => router.push('/create-categories')}>Nueva Categoría</Button>
+          <div className='categories__info__buttons'>
+            <Button variant="contained" className="problem-button" onClick={() => router.push('/create-problems')}>Nuevo Problema</Button>
+            <Button variant="contained" className="category-button" onClick={() => router.push('/create-categories')}>Nueva Categoría</Button>
           </div>
 
           <div>
@@ -138,10 +133,9 @@ const Categories = () => {
                     <TableHead className='categories__info__table'>
                         <TableRow>
                             <TableCell className='categories__info__table__headers'>ID</TableCell>
-                            <TableCell className='categories__info__table__headers'>Nombre</TableCell>
+                            <TableCell className='categories__info__table__headers'>Problema</TableCell>
+                            <TableCell className='categories__info__table__headers'>Categoría</TableCell>
                             <TableCell className='categories__info__table__headers'>Prioridad</TableCell>
-                            <TableCell className='categories__info__table__headers'>Tickets</TableCell>
-                            <TableCell className='categories__info__table__headers'>Fecha de vencimiento por defecto</TableCell>
                             <TableCell className='categories__info__table__headers'>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -152,13 +146,12 @@ const Categories = () => {
                               <TableRow key={category.id}>
                                 <TableCell>{category.id}</TableCell>
                                 <TableCell>{category.name}</TableCell>
+                                <TableCell>{category.categoria.name}</TableCell>
                                 <TableCell>
                                   <span style={getPriorityStyle(category.prioridad.name)}>
                                     {category.prioridad.name}
                                   </span>
                                 </TableCell>
-                                <TableCell>S/A</TableCell>
-                                <TableCell>S/A</TableCell>
                                 <TableCell>
                                     <Tooltip title="Editar Categoría">
                                         <IconButton onClick={() => handleOpenEditCategory(category)}>
@@ -195,14 +188,14 @@ const Categories = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseDeleteConfirmation} autoFocus>Cancelar</Button>
-              <Button onClick={handleDeleteCategory}>
+            <Button className='categories__dialog' onClick={handleDeleteCategory}>
                   Eliminar
               </Button>
+              <Button onClick={handleCloseDeleteConfirmation} autoFocus>Cancelar</Button>
             </DialogActions>
         </Dialog>
 
-        <EditCategoryModal 
+        <EditProblemModal 
           openEditCategory={openEditCategory} 
           handleCloseEditCategory={handleCloseEditCategory}
           categoryName={seletedCategoryName}
@@ -212,4 +205,4 @@ const Categories = () => {
     )
 }
 
-export default Categories
+export default Categories;

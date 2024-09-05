@@ -18,7 +18,7 @@ export const getCategoriesAll = () => async (dispatch) => {
     }
 }
 
-export const getCategories = () => async (dispatch) => {
+export const getProblems = () => async (dispatch) => {
     try {
         const categories = await get('/helpdesk/problemas/')
 
@@ -77,7 +77,7 @@ export const createCategorie = (name) => async (dispatch) => {
     }
 }
 
-export const updateCategory = (categoryId, categoryName) => async (dispatch) => {
+export const updateProblem = (categoryId, categoryName) => async (dispatch) => {
     try {
         const response = await put(`/helpdesk/problems/${categoryId}/update/`, 
         { 
@@ -92,7 +92,7 @@ export const updateCategory = (categoryId, categoryName) => async (dispatch) => 
     }
 }
 
-export const deleteCategory = (categoryId) => async (dispatch) => {
+export const deleteProblem = (categoryId) => async (dispatch) => {
     try {
         await put(`/helpdesk/problems/${categoryId}/delete/`);
 
@@ -118,5 +118,28 @@ export const getDashboard = () => async (dispatch) => {
         console.log("error", e)
 
         return { setDashboardSuccessfully: false }
+    }
+}
+
+export const updateCategories = (categoryId, categoryName) => async (dispatch) => {
+    try {
+        const response = await put(`/helpdesk/categories/${categoryId}/update/`, 
+        { 
+            name: categoryName 
+        })
+        return { setUpdateCategerySuccess: true }
+    } catch (e) {
+        console.log("error", e)
+        return { setUpdateCategerySuccess: false }
+    }
+}
+
+export const deleteCategories = (categoryId) => async (dispatch) => {
+    try {
+        await put(`/helpdesk/categories/${categoryId}/delete/`)
+        return { setDeleteCategerySuccess: true }
+    } catch (e) {
+        console.log("error", e)
+        return { setDeleteCategerySuccess: false }
     }
 }

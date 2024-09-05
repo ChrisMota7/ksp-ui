@@ -1,17 +1,17 @@
 'use client'
 import './Tickets.scss'
 import React, { useEffect, useState } from 'react';
-
-import { Button, Breadcrumbs, Typography, Link, TextField, FormControl, InputLabel, Select, MenuItem, Paper, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Breadcrumbs, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Paper, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputAdornment } from "@mui/material";
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus } from '@/redux/actions/ticketAction';
+import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus, searchTicketByPriority, filterTicketsByDate } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 import { selectIsAdmin } from '@/redux/reducers/authReducer';
+import { showSnackbar } from '@/redux/actions/visualsAction';
 
 const Tickets = () => {
   const dispatch = useDispatch();
@@ -22,6 +22,8 @@ const Tickets = () => {
 
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [filterPriority, setFilterPriority] = useState("");
+  const [filterDate, setFilterDate] = useState("");
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [ticketToDelete, setTicketToDelete] = useState(null);
   const [deleteReason, setDeleteReason] = useState("");
@@ -34,6 +36,25 @@ const Tickets = () => {
   const handleSearchByStatus = (e) => {
     setFilterStatus(e.target.value);
     dispatch(searchTicketByStatus(e.target.value));
+  };
+
+  const handleSearchByPriority = (e) => {
+    setFilterPriority(e.target.value);
+    dispatch(searchTicketByPriority(e.target.value));
+  };
+
+  const handleFilterByDate = (e) => {
+    const date = e.target.value ? new Date(e.target.value) : null;
+    setFilterDate(e.target.value);
+    dispatch(filterTicketsByDate(date));
+  };
+
+  const handleClearFilters = () => {
+    setSearch("");
+    setFilterStatus("");
+    setFilterPriority("");
+    setFilterDate("");
+    dispatch(getTableTickets());
   };
 
   useEffect(() => {
@@ -52,13 +73,18 @@ const Tickets = () => {
   const handleCloseConfirmDialog = () => {
     setOpenConfirmDialog(false);
     setTicketToDelete(null);
-    setDeleteReason(""); // Reset the reason when closing the dialog
+    setDeleteReason("");
   };
 
   const handleDeleteTicket = async () => {
     if (ticketToDelete !== null) {
       const { ticketDeletedSuccessfully } = await dispatch(deleteTicket(ticketToDelete, deleteReason));
-      if (ticketDeletedSuccessfully) dispatch(getTableTickets());
+      if (ticketDeletedSuccessfully) {
+        dispatch(showSnackbar("Ticket eliminado correctamente", "success"));
+        dispatch(getTableTickets());
+      } else {
+        dispatch(showSnackbar("Error al eliminar el ticket", "error"));
+      }
       handleCloseConfirmDialog();
     }
   };
@@ -70,7 +96,7 @@ const Tickets = () => {
           color: 'white', 
           backgroundColor: '#00913f', 
           textDecoration: 'solid', 
-          padding: '4px 18px', 
+          padding: '4px 30px', 
           borderRadius: '5px' 
         };
       case 'Medio':
@@ -78,7 +104,7 @@ const Tickets = () => {
           color: 'white', 
           backgroundColor: '#E66E00', 
           textDecoration: 'solid', 
-          padding: '3px 10px', 
+          padding: '3px 25px', 
           borderRadius: '5px' 
         };
       case 'Crítico':
@@ -86,7 +112,7 @@ const Tickets = () => {
           color: 'white', 
           backgroundColor: '#E63B2C', 
           textDecoration: 'solid', 
-          padding: '3px 10px', 
+          padding: '3px 22px', 
           borderRadius: '5px' 
         };
       default:
@@ -94,24 +120,24 @@ const Tickets = () => {
           color: 'white', 
           backgroundColor: 'grey', 
           textDecoration: 'none',
-          padding: '3px 10px', 
+          padding: '3px 22px', 
           borderRadius: '5px' 
         };
     }
   };
 
-  const getStatusStyle = (status) => {
+  const getStatusClassName = (status) => {
     switch (status) {
-      case 'Nuevo':
-        return { color: 'red', fontWeight: 'bold' };
-      case 'En espera':
-        return { color: 'orange', fontWeight: 'bold' };
-      case 'Respondido':
-        return { color: 'blue', fontWeight: 'bold' };
-      case 'Resuelto':
-        return { color: 'green', fontWeight: 'bold' };
-      default:
-        return { color: 'black', fontWeight: 'bold' };
+        case 'Nuevo':
+            return 'status status-nuevo';
+        case 'En espera':
+            return 'status status-en-espera';
+        case 'Respondido':
+            return 'status status-respondido';
+        case 'Resuelto':
+            return 'status status-resuelto';
+        default:
+            return 'status status-default';
     }
   };
 
@@ -134,6 +160,9 @@ const Tickets = () => {
         </Breadcrumbs>
       </div>
       <div className='tickets__content'>
+        <div className='tickets__content__info-section__button'>
+          <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
+        </div>
         <div className='tickets__content__searcher'>
           <div className='tickets__content__searcher__top'>
             <TextField  
@@ -141,8 +170,17 @@ const Tickets = () => {
               id="outlined-basic" 
               value={search}
               onChange={handleSearch}
-              label="ID, asunto, usuario, prioridad..." 
-            />    
+              label="ID, asunto, usuario..." 
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start" color="disabled">
+                    <IconButton>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />  
             <FormControl className='tickets__content__searcher__top__select'>
               <InputLabel id="select-label">Estado</InputLabel>
               <Select 
@@ -158,14 +196,34 @@ const Tickets = () => {
                 <MenuItem value="Resuelto">Resuelto</MenuItem>
               </Select>
             </FormControl>
+            <FormControl className='tickets__content__searcher__top__select'>
+              <InputLabel id="priority-select-label">Prioridad</InputLabel>
+              <Select 
+                labelId="priority-select-label" 
+                id="priority-select"
+                label="Prioridad"
+                value={filterPriority}
+                onChange={handleSearchByPriority}
+              >
+                <MenuItem value="Bajo">Bajo</MenuItem>
+                <MenuItem value="Medio">Medio</MenuItem>
+                <MenuItem value="Crítico">Crítico</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              label="Filtrar por fecha"
+              type="date"
+              value={filterDate}
+              onChange={handleFilterByDate}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              className='tickets__content__searcher__top__date'
+            />
+            <Button variant="outlined" onClick={handleClearFilters}>Limpiar</Button>
           </div>
         </div>
         <div className='tickets__content__info-section'>
-          {isAdmin === "false" && (
-            <div className='tickets__content__info-section__button'>
-              <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
-            </div>
-          )}
           <div>
             <Paper>
               <Table>
@@ -173,10 +231,10 @@ const Tickets = () => {
                   <TableRow>
                     <TableCell className='tickets__content__info-section__table__headers'>ID</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Asunto</TableCell>
-                    <TableCell className='tickets__content__info-section__table__headers'>Descripción</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Problema</TableCell>
+                    <TableCell className='tickets__content__info-section__table__headers'>Categoría</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Usuario</TableCell>
-                    <TableCell className='tickets__content__info-section__table__headers'>Estatus</TableCell>
+                    <TableCell className='tickets__content__info-section__table__headers'>Estado</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Prioridad</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Fecha de Creación</TableCell>
                     <TableCell className='tickets__content__info-section__table__headers'>Acciones</TableCell>
@@ -185,29 +243,35 @@ const Tickets = () => {
                 <TableBody>
                   {filteredTickets.map(ticket => (
                     <TableRow key={ticket.id}>
-                      <TableCell>{ticket.id}</TableCell>
-                      <TableCell>{ticket.asunto}</TableCell>
-                      <TableCell>{ticket.descripcion}</TableCell>
-                      <TableCell>{ticket.problema.name}</TableCell>
-                      <TableCell>{ticket.user.email}</TableCell>
-                      <TableCell style={getStatusStyle(ticket.status)}>{ticket.status}</TableCell>
-                      <TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.id}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.asunto}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.name}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.categoria.name}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.user.email}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>
+                          <span className={getStatusClassName(ticket.status)}>
+                              {ticket.status}
+                          </span>
+                      </TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>
                         <span style={getPriorityStyle(ticket.problema.prioridad.name)}>
                           {ticket.problema.prioridad.name}
                         </span>
                       </TableCell>
-                      <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Tooltip title="Ver Detalles">
-                          <IconButton onClick={() => handleViewTicket(ticket.id)}>
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Eliminar Ticket">
-                          <IconButton onClick={() => handleOpenConfirmDialog(ticket.id)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
+                      <TableCell className='tickets__content__info-section__table__content'>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>
+                        <div className="action-icons">
+                          <Tooltip title="Ver Detalles" placement="top">
+                            <IconButton onClick={() => handleViewTicket(ticket.id)}>
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Eliminar Ticket" placement="top">
+                            <IconButton onClick={() => handleOpenConfirmDialog(ticket.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}    
@@ -241,11 +305,11 @@ const Tickets = () => {
           />
         </DialogContent>
         <DialogActions>
+          <Button className='tickets__dialog' onClick={handleDeleteTicket} color="primary" autoFocus>
+            Eliminar
+          </Button>
           <Button onClick={handleCloseConfirmDialog} color="primary">
             Cancelar
-          </Button>
-          <Button onClick={handleDeleteTicket} color="primary" autoFocus>
-            Eliminar
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,0 +1,86 @@
+.create-incident {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    &__header {
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+
+        &__title {
+            margin-left: 20px;
+        }
+
+        &__nav {
+            margin-left: 20px;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        width: 70%;
+        padding: 25px;
+        padding-top: 15px;
+        margin-top: 20px;
+
+        &__input {
+            width: 80%;
+        }
+
+        &__select {
+            width: 80%;
+        }
+
+        &__button {
+            display: flex;
+            flex-direction: row;
+            
+            &__create {
+                font-weight: bold;
+                border-radius: 4px;
+                background-color: #1976d2;
+                color: white;
+                width: 235px;
+                margin: 10px 10px 10px 10px;
+
+                &:hover {
+                    background-color: #303f9f;
+                }
+            }
+
+            &__cancel {
+                font-weight: bold;
+                background-color: #636060;
+                color: white;
+                width: 235px;
+                margin: 10px 10px 10px 10px;
+                
+                &:hover {
+                    background-color: black;
+                }
+            }
+        }
+    }
+
+    &__table {
+        width: 80%;
+        margin-top: 20px;
+
+        &__head {
+            background-color: #636060;
+            color: white;
+
+            .MuiTableCell-root {
+                color: white;
+            }
+        }
+    }
+}

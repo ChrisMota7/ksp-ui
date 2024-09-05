@@ -1,4 +1,5 @@
 export const SET_USERS = "SET_USERS"
+export const SET_EMPRESAS = "SET_EMPRESAS"
 export const SET_FILTERED_USERS = "SET_FILTERED_USERS"
 export const REMOVE_USERS_FILTER = "REMOVE_USERS_FILTER"
 
@@ -13,6 +14,7 @@ export const defaultState = {
   clientUsers: [],
   adminUsers: [],
   filteredUsers: [],
+  empresas: [],
 };
 
 const userReducer = (state = defaultState, action) => {
@@ -23,10 +25,15 @@ const userReducer = (state = defaultState, action) => {
         clientUsers: action.payload.clientUsers,
         adminUsers: action.payload.adminUsers
       };
+    case SET_EMPRESAS:
+      return {
+        ...state,
+        empresas: action.payload || []
+      };
     case SET_FILTERED_USERS:
       return {
         ...state,
-        filteredUsers: action.payload
+        filteredUsers: action.payload || []
       };
     case REMOVE_USERS_FILTER:
       return {
@@ -55,3 +62,4 @@ export default userReducer
 export const selectClientUsers = (state) => state.userReducer.clientUsers
 export const selectAdminUsers = (state) => state.userReducer.adminUsers
 export const selectFilteredUsers = (state) => state.userReducer.filteredUsers
+export const selectEmpresas = (state) => state.userReducer.empresas;

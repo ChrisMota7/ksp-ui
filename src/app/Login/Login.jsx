@@ -1,13 +1,10 @@
 "use client"
-
 import { login } from "@/redux/actions/authAction";
 import "./Login.scss"
 
-import { post } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectJWT, selectUserid } from "@/redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 import { showSnackbar } from "@/redux/actions/visualsAction";
 import { Link } from "@mui/material";
 
@@ -34,7 +31,7 @@ const Login = () => {
         <div className="login">
             <img src="/LogoNegro.png" alt="user-login" className="login__image"/>
             <h2 className="login__title">HELP DESK</h2>
-            <h1 className="login__title">Inicio de sesión</h1>
+            <h1 className="login__title">Iniciar Sesión</h1>
             <form className="login__form" onSubmit={submit}>
                 <input 
                     type="text" 
@@ -56,7 +53,9 @@ const Login = () => {
                 <button className="login__form__button">Iniciar Sesión</button>
             </form>
             <div className="login__footer">
-                <Link href="/register" underline="hover" color="inherit">Registrarse</Link>
+                <button onClick={() => router.push(`/register/`)} className="login__footer__button">
+                    Registrarse
+                </button>
             </div>
         </div>
     )

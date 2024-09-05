@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -20,12 +21,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DnsIcon from '@mui/icons-material/Dns';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AddModeratorIcon from '@mui/icons-material/AddModerator';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAdmin, selectUserid } from '@/redux/reducers/authReducer';
 import { logout, setAuthInfo } from '@/redux/actions/authAction';
@@ -122,9 +125,9 @@ const GeneralMenu = ({ children }) => {
 
   useEffect(() => {
     if (isAdmin === "true") {
-      setMenuItems(["Tickets", "Usuarios", "Categorías", "Dashboard", "Configuración"]);
+      setMenuItems(["Tickets", "Crear Ticket", "Usuarios", "Clientes", "Categorías", "Dashboard", "Configuración", "Incidentes", "Crear Incidente"]);
     } else if (isAdmin === "false") {
-      setMenuItems(["Mis Tickets", "Crear Ticket", "Configuración"]);
+      setMenuItems(["Mis Tickets", "Crear Ticket", "Configuración", "Mis Incidentes", "Crear Incidente"]);
     }
   }, [isAdmin]);
 
@@ -140,17 +143,25 @@ const GeneralMenu = ({ children }) => {
     switch (itemText) {
       case "Mis Tickets":
       case "Tickets":
-        return <ListAltIcon />;
+        return <ViewListIcon />;
       case "Crear Ticket":
-        return <PlaylistAddIcon />;
+        return <PlaylistAddIcon sx={{ fontSize: 30 }}/>;
       case "Usuarios":
         return <PeopleAltIcon />;
+      case "Clientes":
+        return <BusinessCenterIcon />; 
       case "Categorías":
         return <DnsIcon />;
       case "Dashboard":
         return <EqualizerIcon />;
       case "Configuración":
         return <SettingsIcon />;
+      case "Mis Incidentes":  
+      case "Incidentes":
+        return <AdminPanelSettingsIcon sx={{ fontSize: 30 }}/>;
+      case "Crear Incidente":
+        return <AddModeratorIcon />;   
+        
     }
   };
 
@@ -166,6 +177,9 @@ const GeneralMenu = ({ children }) => {
       case "Usuarios":
         push("/users");
         break;
+      case "Clientes":
+        push("/clients");
+        break;
       case "Categorías":
         push("/categories");
         break;
@@ -174,6 +188,13 @@ const GeneralMenu = ({ children }) => {
         break;
       case "Configuración":
         push("/settings");
+        break;
+      case "Mis Incidentes":
+      case "Incidentes":
+        push("/incidents");
+        break;
+      case "Crear Incidente":
+        push("/create-incident");
         break;
     }
   };
@@ -199,8 +220,9 @@ const GeneralMenu = ({ children }) => {
       {userId ? (
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
-          <AppBar position="fixed" open={open}>
-            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <AppBar position="fixed" open={open} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -213,44 +235,45 @@ const GeneralMenu = ({ children }) => {
               >
                 <MenuIcon />
               </IconButton>
-              <div>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  anchorEl={anchorEl}
-                  onClick={handleClickProfileMenu}
-                  edge="start"
-                >
-                  <AccountCircleIcon fontSize='large' />
-                </IconButton>
-                <Popper 
-                  open={isOpenProfileMenu} 
-                  anchorEl={anchorEl}
-                  transition
-                  disablePortal
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === 'bottom' ? 'center top' : 'center bottom',
-                      }}
-                    >
-                      <Paper>
-                        <ClickAwayListener onClickAway={handleCloseProfileMenu}>
-                          <MenuList id="split-button-menu" autoFocusItem>
-                            <MenuItem onClick={handleLogout}>
-                              Cerrar Sesión
-                            </MenuItem>
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </div>
-            </Toolbar>
+            </div>
+            <div>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                anchorEl={anchorEl}
+                onClick={handleClickProfileMenu}
+                edge="start"
+              >
+                <AccountCircleIcon fontSize='large' />
+              </IconButton>
+              <Popper 
+                open={isOpenProfileMenu} 
+                anchorEl={anchorEl}
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === 'bottom' ? 'center top' : 'center bottom',
+                    }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={handleCloseProfileMenu}>
+                        <MenuList id="split-button-menu" autoFocusItem>
+                          <MenuItem onClick={handleLogout}>
+                            Cerrar Sesión
+                          </MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </div>
+          </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
             <DrawerHeader sx={{ display: "flex", justifyContent: "space-between", paddingLeft: 2 }}>

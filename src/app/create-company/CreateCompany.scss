@@ -1,0 +1,51 @@
+.create-company {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    &__header {
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+
+        &__title {
+            margin-left: 20px;
+        }
+
+        &__nav {
+            margin-left: 20px;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        width: 70%;
+        padding: 25px;
+        padding-top: 15px;
+        margin-top: 20px;
+
+        &__input {
+            width: 80%;
+        }
+
+        &__button {
+            font-weight: bold;
+            border-radius: 4px;
+            // padding: 10px 20px;
+            background-color: #1976d2;
+            color: white;
+            width: 30%;
+
+            &:hover {
+                background-color: #303f9f;
+            }
+        }
+    }
+}

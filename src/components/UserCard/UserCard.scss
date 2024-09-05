@@ -1,3 +1,4 @@
+// components/UserCard/UserCard.scss
 .user-card {
     width: 300px;
     border-radius: 10px;
@@ -11,6 +12,11 @@
         font-weight: bold;
     }
 
+    &__empresa {
+        font-size: 0.9rem;
+        color: gray;
+    }
+
     &__typeOfUser {
         color: gray;
     }
@@ -19,5 +25,9 @@
         width: 100%;
         display: flex;
         justify-content: flex-end;
+
+        &__button {
+            color: red;
+        }
     }
 }

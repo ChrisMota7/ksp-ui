@@ -99,8 +99,9 @@ const ViewTicket = () => {
                             <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id}</h1>
                             <p className='view-tickets__header__container__title__subject'>{ticketInfo.ticket_data.asunto}</p>
                         </div>
-                        <div className='view-tickets__header__container__actions'>
-                            <Button variant="contained" onClick={handleOpenConfirmDialog}>Cerrar Ticket</Button>
+                        <div className='view-tickets__header__container__button'>
+                            <Button variant="contained" className='view-tickets__header__container__button__close' onClick={handleOpenConfirmDialog}>Cerrar Ticket</Button>
+                            <Button variant="contained" className='view-tickets__header__container__button__cancel' onClick={() => router.push('/tickets')}>Regresar</Button>
                         </div>
                     </div>
                     <Dialog
@@ -116,11 +117,11 @@ const ViewTicket = () => {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
+                            <Button className='view-tickets__header__container__dialog__button' onClick={handleDeleteTicket} color="primary" autoFocus>
+                                Finalizar
+                            </Button>
                             <Button onClick={handleCloseConfirmDialog} color="primary">
                                 Cancelar
-                            </Button>
-                            <Button onClick={handleDeleteTicket} color="primary" autoFocus>
-                                Finalizar
                             </Button>
                         </DialogActions>
                     </Dialog>
@@ -142,12 +143,12 @@ const ViewTicket = () => {
                     
                         <div className='view-tickets__header__info__images'>
                             {relatedFiles.length > 0 ? (
-                                    <ImageList sx={{ height: 300 }} cols={relatedFiles.length} gap={8}>
+                                    <ImageList sx={{ height: 300 }} cols={4} gap={8}>
                                         {relatedFiles.map((item) => (
                                             <ImageListItem key={item.id}>
                                                 <img
-                                                    srcSet={`${item.url}?w=60&h=60&fit=crop&auto=format&dpr=2 2x`}
-                                                    src={`${item.url}?w=60&h=60&fit=crop&auto=format`}
+                                                    srcSet={`${item.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                                    src={`${item.url}?w=164&h=164&fit=crop&auto=format`}
                                                     alt={item.title}
                                                     loading="lazy"
                                                     onClick={() => handleImageClick(item.url)}
@@ -159,14 +160,12 @@ const ViewTicket = () => {
                                 <p>Sin evidencias para mostrar</p>
                             )}
                         </div>
-
                         <hr />
                         <Typography color="text">Creado en: {new Date(ticketInfo.ticket_data.created_at).toLocaleDateString()}</Typography>
                         <Typography color="text.primary">Respuestas: {ticketInfo.total_mensajes} </Typography>
                         <Typography color="text.primary">Ultima respuesta: {ticketInfo.ultimo_remitente}</Typography>
                     </div>
                 </div>
-                
                 <div className='view-tickets__content'>
                     <div className='view-tickets__content__messages'>
                         { messages.length > 0 ? 
@@ -182,7 +181,6 @@ const ViewTicket = () => {
                         }
                     </div>
                 </div>
-
                 <div className='view-tickets__content__input-container'>
                     <TextField 
                         value={newMessage} 
@@ -205,7 +203,6 @@ const ViewTicket = () => {
                         <ReplayOutlinedIcon fontSize="medium" />
                     </IconButton>
                 </div>
-                
                 <Dialog
                     open={openImageModal}
                     onClose={() => setOpenImageModal(false)}
@@ -224,8 +221,8 @@ const ViewTicket = () => {
                     >
                         <CloseIcon />
                     </IconButton>
-                    <DialogContent>
-                        <Box>
+                    <DialogContent className="modal-image-content">
+                        <Box className="image-box">
                             <img src={selectedImage} alt="Imagen seleccionada" />
                         </Box>
                     </DialogContent>

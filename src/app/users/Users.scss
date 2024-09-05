@@ -1,33 +1,64 @@
-.users{
+// Users.scss
+.users {
     width: 100%;
-    
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
     &__header {
         width: 100%;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin-bottom: 20px;
 
-        &__title{
+        &__title {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin-left: 20px;
 
-            &__new-admin {
-                margin-right: 10px;
+            &__buttons {
+                display: flex;
+                gap: 10px;
+                
+                .admin-button, .company-button {
+                    font-weight: bold;
+                    border-radius: 4px;
+                    
+                }
+
+                .admin-button {
+                    background-color: #1976d2;
+                    color: white;
+                    width: 212px;
+                    
+                    &:hover {
+                        background-color: #303f9f;
+                    }
+                }
+
+                .company-button {
+                    background-color: #636060;
+                    color: white;
+                    width: 220px;
+
+                    &:hover {
+                        background-color: black;
+                    }
+                }
             }
         }
 
-        &__nav{
+        &__nav {
             margin-left: 20px;
         }
     }
 
-    &__content{
+    &__content {
         width: 100%;
         margin-top: 15px;
-        
-        &__searcher{
+        display: flex;
+        flex-direction: column;
+
+        &__searcher {
             padding: 10px;
             display: flex;
             flex-direction: column;
@@ -40,14 +71,14 @@
                 gap: 10px;
                 padding: 5px;
                 width: 100%;
+                align-items: center;
 
-                &__input{
-                    width: 100%;
-                }
-        
-                &__select{
-                    width: 50%;
+                &__input {
                     flex: 1;
+                }
+
+                &__select {
+                    min-width: 200px;
                 }
             }
 
@@ -69,23 +100,18 @@
             align-items: center;
         }
 
-        &__cards {
-            display: flex;
-            width: 90vw;
-            gap: 20px;
-            margin: 10px;
-            overflow-x: scroll;
-            overflow-y: hidden;
-        }  
-
+        &__cards,
         &__all-users-cards {
             display: flex;
-            width: 90vw;
+            flex-wrap: wrap;
             gap: 20px;
             margin: 10px;
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }       
+            width: 100%;
+        }
+    }
+
+    &__dialog {
+        color: red;
     }
 }
 

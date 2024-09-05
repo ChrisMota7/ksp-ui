@@ -1,8 +1,49 @@
 import { get, put, post } from "@/utils/api"
-import { SET_FILTERED_USERS, SET_USERS, selectAdminUsers, selectClientUsers } from "../reducers/userReducer"
+import { SET_FILTERED_USERS, SET_USERS, selectAdminUsers, selectClientUsers, SET_EMPRESAS } from "../reducers/userReducer"
 import { filterUsersByFullName } from "@/app/constants"
 
 import { RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAILURE } from "../reducers/userReducer";
+
+export const getEmpresas = () => async (dispatch) => {
+    try {
+        const response = await get("/user/empresas/");
+        console.log('Response from API:', response); 
+        dispatch({
+            type: SET_EMPRESAS,
+            payload: response,
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching companies", error);
+        return [];
+    }
+};
+
+export const filterUsersByEmpresa = (empresaId) => async (dispatch) => {
+    const { getUsersSuccessfully, allUsers } = await dispatch(getUsers());
+    if (getUsersSuccessfully && Array.isArray(allUsers)) {
+        let filteredUsers;
+        if (empresaId === '') {
+            filteredUsers = allUsers; // Si `empresaId` está vacío, retorna todos los usuarios
+        } else if (empresaId === 'no_empresa') {
+            filteredUsers = allUsers.filter(user => !user.empresa); // Filtra usuarios sin empresa
+        } else {
+            filteredUsers = allUsers.filter(user => user.empresa && user.empresa.id === empresaId);
+        }
+
+        dispatch({
+            type: SET_FILTERED_USERS,
+            payload: filteredUsers
+        });
+    } else {
+        dispatch({
+            type: SET_FILTERED_USERS,
+            payload: []
+        });
+    }
+};
+
+
 
 export const resetPassword = (uid, token, newPassword) => async (dispatch) => {
     dispatch({ type: RESET_PASSWORD_REQUEST });
@@ -39,18 +80,19 @@ export const resetPassword = (uid, token, newPassword) => async (dispatch) => {
 };
 
 
-export const getUsers = () => async (dispatch) => {
-    const accessToken = localStorage.getItem("jwt")
-
+export const getUsers = (empresaId = null) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
     try {
-        const allUsers = await get("/user/getAllUsers/", {
+        let url = "/user/getAllUsers/";
+        if (empresaId) {
+            url += `?empresa_id=${empresaId}`;
+        }
+        const allUsers = await get(url, {
             Authorization: `Bearer ${accessToken}`,
-        })
+        });
 
-        console.log("allUsers", allUsers)
-        const adminUsers = allUsers.filter((user) => user.isAdmin === "1")
-        console.log("allUsers", allUsers)
-        const clientUsers = allUsers.filter((user) => user.isAdmin === "0")
+        const adminUsers = allUsers.filter((user) => user.isAdmin === "1");
+        const clientUsers = allUsers.filter((user) => user.isAdmin === "0");
 
         dispatch({
             type: SET_USERS,
@@ -58,62 +100,36 @@ export const getUsers = () => async (dispatch) => {
                 adminUsers: adminUsers,
                 clientUsers: clientUsers,
             }
-        })
-
-        return { getUsersSuccessfully: true }
-    } catch (e) {
-        console.log("error", e)
-
-        return { getUsersSuccessfully: false }
-    } 
-}
-
-export const updatePasswordUser = (userId, newPassword) => async (dispatch) => {
-    const accessToken = localStorage.getItem("jwt");
-
-    console.log("accessToken", accessToken);
-    console.log("userId", userId);
-    console.log("newPassword", newPassword);
-
-    try {           
-        const response = await put(`/user/${userId}/UpdateUser/`, {
-            Authorization: `Bearer ${accessToken}`,
-            password: newPassword
         });
 
-        console.log("response", response);
-        
-        return { setUpdatePasswordUserSuccessfully: true };
-        
+        return { getUsersSuccessfully: true, allUsers };
     } catch (e) {
-
-        return { setUpdatePasswordUserSuccessfully: false };
+        console.log("error", e);
+        return { getUsersSuccessfully: false, allUsers: [] };
     }
-}
+};
 
-export const updateUserDetails = (userId, newEmail, newPassword) => async (dispatch) => {
+export const updateUserDetails = (userId, newEmail, newPassword, empresa, newPhoneNumber) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt");
-
-    console.log("accessToken", accessToken);
-    console.log("userId", userId);
-    console.log("newEmail", newEmail);
-    console.log("newPassword", newPassword);
 
     try {
-        const response = await put(`/user/${userId}/UpdateUser/`, {
-            Authorization: `Bearer ${accessToken}`,
-            email: newEmail,
-            password: newPassword
+        const payload = { email: newEmail, empresa_id: empresa, telefono: newPhoneNumber };
+        if (newPassword) {
+            payload.password = newPassword;
+        }
+
+        const response = await put(`/user/${userId}/UpdateUser/`, payload, {
+            Authorization: `Bearer ${accessToken}`
         });
 
-        console.log("response", response);
-        
         return { setUpdateUserSuccess: true };
         
     } catch (e) {
         return { setUpdateUserSuccess: false };
     }
 }
+
+
 
 export const deleteUser = (userId) => async (dispatch) => {
     const accessToken = localStorage.getItem("jwt");

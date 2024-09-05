@@ -1,6 +1,5 @@
 .view-tickets {
     width: 100%;
-    background-color: #e9f0f3;
 
     &__header {
         display: flex;
@@ -13,6 +12,43 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+
+            &__button {
+                display: flex;
+                flex-direction: column;
+                
+                &__close {
+                    font-weight: bold;
+                    border-radius: 4px;
+                    background-color: #1976d2;
+                    color: white;
+                    width: 220px;
+                    margin: 5px 3px 3px 3px;
+    
+                    &:hover {
+                        background-color: #303f9f;
+                    }
+                }
+    
+                &__cancel {
+                    font-weight: bold;
+                    background-color: #636060;
+                    color: white;
+                    width: 220px;
+                    margin: 5px 3px 3px 3px;
+                    
+                    &:hover {
+                        background-color: black;
+                    }
+                }
+                
+            }
+
+            &__dialog {
+                &__button {
+                     color: red;
+                }
+            }
 
             &__title {
                 display: flex;
@@ -39,11 +75,6 @@
                 justify-content: space-between;
                 align-items: center;
                 gap: 10px;
-                width: 25%;
-
-                &__priority-select {
-                    width: 80%;
-                }
             }
         }
 
@@ -93,54 +124,25 @@
         &__modal {
             display: flex;
             justify-content: center;
+
+            .modal-image-content {
+                width: 800px;
+                height: 600px;
+
+                .image-box {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
+                }
+            }
         }
-    }
-}
-
-.header{
-    align-items: center;
-    justify-content:center;
-    position: relative;
-    &__title{
-        margin-top: 40px;
-        display: flex;
-        flex-direction: row;
-        &__name{
-            margin-right: 100px;
-        }
-        &__problem{
-            margin-left: 750px;
-        }
-    }
-    &__nav{
-        margin-top: 35px;
-    }
-}
-
-.content{
-    margin-top: 30px;
-    &__date{
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-
-    }
-    &__button{
-        margin-left: 1145px;
-        
-    }
-    &__divisor{
-        padding: 20px;
-    }
-}
-
-.footer{
-    display: flex;
-    flex-direction: row;
-    padding-top: 5px;
-    &__label{
-        width: 1200px;
-        
-        padding-right: 5px;
     }
 }

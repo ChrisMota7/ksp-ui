@@ -88,20 +88,22 @@ export const setAuthInfo = () => async (dispatch) => {
     } 
 }
 
-export const createUser = (firstName, lastName, email, password, isAdmin) => async (dispatch) => {
+export const createUser = (firstName, lastName, email, password, empresa, isAdmin, telefono) => async (dispatch) => {
     try {
-      await post("/user/create/", {
-        firstName,
-        lastName,
-        email,
-        password,
-        isAdmin: isAdmin ? "1" : "0"
+        await post("/user/create/", {
+            firstName,
+            lastName,
+            email,
+            password,
+            empresa,
+            isAdmin: isAdmin ? "1" : "0",
+            telefono 
         });
-  
-      return { userCreatedSuccessfully: true }
+
+        return { userCreatedSuccessfully: true }
     } catch (e) {
         console.log("error", e);
-  
-      return { userCreatedSuccessfully: false }
+
+        return { userCreatedSuccessfully: false }
     }
-  }
+}

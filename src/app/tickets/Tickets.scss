@@ -1,74 +1,142 @@
-.tickets{
+.tickets {
+  width: 100%;
+
+  &__header {
     width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
 
-    &__header {
-        width: 100%;
-        margin-left: 20px;
-        margin-right: 20px;
-
-        &__title{
-            margin-left: 20px;
-        }
-
-        &__nav{
-            margin-left: 20px;
-        }
+    &__title {
+      margin-left: 20px;
     }
 
-    &__content{
-        width: 100%;
-        margin-top: 15px;
-        padding-left: 5%;
-        padding-right: 5%;
-        
+    &__nav {
+      margin-left: 20px;
+    }
+  }
 
-        &__searcher{
-            padding: 10px;
+  &__content {
+    width: 100%;
+    margin-top: 15px;
+    padding-left: 5%;
+    padding-right: 5%;
+
+    &__searcher {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+
+      &__top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 5px;
+
+        &__input {
+          flex: 1;
+        }
+
+        &__select, &__date {
+          flex: 0.5;
+        }
+      }
+
+      &__bottom {
+        width: 10%;
+        margin: 5px;
+      }
+    }
+
+    &__info-section {
+      margin-top: 5px;
+
+      &__button {
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 15px;
+      }
+
+      &__table {
+        background-color: #636060;
+        margin: 15px;
+
+        .MuiTableCell-root {
+          color: white;
+        }
+
+        &__headers {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        &__content {
+          align-items: center;
+          text-align: center;
+          vertical-align: middle;
+
+          .action-icons {
             display: flex;
-            flex-direction: column;
-
-            &__top {
-                display: flex;
-                justify-content: space-between;
-                gap: 10px;
-                padding: 5px;
-
-                &__input{
-                    width: 50%;
-                }
-        
-                &__select{
-                    width: 50%;
-                    flex: 1;
-                }
-            }
-
-            &__bottom {
-                width: 10%;
-                margin: 5px;
-            }
+            justify-content: space-between;
+            width: 80px; 
+          }
         }
-
-        &__info-section {
-            margin-top: 5px;
-
-            &__button{
-                width: 100%;
-                margin-bottom: 10px;
-                display: flex;
-                justify-content: flex-end;
-                padding-right: 15px;
-            }
-
-            &__table{
-                background-color: rgb(202, 202, 202);
-                margin: 15px;
-                
-                &__headers {
-                    font-weight: bold;
-                }
-            }
-        }
-        
+      }
     }
+  }
+
+  &__dialog {
+    color: red;
+  }
 }
+
+.tickets__content__info-section__table__content {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tickets__content__info-section__table__headers {
+  text-align: center;
+}
+
+.tickets__content__info-section__table__content .status {
+  display: inline-block;
+  padding: 1px 5px; 
+  border-radius: 5px;
+  text-align: center;
+  border: 2px solid;
+  font-weight: bold;
+}
+
+.status-nuevo {
+  color: red;
+  border-color: red;
+  width: 90px;
+}
+
+.status-en-espera {
+  color: orange;
+  border-color: orange;
+  width: 90px;
+}
+
+.status-respondido {
+  color: blue;
+  border-color: blue;
+  width: 95px;
+}
+
+.status-resuelto {
+  color: green;
+  border-color: green;
+  width: 95px;
+}
+
+.status-default {
+  color: black;
+  border-color: black;
+  width: 95px;
+}
+
+

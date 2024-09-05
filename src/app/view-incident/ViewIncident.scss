@@ -1,0 +1,105 @@
+.view-incident {
+    width: 100%;
+
+    &__header {
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+
+        &__title {
+            margin-left: 20px;
+        }
+
+        &__nav {
+            margin-left: 20px;
+        }
+
+        &__button {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 5px;
+            color: white;
+            text-transform: none;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 10px;
+
+            &__cancel {
+                background-color: #636060;
+                color: white;
+                width: 180px;
+
+                &:hover {
+                    background-color: black;
+                }
+            }
+            
+            &__save {
+                background-color: #1976d2;
+                color: white;
+                width: 180px;
+
+                &:hover {
+                    background-color: #303f9f;
+                }
+            }
+
+            &__pdf {
+                background-color: white;
+                color: #1976d2;
+                width: 180px;
+                margin-left: 3.2%;
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    &__content {
+        padding-left: 5%;
+        padding-right: 5%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &__section {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            &__field {
+                margin-bottom: 20px;
+            }
+
+            &__images {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+
+                img {
+                    width: 100%; 
+                    max-width: 800px; // Puedes ajustar este valor para cambiar el tamaño máximo de las imágenes
+                    height: auto;
+                    border-radius: 8px;
+                    object-fit: contain; // Asegura que la imagen se ajuste al contenedor sin deformarse
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+            }
+        }
+    }
+
+    .readonly-field {
+        .MuiInputBase-input {
+            color: #636060;
+        }
+    }
+
+    @media print {
+        .view-incident__header,
+        .view-incident__content__section__button {
+            display: none;
+        }
+    }
+}
