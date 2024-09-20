@@ -1,0 +1,113 @@
+.floating-button {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-overlay {
+    position: fixed;
+    bottom: 78px;
+    right: 30px;
+    width: 200px; // Ajustar según sea necesario
+    max-height: 70%; // Altura máxima
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .5);
+    overflow: hidden;
+    display: none;
+    z-index: 1001;
+}
+
+.menu {
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+@keyframes breathe {
+    0%, 50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+.title{
+    margin-left: 8%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.floating-button img {
+    width: 35px;
+    height: 40px;
+    animation: breathe 3s ease-in-out infinite;
+}
+
+.department {
+    text-align: center; // Centra el texto
+    font-size: small;
+    color: #1976d2; // Texto blanco
+    margin: 5px;
+    // background-color: #1976d2; // Fondo azul
+    // padding: 12px 10px; // Añadir algo de padding para mejor visualización
+    cursor: pointer;
+    // border-radius: 5px; // Bordes redondeados
+    // margin: 8px 0; // Espacio entre opciones
+    transition: background-color 0.5s, transform 0.5s; // Transiciones suaves
+}
+
+.option {
+    text-align: center; // Centra el texto
+    font-size: small;
+    color:white; // Texto blanco
+    background-color: #1976d2; // Fondo azul
+    padding: 12px 10px; // Añadir algo de padding para mejor visualización
+    cursor: pointer;
+    border-radius: 5px; // Bordes redondeados
+    margin: 2px 0; // Espacio entre opciones
+}
+
+.submenu:not(.hidden) {
+    visibility: visible;
+    opacity: 1;
+    max-height: 500px; // Altura máxima cuando es visible
+}
+
+.submenu div.option {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.submenu:not(.hidden) {
+    visibility: visible;
+    opacity: 1;
+}
+
+.floating-button img {
+    animation: breathe 2s ease-in-out infinite; // Animación de respiración
+}

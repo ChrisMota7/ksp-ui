@@ -212,6 +212,7 @@ export const searchTicketByInfo = (searchWord) => async (dispatch, getState) => 
         const ticketDate = new Date(ticket.created_at);
         return (
             ticket.id == searchWord ||
+            ticket.id_custom.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.asunto.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.problema.prioridad.name.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.user.email.toLowerCase().includes(searchWord.toLowerCase()) ||
@@ -315,6 +316,58 @@ export const filterTicketsByDate = (date) => async (dispatch, getState) => {
     return { setTicketsTableSuccessfully: true };
   };
   
+  export const filterTicketsByDateRange = (startDate, endDate) => async (dispatch, getState) => {
+    const currentTickets = selectTicketsDuplication(getState());
+
+    // Validar si las fechas están presentes
+    if (!startDate || !endDate) {
+        dispatch({
+            type: SET_TICKETS_TABLE,
+            payload: currentTickets,
+        });
+        return { setTicketsTableSuccessfully: true };
+    }
+
+    const formattedStartDate = startDate.toISOString().split('T')[0]; // Formatear a YYYY-MM-DD
+    const formattedEndDate = endDate.toISOString().split('T')[0]; // Formatear a YYYY-MM-DD
+
+    try {
+        const filteredTickets = await get(`/helpdesk/tickets/filter_by_date_range/?start_date=${formattedStartDate}&end_date=${formattedEndDate}`);
+
+        dispatch({
+            type: SET_TICKETS_TABLE,
+            payload: filteredTickets,
+        });
+
+        return { setTicketsTableSuccessfully: true };
+    } catch (error) {
+        console.error("Error al filtrar por rango de fechas:", error);
+        return { setTicketsTableSuccessfully: false };
+    }
+};
+
+export const filterTicketsByCompany = (empresaId) => async (dispatch) => {
+    const accessToken = localStorage.getItem("jwt");
+
+    try {
+        const response = await get(`/user/tickets/by_company/?empresa_id=${empresaId}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        });
+
+        dispatch({
+            type: SET_TICKETS_TABLE,
+            payload: response
+        });
+
+        return { setTicketsTableSuccessfully: true };
+    } catch (e) {
+        console.error("Error al filtrar tickets por empresa", e);
+        return { setTicketsTableSuccessfully: false };
+    }
+};
 
   
+
   

@@ -34,7 +34,7 @@ const Login = () => {
             <h1 className="login__title">Iniciar Sesión</h1>
             <form className="login__form" onSubmit={submit}>
                 <input 
-                    type="text" 
+                    type="email" 
                     placeholder="Email" 
                     className="login__form__input"
                     onChange={e => setEmail(e.target.value)}

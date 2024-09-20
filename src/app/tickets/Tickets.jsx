@@ -8,10 +8,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus, searchTicketByPriority, filterTicketsByDate } from '@/redux/actions/ticketAction';
+import { deleteTicket, getTableTickets, searchTicketByInfo, searchTicketByStatus, searchTicketByPriority, filterTicketsByDate, filterTicketsByDateRange, filterTicketsByCompany } from '@/redux/actions/ticketAction';
 import { selectTickets } from '@/redux/reducers/ticketReducer';
 import { selectIsAdmin } from '@/redux/reducers/authReducer';
 import { showSnackbar } from '@/redux/actions/visualsAction';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { selectEmpresas } from '@/redux/reducers/userReducer';
+import { getEmpresas } from '@/redux/actions/userAction';
+
 
 const Tickets = () => {
   const dispatch = useDispatch();
@@ -19,6 +26,7 @@ const Tickets = () => {
 
   const tickets = useSelector(selectTickets);
   const isAdmin = useSelector(selectIsAdmin);
+  const empresas = useSelector(selectEmpresas);
 
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
@@ -27,6 +35,42 @@ const Tickets = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [ticketToDelete, setTicketToDelete] = useState(null);
   const [deleteReason, setDeleteReason] = useState("");
+  const [dateRange, setDateRange] = useState([null, null]);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const [selectedEmpresa, setSelectedEmpresa] = useState("");
+
+  useEffect(() => {
+    // Verifica si es la primera vez que accede a la página de tickets
+    const hasReloaded = localStorage.getItem("hasReloaded");
+
+    // Si la página es /tickets y no se ha recargado aún
+    if (!hasReloaded) {
+        // Almacena en localStorage que ya se ha recargado
+        localStorage.setItem("hasReloaded", "true");
+
+        // Forzar la recarga de la página
+        window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("isAdmin:", isAdmin);
+    if (isAdmin) {
+      dispatch(getEmpresas());
+    }
+  }, [isAdmin, dispatch]);
+  
+
+  const handleEmpresaChange = (event) => {
+    const empresaId = event.target.value;
+    setSelectedEmpresa(empresaId);
+    if (empresaId) {
+      dispatch(filterTicketsByCompany(empresaId));
+    }
+  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -43,23 +87,25 @@ const Tickets = () => {
     dispatch(searchTicketByPriority(e.target.value));
   };
 
-  const handleFilterByDate = (e) => {
-    const date = e.target.value ? new Date(e.target.value) : null;
-    setFilterDate(e.target.value);
-    dispatch(filterTicketsByDate(date));
-  };
-
   const handleClearFilters = () => {
     setSearch("");
     setFilterStatus("");
     setFilterPriority("");
+    setSelectedEmpresa("");
     setFilterDate("");
+    setDateRange([null, null]);
     dispatch(getTableTickets());
   };
 
   useEffect(() => {
     dispatch(getTableTickets());
   }, [dispatch]);
+
+  const handleFilterByDateRange = () => {
+    if (startDate && endDate) {
+      dispatch(filterTicketsByDateRange(startDate, endDate));
+    }
+  };
 
   const handleViewTicket = (ticketId) => {
     router.push(`/view-ticket/?ticketId=${ticketId}`);
@@ -161,7 +207,25 @@ const Tickets = () => {
       </div>
       <div className='tickets__content'>
         <div className='tickets__content__info-section__button'>
-          <Button variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
+          {isAdmin === "true" && (
+            <FormControl className='tickets__content__searcher__top__select'>
+              <InputLabel id="empresa-select-label">Empresa</InputLabel>
+              <Select
+                labelId="empresa-select-label"
+                id="empresa-select"
+                value={selectedEmpresa}
+                label="Empresa"
+                onChange={handleEmpresaChange}
+              >
+                {empresas.filter(empresa => empresa.isDeleted == 0).map((empresa) => (
+                <MenuItem key={empresa.id} value={empresa.id}>{empresa.nombre}</MenuItem>
+              ))}
+              </Select>
+            </FormControl>
+          )}
+          {isAdmin === "false" && (
+            <Button className='tickets__content__searcher__top__select__button' variant="contained" onClick={() => router.push(`/create-ticket/`)}>Nuevo Ticket</Button>
+          )}
         </div>
         <div className='tickets__content__searcher'>
           <div className='tickets__content__searcher__top'>
@@ -210,17 +274,36 @@ const Tickets = () => {
                 <MenuItem value="Crítico">Crítico</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              label="Filtrar por fecha"
-              type="date"
-              value={filterDate}
-              onChange={handleFilterByDate}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              className='tickets__content__searcher__top__date'
-            />
-            <Button variant="outlined" onClick={handleClearFilters}>Limpiar</Button>
+            <div className='tickets__content__searcher__top__date-range'>
+              <TextField
+                label="Fecha de inicio"
+                type="date"
+                value={startDate ? startDate.toISOString().split('T')[0] : ''}
+                onChange={(e) => setStartDate(new Date(e.target.value))}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                className='tickets__content__searcher__top__date'
+              />
+              <span className='tickets__content__searcher__top__date-range-dash'>-</span>
+              <TextField
+                label="Fecha de fin"
+                type="date"
+                value={endDate ? endDate.toISOString().split('T')[0] : ''}
+                onChange={(e) => setEndDate(new Date(e.target.value))}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                className='tickets__content__searcher__top__date'
+              />
+              <Button variant="outlined" onClick={handleFilterByDateRange} className='tickets__content__searcher__top__button'>
+                Filtrar
+              </Button>
+              <Button variant="outlined" onClick={handleClearFilters} className='tickets__content__searcher__top__button'>
+                Limpiar
+              </Button>
+            </div>
+
           </div>
         </div>
         <div className='tickets__content__info-section'>
@@ -243,7 +326,7 @@ const Tickets = () => {
                 <TableBody>
                   {filteredTickets.map(ticket => (
                     <TableRow key={ticket.id}>
-                      <TableCell className='tickets__content__info-section__table__content'>{ticket.id}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.id_custom}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.asunto}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.name}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.categoria.name}</TableCell>
@@ -266,9 +349,9 @@ const Tickets = () => {
                               <VisibilityIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Eliminar Ticket" placement="top">
+                          <Tooltip title="Cerrar Ticket" placement="top">
                             <IconButton onClick={() => handleOpenConfirmDialog(ticket.id)}>
-                              <DeleteIcon />
+                              <ThumbUpIcon />
                             </IconButton>
                           </Tooltip>
                         </div>
@@ -306,7 +389,7 @@ const Tickets = () => {
         </DialogContent>
         <DialogActions>
           <Button className='tickets__dialog' onClick={handleDeleteTicket} color="primary" autoFocus>
-            Eliminar
+            Aceptar
           </Button>
           <Button onClick={handleCloseConfirmDialog} color="primary">
             Cancelar

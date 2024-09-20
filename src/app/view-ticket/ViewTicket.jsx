@@ -18,6 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { createNewMessage, deleteTicket, getMessages, getTicketInfo } from '@/redux/actions/ticketAction';
 import { selectTicketMessages, selectTicketInfo, selectTicketFiles } from '@/redux/reducers/ticketReducer';
 import { showSnackbar } from '@/redux/actions/visualsAction';
+import Loader from '@/components/Loader/Loader';
 
 const ViewTicket = () => {
     const router = useRouter()
@@ -35,6 +36,9 @@ const ViewTicket = () => {
     const [prioridad, setPrioridad] = useState("");
     const [newMessage, setNewMessage] = useState("");
     const [file, setFile] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [closeReason, setCloseReason] = useState("");
+
     
     useEffect(() => {
         const interval = setInterval(() => {
@@ -55,10 +59,16 @@ const ViewTicket = () => {
     }
 
     const loadInfo = async () => {
-        const isAdmin = await localStorage.getItem("isAdmin")
-        dispatch(getTicketInfo(ticketId));
-        setIsAdminUser(isAdmin === "true")
-    }
+        setLoading(true); // Activar loader al comenzar la carga
+        const isAdmin = await localStorage.getItem("isAdmin");
+        try {
+            await dispatch(getTicketInfo(ticketId));
+            setIsAdminUser(isAdmin === "true");
+        } catch (error) {
+            console.error('Failed to fetch ticket info:', error);
+        }
+        setLoading(false); // Desactivar loader después de cargar los datos
+    };
 
     const handleOpenConfirmDialog = () => {
         setOpenConfirmDialog(true);
@@ -70,7 +80,7 @@ const ViewTicket = () => {
 
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const handleDeleteTicket = async () => {
-        const result = await dispatch(deleteTicket(ticketId));
+        const result = await dispatch(deleteTicket(ticketId, closeReason));
         if (result.ticketDeletedSuccessfully) {
             dispatch(showSnackbar("Ticket finalizado con éxito.", "success"));
             router.push('/tickets'); 
@@ -82,21 +92,25 @@ const ViewTicket = () => {
 
     useEffect(() => {
         loadInfo()
-    }, [dispatch]);
+    }, [dispatch, ticketId]);
 
     const handleImageClick = async (imageUrl) => {
-        await setSelectedImage(imageUrl)
-        setOpenImageModal(true)
+        window.open(imageUrl, '_blank');
+        // await setSelectedImage(imageUrl)
+        // setOpenImageModal(true)
     }
 
     return(
         <>
-        {ticketInfo ? (
+
+        {loading ? (
+            <Loader />
+        ) :ticketInfo ? (
             <div className='view-tickets'>
                 <div className='view-tickets__header'>
                     <div className="view-tickets__header__container">
                         <div className='view-tickets__header__container__title'>
-                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id}</h1>
+                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id_custom}</h1>
                             <p className='view-tickets__header__container__title__subject'>{ticketInfo.ticket_data.asunto}</p>
                         </div>
                         <div className='view-tickets__header__container__button'>
@@ -115,6 +129,16 @@ const ViewTicket = () => {
                             <DialogContentText id="alert-dialog-description">
                                 ¿Estás seguro de que quieres finalizar este ticket?
                             </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="reason"
+                                label="Razón de finalización"
+                                type="text"
+                                fullWidth
+                                value={closeReason}
+                                onChange={(e) => setCloseReason(e.target.value)}
+                            />
                         </DialogContent>
                         <DialogActions>
                             <Button className='view-tickets__header__container__dialog__button' onClick={handleDeleteTicket} color="primary" autoFocus>
@@ -203,7 +227,7 @@ const ViewTicket = () => {
                         <ReplayOutlinedIcon fontSize="medium" />
                     </IconButton>
                 </div>
-                <Dialog
+                {/* <Dialog
                     open={openImageModal}
                     onClose={() => setOpenImageModal(false)}
                     aria-labelledby="alert-dialog-title"
@@ -226,7 +250,7 @@ const ViewTicket = () => {
                             <img src={selectedImage} alt="Imagen seleccionada" />
                         </Box>
                     </DialogContent>
-                </Dialog>
+                </Dialog> */}
             </div>
         ) : (
             <div>

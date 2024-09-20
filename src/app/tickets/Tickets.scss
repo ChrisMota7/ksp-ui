@@ -31,6 +31,14 @@
         justify-content: space-between;
         gap: 10px;
         padding: 5px;
+        
+        &__date {
+          color: #ccc; // Cambiar al color del fondo o un color que prefieras
+
+          &::placeholder { // Esto cambia el color del placeholder si está afectando como marca de agua
+            color: #ccc; // Asegúrate de que esto coincide con el estilo general
+          }
+        }
 
         &__input {
           flex: 1;
@@ -139,4 +147,34 @@
   width: 95px;
 }
 
+.tickets__content__searcher__top__date-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
+  &-dash {
+    font-size: 20px; // Ajustar tamaño según necesidad
+    padding: 0 5px;
+  }
+
+  .tickets__content__searcher__top__button {
+    min-width: 90px; // Asegura que los botones tengan un mínimo de anchura
+  }
+
+  .tickets__content__searcher__top__date {
+    width: 180px; // Asegura que los inputs de fecha tengan un tamaño adecuado
+  }
+}
+
+.tickets__content__info-section__button {
+  display: flex;
+  justify-content: flex-end; /* Esto asegura que el botón siempre esté a la derecha */
+  align-items: center; /* Alinea verticalmente los elementos */
+  padding: 0 15px; /* Añade algo de padding si es necesario */
+  gap: 10px; /* Añade espacio entre el select y el botón */
+}
+
+
+.tickets__content__searcher__top__select {
+  max-width: 15%;
+}

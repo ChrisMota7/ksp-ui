@@ -20,6 +20,7 @@ const CreateTicket = () => {
     const [problemaid, setProblemaid] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [files, setFiles] = useState([]); 
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         dispatch(getCategoriesAll());
@@ -27,6 +28,11 @@ const CreateTicket = () => {
 
     const submitCreateTicket = async (e) => {
         e.preventDefault();
+		
+		if (isSubmitting) return; // Evita múltiples envíos
+
+        setIsSubmitting(true);
+		
         const { newTicketId, ticketCreatedSuccessfully } = await dispatch(createTicket(asunto, descripcion, problemaid, files));
 
         if (ticketCreatedSuccessfully) {
@@ -166,8 +172,8 @@ const CreateTicket = () => {
                         <Button className='create-ticket__content__bottom__button-container__cancel' onClick={() => router.push(`/tickets/`)} variant="contained">
                             Cancelar
                         </Button>
-                        <Button className='create-ticket__content__bottom__button-container__sent' type='submit'  variant="contained">
-                            Enviar Ticket
+                        <Button className='create-ticket__content__bottom__button-container__sent' type='submit'  variant="contained" disabled={isSubmitting}>
+							{isSubmitting ? 'Enviando...' : 'Enviar Ticket'}
                         </Button>
                     </div>
                 </div>

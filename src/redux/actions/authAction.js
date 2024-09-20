@@ -30,9 +30,9 @@ export const login = (email, password) => async (dispatch) => {
             }
         });
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 500);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 500);
         
         return { userAuthenticationSuccessfully: true, message: undefined }
     } catch (e) {
@@ -52,6 +52,8 @@ export const logout = () => async (dispatch) => {
         localStorage.removeItem("userid");
         localStorage.removeItem("user_email");
         localStorage.removeItem("isAdmin");
+
+        localStorage.removeItem("hasReloaded");
 
         dispatch({
             type: LOGOUT_USER
