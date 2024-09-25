@@ -1,13 +1,14 @@
 'use client'
 import './CreateTicket.scss'
 import React, { useEffect, useState } from 'react';
-import { TextField, FormControl, InputLabel, Select, MenuItem, Breadcrumbs, Link, Typography, Button, FormHelperText } from "@mui/material"
+import { TextField, FormControl, InputLabel, Select, MenuItem, Breadcrumbs, Link, Typography, Button, FormHelperText, Input } from "@mui/material"
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket, getProblems } from '@/redux/actions/ticketAction';
 import { selectProblems } from '@/redux/reducers/ticketReducer';
 import { getCategoriesAll } from '@/redux/actions/categoryActions';
 import { selectCategoriesAll } from '@/redux/reducers/categoryReducer';
+import { showSnackbar } from '@/redux/actions/visualsAction';
 
 const CreateTicket = () => {
     const router = useRouter();
@@ -48,12 +49,38 @@ const CreateTicket = () => {
 
     const handleFileInputChange = (event) => {
         const selectedFiles = event.target.files;
-        const allFiles = [];
+        let allFiles = [...files]; // Mantén los archivos previamente seleccionados
+        let tooLargeFiles = false;
+        
         for (let i = 0; i < selectedFiles.length; i++) {
-            let file = selectedFiles.item(i);
-            allFiles.push(file);
+            const file = selectedFiles[i];
+    
+            // Verificar el tipo de archivo y tamaño
+            if (file.type.startsWith('image/') || file.type.startsWith('video/') || file.type.startsWith('application/')) {
+                if (file.size > 5 * 1024 * 1024) {  // Limitar a 5MB
+                    tooLargeFiles = true;
+                } else if (allFiles.length < 5) {  // Limitar a 5 archivos
+                    allFiles.push(file);
+                } else {
+                    console.warn("Solo puedes subir un máximo de 5 archivos.");
+                    dispatch(showSnackbar("Solo puedes subir un máximo de 5 archivos", "error"));
+                    break;  // Detenemos el bucle si ya alcanzamos el límite
+                }
+            }
         }
+    
+        if (tooLargeFiles) {
+            dispatch(showSnackbar("Uno o más archivos exceden el tamaño máximo permitido de 5MB.", "error"));
+        }
+    
         setFiles(allFiles);
+    };
+
+    // Formato de tamaño de archivo
+    const formatFileSize = (size) => {
+        return size > 1024 * 1024
+            ? `${(size / (1024 * 1024)).toFixed(2)} MB`
+            : `${(size / 1024).toFixed(2)} KB`;
     };
 
     // Filtrar categorías activas
@@ -78,7 +105,7 @@ const CreateTicket = () => {
             </div>
 
             <form onSubmit={submitCreateTicket} className='create-ticket__content'>
-                <h4 className='create-ticket__content__title'>Información básica</h4>
+                <h2 className='create-ticket__content__title'>Información básica</h2>
                 <div className='create-ticket__content__top'>
                     <FormControl className='create-ticket__content__top__input'>
                         <TextField
@@ -146,27 +173,29 @@ const CreateTicket = () => {
                         <FormHelperText className='char-counter'>{descripcion.length}/250</FormHelperText>
                     </FormControl>
 
-                    <h4 className='create-ticket__content__bottom__title'>Evidencia</h4>
-                    <p>Solo se pueden subir imágenes</p>
+                    <h2 className='create-ticket__content__bottom__title'>Evidencia (opcional)</h2>
+                    <p>Solo se pueden subir máximo 5 imagenes o videos. Cada uno puede pesar máximo 5 MB.</p>
 
-                    <div className="file-upload">
-                        <input
+                    <FormControl fullWidth className='create-incident__content__bottom__archivos'>
+                        <Input
                             type="file"
-                            id="file-upload"
-                            accept="image/*"
-                            multiple
+                            inputProps={{ multiple: true }}
                             onChange={handleFileInputChange}
-                            className="file-upload__input"
                         />
-                        <label htmlFor="file-upload" className="file-upload__label">
-                            Elegir archivos
-                        </label>
-                        <div className="file-upload__file-list">
+                        <FormHelperText>Adjunta archivos relacionados con el ticket (opcional)</FormHelperText>
+                    </FormControl>
+
+                    {/* Lista de archivos seleccionados */}
+                    <p>Lista de archivos seleccionados:</p>
+                    {files.length > 0 && (
+                        <ul>
                             {files.map((file, index) => (
-                                <span key={index} className="file-upload__file-name">{file.name}</span>
+                                <li key={index}>
+                                    {file.name} - {formatFileSize(file.size)}
+                                </li>
                             ))}
-                        </div>
-                    </div>
+                        </ul>
+                    )}
 
                     <div className='create-ticket__content__bottom__button-container'>
                         <Button className='create-ticket__content__bottom__button-container__cancel' onClick={() => router.push(`/tickets/`)} variant="contained">

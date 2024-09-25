@@ -165,21 +165,51 @@ const ViewTicket = () => {
                     <div className='view-tickets__header__info'> 
                         <Typography color="text.primary">Descripción: {ticketInfo.ticket_data.descripcion}</Typography>
                     
-                        <div className='view-tickets__header__info__images'>
+                        <div className='view-tickets__header__info__files'>
                             {relatedFiles.length > 0 ? (
-                                    <ImageList sx={{ height: 300 }} cols={4} gap={8}>
-                                        {relatedFiles.map((item) => (
-                                            <ImageListItem key={item.id}>
-                                                <img
-                                                    srcSet={`${item.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                                    src={`${item.url}?w=164&h=164&fit=crop&auto=format`}
-                                                    alt={item.title}
-                                                    loading="lazy"
-                                                    onClick={() => handleImageClick(item.url)}
-                                                />
-                                            </ImageListItem>
-                                        ))}
-                                    </ImageList>
+                                <ImageList sx={{ height: 300 }} cols={4} gap={8}>
+                                    {relatedFiles.map((item) => {
+                                        // Verificamos el tipo de archivo para mostrarlo adecuadamente
+                                        const fileType = item.url.split('.').pop(); // Obtener la extensión del archivo
+                                        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType.toLowerCase())) {
+                                            // Si es una imagen
+                                            return (
+                                                <ImageListItem key={item.id}>
+                                                    <img
+                                                        srcSet={`${item.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                                        src={`${item.url}?w=164&h=164&fit=crop&auto=format`}
+                                                        alt={item.title}
+                                                        loading="lazy"
+                                                        onClick={() => handleImageClick(item.url)}
+                                                    />
+                                                </ImageListItem>
+                                            );
+                                        } else if (['mp4', 'webm', 'ogg'].includes(fileType.toLowerCase())) {
+                                            // Si es un video
+                                            return (
+                                                <ImageListItem key={item.id}>
+                                                    <video
+                                                        controls
+                                                        src={item.url}
+                                                        style={{ width: '100%', height: 'auto' }}
+                                                        onClick={() => handleImageClick(item.url)}
+                                                    />
+                                                </ImageListItem>
+                                            );
+                                        } else {
+                                            // Si es otro tipo de archivo
+                                            return (
+                                                <ImageListItem key={item.id}>
+                                                    <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                                        <Button variant="outlined" startIcon={<FileUploadOutlinedIcon />}>
+                                                            Descargar {fileType.toUpperCase()}
+                                                        </Button>
+                                                    </a>
+                                                </ImageListItem>
+                                            );
+                                        }
+                                    })}
+                                </ImageList>
                             ) : (
                                 <p>Sin evidencias para mostrar</p>
                             )}

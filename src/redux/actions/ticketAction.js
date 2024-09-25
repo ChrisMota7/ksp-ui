@@ -172,9 +172,9 @@ export const createTicket = (asunto, descripcion, problemaid, files) => async (d
     body.append('descripcion', descripcion)
     body.append('problema', problemaid)
 
-    files.map((file) => {
-        body.append('archivos', file, file.name)
-    })
+    files.forEach((file) => {
+        body.append('archivos', file);
+    });
     try {
         const response = await post("/helpdesk/tickets/crear/", body, {
             Authorization: `Bearer ${accessToken}`,

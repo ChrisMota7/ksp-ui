@@ -1,10 +1,13 @@
 'use client'
 import { useEffect, useState } from "react";
 import "./settings.scss"
-import { Breadcrumbs, Button, TextField, Typography, Grid } from "@mui/material"
+import { Breadcrumbs, Button, TextField, Typography, Grid, Tooltip, IconButton, InputAdornment } from "@mui/material"
 import { useDispatch } from "react-redux";
 import { updateUserDetails, getUsers } from "@/redux/actions/userAction";
 import { showSnackbar } from "@/redux/actions/visualsAction";
+import InfoIcon from '@mui/icons-material/Info';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Settings = () => {
     const dispatch = useDispatch();
@@ -12,6 +15,8 @@ const Settings = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [newPhoneNumber, setNewPhoneNumber] = useState('');
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -29,10 +34,17 @@ const Settings = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         if (newPassword && newPassword !== confirmNewPassword) {
             dispatch(showSnackbar("Las contraseñas no coinciden", "error"));
             return;
         }
+
+        if (newPassword && !validatePassword(newPassword, dispatch)) {
+            return;
+        }
+
+        
     
         const userId = localStorage.getItem('userid');
         const { setUpdateUserSuccess } = await dispatch(updateUserDetails(userId, user.email, newPassword, user.empresa.id, newPhoneNumber));
@@ -45,7 +57,36 @@ const Settings = () => {
         } else {
             dispatch(showSnackbar("Error al actualizar los datos", "error"));
         }
-    }    
+    }  
+
+    const validatePassword = (password, dispatch) => {
+        const hasUpperCase = /[A-Z]/;
+        const hasNumber = /\d/;
+        const hasSpecialChar = /[@$!%*?&]/;
+    
+        if (!hasUpperCase.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos una letra mayúscula", "error"));
+            return false;
+        }
+    
+        if (!hasNumber.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos un número", "error"));
+            return false;
+        }
+    
+        if (!hasSpecialChar.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos un carácter especial (@$!%*?&)", "error"));
+            return false;
+        }
+    
+        if (password.length < 8) {
+            dispatch(showSnackbar("La contraseña debe tener al menos 8 caracteres", "error"));
+            return false;
+        }
+    
+        return true;
+    };
+    
 
     return(
         <div className="settings">
@@ -108,22 +149,66 @@ const Settings = () => {
                             className="settings__form__shortInput"
                             margin="normal"
                         />
-                        <Typography variant="h5" style={{ marginTop: '20px' }}>Cambiar Contraseña</Typography>
+                        <Typography variant="h5" style={{ marginTop: '15px' }}>
+                            Cambiar Contraseña
+                            <Tooltip variant="h8" 
+                                title={
+                                    <div>
+                                        La contraseña debe cumplir con los siguientes lineamientos:
+                                        <li>Debe tener al menos 8 caracteres.</li>
+                                        <li>Debe contener una letra mayúscula.</li>
+                                        <li>Debe contener un número.</li>
+                                        <li>Debe contener un carácter especial (@$!%*?&).</li>
+                                    </div>
+                                }
+                                arrow
+                                placement="right"
+                            >
+                                <IconButton>
+                                    <InfoIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Typography>
                         <TextField
-                            type="password"
+                            type={isPasswordVisible ? "text" : "password"}
                             label="Nueva Contraseña"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             className="settings__form__shortInput"
                             margin="normal"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                                            edge="end"
+                                        >
+                                            {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
+
                         <TextField
-                            type="password"
+                            type={isConfirmPasswordVisible ? "text" : "password"}
                             label="Confirmar Nueva Contraseña"
                             value={confirmNewPassword}
                             onChange={(e) => setConfirmNewPassword(e.target.value)}
                             className="settings__form__shortInput"
                             margin="normal"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+                                            edge="end"
+                                        >
+                                            {isConfirmPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         <Button
                             type="submit" 

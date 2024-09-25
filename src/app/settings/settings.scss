@@ -31,7 +31,7 @@
         padding: 20px;
 
         &__shortInput {
-            width: 80%; // Reduce la longitud de los inputs
+            width: 70%; // Reduce la longitud de los inputs
             margin-bottom: 10px;
         }
 
@@ -41,5 +41,16 @@
             display: flex;
             align-items: flex-end;
         }
+    }
+}
+
+.password-requirements {
+    margin-top: 10px;
+    padding-left: 20px; /* Aumenta la separación del margen izquierdo */
+    list-style-type: disc; /* Añade puntos a la lista */
+    color: black; /* Cambia el color de los elementos */
+
+    li {
+        margin-bottom: 5px; /* Espacio entre cada punto */
     }
 }

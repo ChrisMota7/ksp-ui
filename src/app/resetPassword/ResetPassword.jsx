@@ -2,10 +2,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { TextField, Button, Typography } from '@mui/material';
+import { TextField, Button, Typography, FormHelperText, InputAdornment, IconButton, Tooltip } from '@mui/material';
 import { resetPassword as resetPasswordAction } from '@/redux/actions/userAction';
 import { showSnackbar } from '@/redux/actions/visualsAction'; 
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import './ResetPassword.scss';
+import InfoIcon from '@mui/icons-material/Info';
 
 const ResetPassword = () => {
     const router = useRouter();
@@ -14,6 +17,8 @@ const ResetPassword = () => {
     const dispatch = useDispatch();
     const [newPassword, setNewPassword] = useState('');
     const [passwordUpdated, setPasswordUpdated] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -30,13 +35,50 @@ const ResetPassword = () => {
         }
     }, [dispatch]);
 
+    const validatePassword = (password, dispatch) => {
+        const hasUpperCase = /[A-Z]/;
+        const hasNumber = /\d/;
+        const hasSpecialChar = /[@$!%*?&]/;
+    
+        if (!hasUpperCase.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos una letra mayúscula", "error"));
+            return false;
+        }
+    
+        if (!hasNumber.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos un número", "error"));
+            return false;
+        }
+    
+        if (!hasSpecialChar.test(password)) {
+            dispatch(showSnackbar("La contraseña debe contener al menos un carácter especial (@$!%*?&)", "error"));
+            return false;
+        }
+    
+        if (password.length < 8) {
+            dispatch(showSnackbar("La contraseña debe tener al menos 8 caracteres", "error"));
+            return false;
+        }
+    
+        return true;
+    };
+    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        // Validación de la nueva contraseña
+        if (!validatePassword(newPassword, dispatch)) {
+            return;
+        }
+    
         console.log("Submitting with UID:", uid, "Token:", token, "New Password:", newPassword);
+        
         if (!uid || !token) {
             dispatch(showSnackbar("Invalid or missing UID/Token", "error"));
             return;
         }
+        
         const response = await dispatch(resetPasswordAction(uid, token, newPassword));
         if (response.resetPasswordSuccessfully) {
             setPasswordUpdated(true);
@@ -47,6 +89,7 @@ const ResetPassword = () => {
             dispatch(showSnackbar("Error updating password", "error"));
         }
     };
+    
 
     return (
         <div className="request-reset">
@@ -57,14 +100,40 @@ const ResetPassword = () => {
             ) : (
                 <>
                     <h1>Escribe tu nueva contraseña</h1>
+                    <Tooltip variant="h8" 
+                                title={
+                                    <div>
+                                        La contraseña debe cumplir con los siguientes lineamientos:
+                                        <li>Debe tener al menos 8 caracteres.</li>
+                                        <li>Debe contener una letra mayúscula.</li>
+                                        <li>Debe contener un número.</li>
+                                        <li>Debe contener un carácter especial (@$!%*?&).</li>
+                                    </div>
+                                }
+                                arrow
+                                placement="right"
+                            >
+                                <IconButton>
+                                    <InfoIcon />
+                                </IconButton>
+                            </Tooltip>
                     <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Nueva contraseña"
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
+                    <TextField
+                        label="Nueva contraseña"
+                        type={isPasswordVisible ? "text" : "password"}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                                        {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                         <Button type="submit" variant="contained" color="primary">
                             Reestablecer
                         </Button>

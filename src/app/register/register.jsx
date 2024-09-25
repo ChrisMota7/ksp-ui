@@ -5,10 +5,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUser } from '@/redux/actions/authAction';
 import { useDispatch } from 'react-redux';
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { showSnackbar } from "@/redux/actions/visualsAction";
+import InfoIcon from '@mui/icons-material/Info';
 
 const Register = () => {
     const { push } = useRouter();
@@ -113,7 +114,23 @@ const Register = () => {
             <form className='register__form' onSubmit={handleCreateUser}>
                 <img src="/LogoNegro.png" height={80} alt="user-login" className="register__form__image" />
                 <h2 className='register__form__title'>Registro de cliente</h2>
-
+                <Tooltip variant="h8" 
+                    title={
+                        <div>
+                            La contraseña debe cumplir con los siguientes lineamientos:
+                            <li>Debe tener al menos 8 caracteres.</li>
+                            <li>Debe contener una letra mayúscula.</li>
+                            <li>Debe contener un número.</li>
+                            <li>Debe contener un carácter especial (@$!%*?&).</li>
+                        </div>
+                    }
+                    arrow
+                    placement="right"
+                >
+                    <IconButton>
+                        <InfoIcon />
+                    </IconButton>
+                </Tooltip>
                 <TextField
                     type="text"
                     placeholder="Nombre"
