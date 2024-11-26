@@ -53,7 +53,7 @@ const Chatbot = () => {
       mejoresPracticas: "https://kspus.sharepoint.com/:f:/s/vivekspmaxi/EuxCL1zUSmhCu2OKR-_4xwUBpKk643ONUouwnK2uyLiWeg?e=g36NKr",
       estandaresNegocio: "https://kspus.sharepoint.com/:f:/s/vivekspmaxi/Ek-FAVdD3SNJuXVGpJLeieUBMU3iiHPCFHkNXsO8wPPmyA?e=JpcBru",
       estandaresTecnicos: "https://kspus.sharepoint.com/:f:/s/vivekspmaxi/EiMa3lWb135Pmp4msbX-8UMB4gmYePGW4Zy0tq6VvyaEbw?e=WBr7s7",
-      ciberseguridad: "https://example.com/ciberseguridad",
+      ciberseguridad: "https://kspus.sharepoint.com/sites/vivekspmaxi/Ciberseguridad/Forms/AllItems.aspx",
       capacitacionTecnica: "https://learning.cloud.microsoft/search",
       capacitacionOffice: "https://learning.cloud.microsoft/search",
     };

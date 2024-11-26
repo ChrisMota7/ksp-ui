@@ -110,7 +110,7 @@ const ViewTicket = () => {
                 <div className='view-tickets__header'>
                     <div className="view-tickets__header__container">
                         <div className='view-tickets__header__container__title'>
-                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id_custom}</h1>
+                            <h1 className='view-tickets__header__container__title__id'>Ticket {ticketInfo.ticket_data.id}</h1>
                             <p className='view-tickets__header__container__title__subject'>{ticketInfo.ticket_data.asunto}</p>
                         </div>
                         <div className='view-tickets__header__container__button'>

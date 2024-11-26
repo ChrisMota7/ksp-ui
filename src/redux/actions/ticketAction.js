@@ -212,7 +212,6 @@ export const searchTicketByInfo = (searchWord) => async (dispatch, getState) => 
         const ticketDate = new Date(ticket.created_at);
         return (
             ticket.id == searchWord ||
-            ticket.id_custom.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.asunto.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.problema.prioridad.name.toLowerCase().includes(searchWord.toLowerCase()) ||
             ticket.user.email.toLowerCase().includes(searchWord.toLowerCase()) ||

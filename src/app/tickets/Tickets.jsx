@@ -19,7 +19,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvid
 import { selectEmpresas } from '@/redux/reducers/userReducer';
 import { getEmpresas } from '@/redux/actions/userAction';
 
-
 const Tickets = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -326,7 +325,7 @@ const Tickets = () => {
                 <TableBody>
                   {filteredTickets.map(ticket => (
                     <TableRow key={ticket.id}>
-                      <TableCell className='tickets__content__info-section__table__content'>{ticket.id_custom}</TableCell>
+                      <TableCell className='tickets__content__info-section__table__content'>{ticket.id}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.asunto}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.name}</TableCell>
                       <TableCell className='tickets__content__info-section__table__content'>{ticket.problema.categoria.name}</TableCell>

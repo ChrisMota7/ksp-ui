@@ -15,11 +15,14 @@ export const login = (email, password) => async (dispatch) => {
         const { is_admin } = await get("/user/user-type/", {
             Authorization: `Bearer ${access}`,
         });
-        
+
+        const expirationTime = Date.now() + 2 * 60 * 60 * 1000; // 2 minutes for testing
+
         localStorage.setItem("jwt", access);
         localStorage.setItem("userid", user_id);
         localStorage.setItem("user_email", email);
         localStorage.setItem("isAdmin", is_admin);
+        localStorage.setItem("expirationTime", expirationTime);
 
         dispatch({
             type: AUTHENTICATE_USER,
@@ -29,10 +32,6 @@ export const login = (email, password) => async (dispatch) => {
                 isAdmin: is_admin,
             }
         });
-
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 500);
         
         return { userAuthenticationSuccessfully: true, message: undefined }
     } catch (e) {

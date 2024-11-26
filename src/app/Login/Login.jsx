@@ -3,7 +3,7 @@ import { login } from "@/redux/actions/authAction";
 import "./Login.scss"
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { showSnackbar } from "@/redux/actions/visualsAction";
 import { Link } from "@mui/material";
@@ -15,12 +15,13 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const submit = async (e) =>{
+    const submit = async (e) => {
         e.preventDefault();
         
         const { userAuthenticationSuccessfully, message } = await dispatch(login(email, password))
-
+    
         if (userAuthenticationSuccessfully) {
+            sessionStorage.removeItem("sessionExpiredReloaded"); // Restablece la bandera
             router.push("/tickets")
         } else {
             dispatch(showSnackbar(message, "error"))
